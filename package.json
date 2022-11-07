@@ -2,6 +2,7 @@
   "name": "extism-playground",
   "version": "0.1.0",
   "private": true,
+  "license": "BSD-3-Clause",
   "dependencies": {
     "@extism/runtime-browser": "file:../extism-upstream/browser",
     "@testing-library/jest-dom": "^5.16.5",
