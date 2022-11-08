@@ -1,6 +1,7 @@
 :root {
   --default-font-size: 1.6rem;
   --default-label-padding: 1rem;
+  --max-width: 1200px;
 }
 
 @media (min-width: 768px) {
@@ -11,6 +12,6 @@
 }
 @media (min-width: 1200px) {
   :root {
-    --default-font-size: 2.2rem;
+    --default-font-size: 2rem;
   }
 }

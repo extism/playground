@@ -1,13 +1,27 @@
+// @ts-nocheck
 import React from 'react';
 import './URLInput.css';
 
-const URLInput: React.FC = function () {
+interface URLInputProps {
+  onChange: (e: Event) => void;
+  currentUrl: string;
+}
+const URLInput: React.FC<URLInputProps> = ({ onChange, currentUrl }) => {
   return (
     <div className="url-input-container">
-      <label className="url-text-input" htmlFor="module-url-input">
+      <label className="url-text-label" htmlFor="module-url-input">
         Module Url:
       </label>
-      <input type="text" name="module-url-input" id="module-url-input" />
+      <input
+        onChange={(e) => {
+          onChange(e);
+        }}
+        className="url-text-input"
+        type="text"
+        name="url"
+        id="module-url-input"
+        value={currentUrl}
+      />
     </div>
   );
 };

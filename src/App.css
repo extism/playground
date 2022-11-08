@@ -1,5 +1,24 @@
 .App {
   text-align: center;
+}
+.module-upload-wrapper {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.container {
   max-width: 1200px;
-  /* margin: 0 40px; */
+  margin: 0 auto;
+}
+
+@media (min-width: 1200px) {
+  .plugin-input-output-wrapper {
+    display: flex;
+    margin: 4.8rem 0;
+  }
+  .plugin-input-textarea-container,
+  .plugin-output-textarea-container {
+    flex-basis: 50%;
+  }
 }

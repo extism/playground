@@ -1,0 +1,24 @@
+.plugin-output-textarea-container {
+  display: grid;
+  justify-items: end;
+  margin: 2rem;
+  font-size: var(--font-size);
+}
+
+#plugin-output-textarea {
+  border: 0.1rem solid black;
+}
+
+.plugin-output-textarea-label-container {
+  display: flex;
+  flex-direction: column;
+  justify-self: stretch;
+}
+
+.plugin-output-textarea-label {
+  color: white;
+  background-color: black;
+  font-weight: bold;
+  align-self: flex-start;
+  padding: 1rem;
+}

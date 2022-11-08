@@ -1,13 +1,15 @@
 import React from 'react';
-import PluginTextArea from '../PluginTextArea/PluginTextArea';
+
 import './PluginInputOutputWrapper.css';
-const PluginInputOutputWrapper: React.FC = function () {
-  return (
-    <div className="plugin-input-output-wrapper">
-      <PluginTextArea label="Plugin Input" dropDownTitle="Input type" />
-      <PluginTextArea label="Plugin Output" dropDownTitle="Output Type" />
-    </div>
-  );
+
+// I receive some data from App that tells me what kind of input/ output to render.
+interface PluginInputOutputWrapperProps {
+  mimeType: string;
+  onChange: any;
+}
+
+const PluginInputOutputWrapper: React.FC<PluginInputOutputWrapperProps> = function ({ mimeType, onChange }) {
+  return <div className="plugin-input-output-wrapper"></div>;
 };
 
 export default PluginInputOutputWrapper;
