@@ -30,18 +30,31 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
     onChange({ target: { name: 'input', value: toEncoded } });
   };
 
-  const readImage = (file: Blob) => {
+  const readFile = (file: Blob) => {
     const reader = new FileReader();
 
-    reader.onload = (event) => {
-      const uploaded_image = event.target?.result;
-      console.log(uploaded_image, 'HERE');
+    if (file.type === 'text/html' || file.type === 'text/plain') {
+      reader.readAsText(file);
+      reader.onload = (event: any) => {
+        const uploadedFile = event.target?.result;
+        const toEncoded = new TextEncoder().encode(uploadedFile);
+        setTextAreaValue(uploadedFile);
+        onChange({ target: { name: 'input', value: toEncoded } });
+        //  for future Ref: makes Iframe HTML File
+        // const iframe = document.createElement('iframe');
+        // iframe.srcdoc = uploadedFile;
+        // document.body.appendChild(iframe);
+      };
+      return;
+    } else if (file.type === 'image/png' || file.type === 'image/jpg') {
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const uploaded_file = event.target?.result;
+        drag_area_ref.current!.style.backgroundImage = `url(${uploaded_file})`;
+      };
+    }
 
-      drag_area_ref.current!.style.backgroundImage = `url(${uploaded_image})`;
-    };
-    // const e = { target: { name: 'input', value: file.type } };
-    // onChange(e);
-    reader.readAsDataURL(file);
+    // need a json reader...
   };
 
   const onDropHandler = (event: any) => {
@@ -49,10 +62,10 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
     event.stopPropagation();
     const fileList = event.dataTransfer?.files;
     if (fileList) {
-      console.log(fileList[0], 'IN Drop ');
-
-      readImage(fileList[0]);
+      const file = fileList[0];
+      readFile(file);
     }
+
     drag_area_ref.current!.style.opacity = '1';
     drag_area_ref.current!.style.backgroundColor = 'initial';
     handleDrop(event);
@@ -63,6 +76,7 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
     event.stopPropagation();
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'copy';
+      event.dataTransfer.effectAllowed = 'copyMove';
     }
     drag_area_ref.current!.style.backgroundColor = '#a49cd6';
     drag_area_ref.current!.style.opacity = '0.5';
@@ -74,28 +88,20 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
     drag_area_ref.current!.style.backgroundColor = 'white';
   };
 
-  const onFileChange = (event: any) => {
-    event.preventDefault();
-    event.stopPropagation();
-    console.log(event.target, 'filereader');
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const uploaded_image = event.target?.result;
-      console.log(uploaded_image, 'HERE');
-
-      // drag_area_ref.current!.style.backgroundImage = `url(${uploaded_image})`;
-    };
-    // reader.
-  };
-
   return (
     <div className="plugin-input-textarea-container">
-      <DropDownMenu name={mimeType} value="hello" title={dropDownTitle} onChange={onChange} options={mimeOptions} />
+      <DropDownMenu
+        mimeType={mimeType}
+        selectName="inputMimeType"
+        title={dropDownTitle}
+        onChange={onChange}
+        options={mimeOptions}
+      />
       <div className="plugin-input-textarea-label-container">
         <label className="plugin-input-text-area-label" htmlFor="plugin-input-textarea">
           {label}:
         </label>
-        <input type="file" name="file-input" onChange={onFileChange} />
+
         <textarea
           ref={drag_area_ref}
           className="input-text-area"

@@ -44,17 +44,14 @@ const ImageJpg = ({ bytes }: { bytes: Uint8Array }) => {
 
 const JSONOutput = ({ bytes }: { bytes: Uint8Array }) => {
   const text = new TextDecoder().decode(bytes);
-  //  const toJson = JSON.stringify(null, 2, JSON.parse(text))
+  const toJson = JSON.stringify(JSON.parse(text), null, 4);
   // get params mapped to input. component.
   //
-  return <div id="plugin-output-area">{text}</div>;
+  return <pre id="plugin-output-area">{toJson}</pre>;
 };
 const HTMLOutput = ({ bytes }: { bytes: Uint8Array }) => {
   const text = new TextDecoder().decode(bytes);
-  //  const toJson = JSON.stringify(null, 2, JSON.parse(text))
-  // get params mapped to input. component.
-  //
-  console.log(text, 'html');
+  // const toJson = JSON.stringify(JSON.parse(text), null, 2);
 
   return <div id="plugin-output-area">{text}</div>;
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { MimeTypes } from '../../util/MimeTypes';
+import DropDownMenu from '../Buttons/DropDownMenu/DropDownMenu';
 import GetOutputComponent from './GetOutputComponent';
 import './PluginOutput.css';
 interface PluginOutputProps {
@@ -11,29 +12,18 @@ interface PluginOutputProps {
 
 const PluginOutput: React.FC<PluginOutputProps> = ({ output, mimeType, onChange }) => {
   const OutputComponent = GetOutputComponent(mimeType, output);
-  console.log(OutputComponent);
+  const mimeOptions = MimeTypes.map((m, i) => <option key={i}>{m}</option>);
 
   return (
     <div className="plugin-output-textarea-container">
-      <div className="drop-down-button-container">
-        <label className="func-name-label" htmlFor="select_mime_type">
-          Output Type:
-        </label>
-        <select
-          id="select_mime_type"
-          name="outputMimeType"
-          onChange={(e) => {
-            onChange(e);
-          }}
-          value={mimeType}
-        >
-          {MimeTypes.map((type, i) => (
-            <option key={i} value={type}>
-              {type}
-            </option>
-          ))}
-        </select>
-      </div>
+      <DropDownMenu
+        title="Output Type"
+        onChange={onChange}
+        options={mimeOptions}
+        mimeType={mimeType}
+        selectName={'outputMimeType'}
+      />
+
       <div className="plugin-output-textarea-label-container">
         <label className="plugin-output-textarea-label" htmlFor="plugin-output-textarea">
           Plugin Output:
