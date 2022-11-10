@@ -1,4 +1,4 @@
-import ExtismContext from '@extism/runtime-browser';
+import {ExtismContext} from '@extism/runtime-browser';
 import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import './global.css';
@@ -49,7 +49,9 @@ const App: React.FC = () => {
 
   const loadFunctions = async (url: string) => {
     try {
-      const plugin = await extismContext.current.newPlugin(pluginState.url);
+      const plugin = await extismContext.current.newPlugin({
+        "wasm": [ { "path": pluginState.url } ]
+      });
       const functions = await plugin.getExportedFunctions();
       setPluginState((prevState) => {
         return { ...prevState, functions: functions, func_name: functions[0] };
@@ -80,7 +82,9 @@ const App: React.FC = () => {
     e && e.preventDefault && e.preventDefault();
 
     try {
-      let plugin = await extismContext.current.newPlugin(pluginState.url);
+      let plugin = await extismContext.current.newPlugin({
+        "wasm": [ { "path": pluginState.url }]
+      });
       let result = await plugin.call(pluginState.func_name, pluginState.input);
       let output = result;
 
