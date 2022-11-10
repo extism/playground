@@ -35,6 +35,8 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
 
     reader.onload = (event) => {
       const uploaded_image = event.target?.result;
+      console.log(uploaded_image, 'HERE');
+
       drag_area_ref.current!.style.backgroundImage = `url(${uploaded_image})`;
     };
     // const e = { target: { name: 'input', value: file.type } };
@@ -47,6 +49,8 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
     event.stopPropagation();
     const fileList = event.dataTransfer?.files;
     if (fileList) {
+      console.log(fileList[0], 'IN Drop ');
+
       readImage(fileList[0]);
     }
     drag_area_ref.current!.style.opacity = '1';
@@ -70,6 +74,20 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
     drag_area_ref.current!.style.backgroundColor = 'white';
   };
 
+  const onFileChange = (event: any) => {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log(event.target, 'filereader');
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const uploaded_image = event.target?.result;
+      console.log(uploaded_image, 'HERE');
+
+      // drag_area_ref.current!.style.backgroundImage = `url(${uploaded_image})`;
+    };
+    // reader.
+  };
+
   return (
     <div className="plugin-input-textarea-container">
       <DropDownMenu name={mimeType} value="hello" title={dropDownTitle} onChange={onChange} options={mimeOptions} />
@@ -77,7 +95,7 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
         <label className="plugin-input-text-area-label" htmlFor="plugin-input-textarea">
           {label}:
         </label>
-
+        <input type="file" name="file-input" onChange={onFileChange} />
         <textarea
           ref={drag_area_ref}
           className="input-text-area"

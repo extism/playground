@@ -26,6 +26,8 @@ interface PluginState {
 const App: React.FC = () => {
   /*
       invert url: http://localhost:3000/invert.wasm
+      html types
+
   */
 
   const [pluginState, setPluginState] = useState<PluginState>({

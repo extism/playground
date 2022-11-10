@@ -15,6 +15,9 @@ const GetOutputComponent = (outputType: string, output: Uint8Array) => {
     case 'application/json':
       OutputComp = JSONOutput;
       break;
+    case 'text/html':
+      OutputComp = HTMLOutput;
+      break;
   }
   // @ts-ignore
   return <OutputComp bytes={output} />;
@@ -42,6 +45,17 @@ const ImageJpg = ({ bytes }: { bytes: Uint8Array }) => {
 const JSONOutput = ({ bytes }: { bytes: Uint8Array }) => {
   const text = new TextDecoder().decode(bytes);
   //  const toJson = JSON.stringify(null, 2, JSON.parse(text))
+  // get params mapped to input. component.
+  //
+  return <div id="plugin-output-area">{text}</div>;
+};
+const HTMLOutput = ({ bytes }: { bytes: Uint8Array }) => {
+  const text = new TextDecoder().decode(bytes);
+  //  const toJson = JSON.stringify(null, 2, JSON.parse(text))
+  // get params mapped to input. component.
+  //
+  console.log(text, 'html');
+
   return <div id="plugin-output-area">{text}</div>;
 };
 
