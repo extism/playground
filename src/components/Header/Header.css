@@ -1,14 +1,17 @@
 .header-container {
   background-color: #2b2b2b;
-  margin: 0;
+}
+
+.header {
+  margin: 0 auto;
   padding: 0;
   display: flex;
   gap: 4%;
   align-items: center;
+  max-width: var(--max-width);
 }
-
 .header-h1 {
   color: white;
-  font-size: 1.3rem;
+  font-size: 2rem;
   vertical-align: center;
 }
