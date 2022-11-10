@@ -9,7 +9,6 @@ const PluginTextArea: React.FC<PluginTextAreaProps> = function ({ label, dropDow
   const lowerCaseLabel = label.toLowerCase().split(' ').join('-');
   return (
     <div className={`${lowerCaseLabel}-text-area-container`}>
-      <DropDownMenu title={dropDownTitle} onChange={() => {}} />
       <div className="textarea-label-container">
         <label className="text-area-label" htmlFor={`${lowerCaseLabel}-textarea`}>
           {label}:

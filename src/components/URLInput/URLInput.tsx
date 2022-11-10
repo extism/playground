@@ -5,8 +5,9 @@ import './URLInput.css';
 interface URLInputProps {
   onChange: (e: Event) => void;
   currentUrl: string;
+  defaultUrl: string;
 }
-const URLInput: React.FC<URLInputProps> = ({ onChange, currentUrl }) => {
+const URLInput: React.FC<URLInputProps> = ({ onChange, currentUrl, defaultUrl }) => {
   return (
     <div className="url-input-container">
       <label className="url-text-label" htmlFor="module-url-input">
@@ -20,6 +21,7 @@ const URLInput: React.FC<URLInputProps> = ({ onChange, currentUrl }) => {
         type="text"
         name="url"
         id="module-url-input"
+        placeholder={defaultUrl}
         value={currentUrl}
       />
     </div>

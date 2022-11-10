@@ -12,150 +12,109 @@ import PluginOutput from './components/PluginOutput/PluginOutput';
 import URLInput from './components/URLInput/URLInput';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
 
-//@ts-no-check
+interface PluginState {
+  defaultUrl: string;
+  url: string;
+  input: Uint8Array;
+  output: Uint8Array;
+  inputMimeType: string;
+  outputMimeType: string;
+  func_name: string;
+  functions: string[];
+}
+
 const App: React.FC = () => {
-  // input ouput to UInt8Array type
   /*
-  write two funcs, different functions for each mime type
-    encode
-
-    decode
-
-    - as args : (bytes, mimeType)
-
-    State- output select menu needs mime types
-
-    -- for now text/plain  png/image jpg/image
-
-
-    for images
-      if input type is image,
-
-        either drag in image
-        or filetree menu chooser.
-
-      display image when its loaded
+      invert url: http://localhost:3000/invert.wasm
   */
-  const [pluginState, setPluginState] = useState({
+
+  const [pluginState, setPluginState] = useState<PluginState>({
+    defaultUrl: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
     url: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
-    input: '',
-    output: '',
+    input: new Uint8Array(),
+    output: new Uint8Array(),
+    inputMimeType: 'text/plain',
+    outputMimeType: 'text/plain',
     func_name: 'count_vowels',
     functions: [],
   });
-
-  const extismContext = useRef(new ExtismContext());
-
-  const loadFunctions = async (url: string) => {
-    console.log('url', url);
-
-    const plugin = await extismContext.current.newPlugin(pluginState.url);
-    console.log('plugin', plugin);
-
-    const functions = await plugin.getExportedFunctions();
-    console.log('functions', functions);
-
-    setPluginState((prevState) => {
-      return { ...prevState, functions: functions };
-    });
-  };
 
   useEffect(() => {
     loadFunctions(pluginState.url);
   }, [pluginState.url]);
 
-  const handleInputChange = (e: Event) => {
-    e.preventDefault();
+  const extismContext = useRef(new ExtismContext());
+
+  const loadFunctions = async (url: string) => {
+    try {
+      const plugin = await extismContext.current.newPlugin(pluginState.url);
+      const functions = await plugin.getExportedFunctions();
+      setPluginState((prevState) => {
+        return { ...prevState, functions: functions, func_name: functions[0] };
+      });
+    } catch (error) {
+      console.log('ERROR IN LOAD', error);
+    }
+  };
+
+  const onInputKeyPress = (e: Event) => {
     //@ts-ignore
-    console.log('e', e.target.name);
-    //@ts-ignore
+    if (e.keyCode === 13 && e.shiftKey === true) {
+      e.preventDefault();
+      handleOnRun(e);
+    }
+  };
+
+  const handleInputChange = (e: any) => {
+    e.preventDefault && e.preventDefault();
+    console.log(e.target.name, e.target.value);
+
     setPluginState((prevState) => {
-      //@ts-ignore
       return { ...prevState, [e.target.name]: e.target.value };
     });
-
-    //@ts-ignore
-    // if (e.target.name === 'url') {
-    //   //@ts-ignore
-    //   loadFunctions(e.target.value);
-    // }
   };
 
-  const handleOnRun = async (e: Event) => {
+  const handleOnRun = async (e?: any) => {
     e && e.preventDefault && e.preventDefault();
-    console.log('INPUT', pluginState.input);
 
-    let plugin = await extismContext.current.newPlugin(pluginState.url);
-    let result = await plugin.call(pluginState.func_name, pluginState.input);
-    let output = new TextDecoder().decode(result);
-    console.log('result', output);
+    try {
+      let plugin = await extismContext.current.newPlugin(pluginState.url);
+      let result = await plugin.call(pluginState.func_name, pluginState.input);
+      let output = result;
 
-    setPluginState({ ...pluginState, output: output });
+      setPluginState((prevState) => {
+        return { ...prevState, output: output };
+      });
+    } catch (error) {
+      console.log('Error in handleOnRun:', error);
+    }
+  };
+  const handleDrop = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
+    let files = [...e.dataTransfer.files];
+    if (files && files.length === 1) {
+      let file = files[0];
+
+      file.arrayBuffer().then((b: Iterable<number>) => {
+        setPluginState((prevState) => {
+          return { ...prevState, input: new Uint8Array(b) };
+        });
+        handleOnRun();
+      });
+    } else {
+      throw Error('Only one file please');
+    }
   };
 
-  // drag and drop functions
-  // const nop = (e: Event) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  // };
+  const funcOptions = pluginState.functions.map((f, i) => {
+    return (
+      <option key={i} value={f}>
+        {f}
+      </option>
+    );
+  });
 
-  // const handleDrop = (e: Event) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-  //   //@ts-ignore
-  //   let files = [...e.dataTransfer.files];
-  //   if (files && files.length === 1) {
-  //     let file = files[0];
-  //     console.log(file);
-  //     getBase64(file, (b64) => {
-  //       // we need to remove the content type part of the string
-  //       if (typeof b64 === 'string') {
-  //         b64 = b64?.substring(b64?.indexOf(',') + 1);
-  //         let input = JSON.stringify({
-  //           event_file_name: file.name,
-  //           event_file_data: b64,
-  //         });
-  //         setPluginState({ ...pluginState, input });
-  //         handleOnRun(e);
-  //       }
-  //     });
-  //   } else {
-  //     throw Error('Only one file please');
-  //   }
-  // };
-
-  // const getBase64 = (file: File, cb: (b64: string | ArrayBuffer | null) => void) => {
-  //   var reader = new FileReader();
-  //   reader.readAsDataURL(file);
-  //   reader.onload = function () {
-  //     cb(reader.result);
-  //   };
-  //   reader.onerror = function (error) {
-  //     console.log('error');
-  //   };
-  // };
-
-  const funcOptions = pluginState.functions.map((f, i) => (
-    <option selected={i === 0 ? true : false} key={i} value={f}>
-      {f}
-    </option>
-  ));
-
-  // if (pluginState.output) {
-  //   try {
-  //     let result = JSON.parse(pluginState.output);
-
-  //     let image = null;
-
-  //     if (result.output_file_data) {
-  //       image = <img src={`data:image/png;base64,${result.output_file_data}`} alt="" />;
-  //     } else {
-  //       console.log('No output_file_data, moving on');
-  //     }
-  //   } catch (e) {
-  //     console.log('Could not parse output json, moving on');
-  //   }
-  // }
   return (
     <div className="App">
       <Header />
@@ -163,8 +122,8 @@ const App: React.FC = () => {
         <WelcomeBanner />
 
         <div className="module-upload-wrapper">
-          <URLInput onChange={handleInputChange} currentUrl={pluginState.url} />
-          <Button onClick={() => {}} title="Upload Module" />
+          <URLInput onChange={handleInputChange} defaultUrl={pluginState.defaultUrl} currentUrl={pluginState.url} />
+
           <FunctionDropDownMenu
             title="Function Name:"
             onChange={handleInputChange}
@@ -175,19 +134,23 @@ const App: React.FC = () => {
 
         <div className="plugin-input-output-wrapper">
           <InputTextArea
+            handleDrop={handleDrop}
             onChange={handleInputChange}
             label="Plugin Input"
             dropDownTitle="Input Type"
             input={pluginState.input}
+            mimeType={pluginState.inputMimeType}
+            onKeyDown={onInputKeyPress}
           />
 
           <PluginOutput
+            input={pluginState.input}
             output={pluginState.output}
-            label="Plugin Output"
-            dropDownTitle="Output Type"
             onChange={handleInputChange}
+            mimeType={pluginState.outputMimeType}
           />
         </div>
+
         <div>
           <Button onClick={handleOnRun} title="Run Plugin" />
         </div>

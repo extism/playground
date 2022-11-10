@@ -5,8 +5,9 @@
   font-size: var(--font-size);
 }
 
-#plugin-output-textarea {
+#plugin-output-area {
   border: 0.1rem solid black;
+  min-height: 321px;
 }
 
 .plugin-output-textarea-label-container {

@@ -17,9 +17,10 @@ const FunctionDropDownMenu: React.FC<Props> = function ({ title, onChange, optio
         name="func_name"
         id="func_name"
         className="funcName"
-        defaultValue={value}
         value={value}
-        onChange={onChange}
+        onChange={(e) => {
+          onChange(e);
+        }}
       >
         {options}
       </select>

@@ -7,6 +7,9 @@
 
 #plugin-input-textarea {
   border: 0.1rem solid black;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .plugin-input-textarea-label-container {

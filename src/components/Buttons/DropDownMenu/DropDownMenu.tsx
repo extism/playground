@@ -1,18 +1,20 @@
 import React from 'react';
 import './DropDownMenu.css';
 
-interface Props {
+interface DropDownMenuProps {
   title: string;
-  onChange: () => void;
+  onChange: any;
   options?: any;
+  value: string;
+  name: string;
 }
-const DropDownMenu: React.FC<Props> = function ({ title, onChange, options }) {
+const DropDownMenu: React.FC<DropDownMenuProps> = function ({ title, onChange, options, name, value }) {
   return (
     <div className="drop-down-button-container">
       <label className="func-name-label" htmlFor="func_name">
         {title}
       </label>
-      <select name="func_name" id="func_name" className="funcName" value="placeholder" onChange={onChange}>
+      <select name={name} id="func_name" className="funcName" value={name} onChange={(e) => onChange(e)}>
         {options}
       </select>
     </div>

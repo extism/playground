@@ -1,28 +1,44 @@
 import React from 'react';
-import DropDownMenu from '../Buttons/DropDownMenu/DropDownMenu';
+import { MimeTypes } from '../../util/MimeTypes';
+import GetOutputComponent from './GetOutputComponent';
 import './PluginOutput.css';
 interface PluginOutputProps {
-  output: any;
-  label: string;
+  output: Uint8Array;
+  input: Uint8Array;
   onChange: any;
-  dropDownTitle: string;
+  mimeType: string;
 }
-const PluginOutput: React.FC<PluginOutputProps> = ({ output, label, dropDownTitle, onChange }) => {
+
+const PluginOutput: React.FC<PluginOutputProps> = ({ output, mimeType, onChange }) => {
+  const OutputComponent = GetOutputComponent(mimeType, output);
+  console.log(OutputComponent);
+
   return (
     <div className="plugin-output-textarea-container">
-      <DropDownMenu title={dropDownTitle} onChange={onChange} />
+      <div className="drop-down-button-container">
+        <label className="func-name-label" htmlFor="select_mime_type">
+          Output Type:
+        </label>
+        <select
+          id="select_mime_type"
+          name="outputMimeType"
+          onChange={(e) => {
+            onChange(e);
+          }}
+          value={mimeType}
+        >
+          {MimeTypes.map((type, i) => (
+            <option key={i} value={type}>
+              {type}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="plugin-output-textarea-label-container">
         <label className="plugin-output-textarea-label" htmlFor="plugin-output-textarea">
-          {label}:
+          Plugin Output:
         </label>
-        <textarea
-          disabled
-          defaultValue={output}
-          onChange={onChange}
-          name="output"
-          rows={15}
-          id="plugin-output-textarea"
-        />
+        {OutputComponent}
       </div>
     </div>
   );
