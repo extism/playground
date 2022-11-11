@@ -1,9 +1,8 @@
 .drop-down-button-container {
-  background-color: #a8a5a5;
+  /* background-color: #a8a5a5; */
   display: flex;
 }
 
 .func-name-label {
-  align-self: center;
   padding: 0.4rem;
 }

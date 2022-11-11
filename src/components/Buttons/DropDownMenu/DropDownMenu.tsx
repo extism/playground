@@ -11,10 +11,16 @@ interface DropDownMenuProps {
 const DropDownMenu: React.FC<DropDownMenuProps> = function ({ title, onChange, options, mimeType, selectName }) {
   return (
     <div className="drop-down-button-container">
-      <label className="func-name-label" htmlFor="func_name">
+      <label className="func-name-label font-bold" htmlFor="func_name">
         {title}
       </label>
-      <select name={selectName} id="func_name" className="funcName" value={mimeType} onChange={(e) => onChange(e)}>
+      <select
+        name={selectName}
+        id="func_name"
+        className="funcName border-solid border-black"
+        value={mimeType}
+        onChange={(e) => onChange(e)}
+      >
         {options}
       </select>
     </div>

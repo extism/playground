@@ -46,7 +46,7 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
         // document.body.appendChild(iframe);
       };
       return;
-    } else if (file.type === 'image/png' || file.type === 'image/jpg') {
+    } else if (file.type === 'image/png' || file.type === 'image/jpg' || file.type === 'image/jpeg') {
       reader.readAsDataURL(file);
       reader.onload = (event) => {
         const uploaded_file = event.target?.result;
@@ -76,7 +76,7 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
     event.stopPropagation();
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'copy';
-      event.dataTransfer.effectAllowed = 'copyMove';
+      // event.dataTransfer.effectAllowed = 'copyMove';
     }
     drag_area_ref.current!.style.backgroundColor = '#a49cd6';
     drag_area_ref.current!.style.opacity = '0.5';
@@ -89,7 +89,7 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
   };
 
   return (
-    <div className="plugin-input-textarea-container">
+    <div className="grid">
       <DropDownMenu
         mimeType={mimeType}
         selectName="inputMimeType"
@@ -97,24 +97,29 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
         onChange={onChange}
         options={mimeOptions}
       />
-      <div className="plugin-input-textarea-label-container">
-        <label className="plugin-input-text-area-label" htmlFor="plugin-input-textarea">
+      <div className="flex flex-col h-128  self-stretch max-h-full ">
+        <label
+          className="text-white bg-black pt-2  px-3 self-start pb-4 font-bold h-10 max-h-full  rounded-t-lg"
+          htmlFor="plugin-input-textarea"
+        >
           {label}:
         </label>
-
-        <textarea
-          ref={drag_area_ref}
-          className="input-text-area"
-          onDragOver={onDragOverHandler}
-          onDragLeave={onDragLeaveHandler}
-          onDrop={onDropHandler}
-          onKeyDown={onKeyDown}
-          onChange={inputChangeHandler}
-          value={textAreaValue}
-          name="input"
-          rows={15}
-          id="plugin-input-textarea"
-        />
+        <div className="border-solid   border-black border rounded basis-full flex ">
+          <textarea
+            ref={drag_area_ref}
+            className="  rounded h-128 w-full p-2 basis-full border-none"
+            onDragOver={onDragOverHandler}
+            onDragLeave={onDragLeaveHandler}
+            onDrop={onDropHandler}
+            onKeyDown={onKeyDown}
+            onChange={inputChangeHandler}
+            value={textAreaValue}
+            placeholder="enter text or drop file..."
+            name="input"
+            rows={15}
+            id="plugin-input-textarea"
+          />
+        </div>
       </div>
     </div>
   );

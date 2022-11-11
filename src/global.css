@@ -1,15 +1,16 @@
 html {
   box-sizing: border-box;
   scroll-behavior: smooth;
-  font-size: 62.5%;
-
-  @media (prefers-reduced-motion: reduce) {
+  font-family: var(--ifm-font-family-base);
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
     scroll-behavior: auto;
+  }
 
-    body * {
-      animation-duration: 0s !important;
-      animation-delay: 0s !important;
-    }
+  body * {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }
 
@@ -81,7 +82,7 @@ textarea {
 
 button {
   border-radius: 0.125rem;
-  background: #a8a5a5;
+
   padding: 0;
 }
 
@@ -118,16 +119,7 @@ noscript {
   margin-bottom: 1em;
 }
 
-[tabindex='-1'] {
+/* [tabindex='-1'] {
   outline: none !important;
   box-shadow: none !important;
-}
-
-div {
-  font-size: var(--default-font-size);
-}
-
-label,
-button {
-  font-size: calc(var(--default-font-size) - 2px);
-}
+} */

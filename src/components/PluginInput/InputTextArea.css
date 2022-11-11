@@ -1,12 +1,12 @@
 .plugin-input-textarea-container {
   display: grid;
-  justify-items: end;
+  /* justify-items: end;
   margin: 2rem;
-  font-size: var(--font-size);
+  font-size: var(--font-size); */
 }
 
 #plugin-input-textarea {
-  border: 0.1rem solid black;
+  /* border: 0.1rem solid black; */
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;

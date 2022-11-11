@@ -1,25 +1,25 @@
 .plugin-output-textarea-container {
-  display: grid;
+  /* display: grid;
   justify-items: end;
   margin: 2rem;
-  font-size: var(--font-size);
+  font-size: var(--font-size); */
 }
 
 #plugin-output-area {
-  border: 0.1rem solid black;
-  min-height: 321px;
+  /* border: 0.1rem solid black; */
+  /* min-height: 321px; */
 }
 
 .plugin-output-textarea-label-container {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-self: stretch;
+  justify-self: stretch; */
 }
 
 .plugin-output-textarea-label {
-  color: white;
+  /* color: white;
   background-color: black;
   font-weight: bold;
   align-self: flex-start;
-  padding: 1rem;
+  padding: 1rem; */
 }

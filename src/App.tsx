@@ -61,9 +61,8 @@ const App: React.FC = () => {
     }
   };
 
-  const onInputKeyPress = (e: Event) => {
-    //@ts-ignore
-    if (e.keyCode === 13 && e.shiftKey === true) {
+  const onInputKeyPress = (e: KeyboardEvent) => {
+    if (e.keyCode === 13 && e.metaKey) {
       e.preventDefault();
       handleOnRun(e);
     }
@@ -71,7 +70,6 @@ const App: React.FC = () => {
 
   const handleInputChange = (e: any) => {
     e.preventDefault && e.preventDefault();
-    console.log(e.target.name, e.target.value);
 
     setPluginState((prevState) => {
       return { ...prevState, [e.target.name]: e.target.value };
@@ -115,7 +113,7 @@ const App: React.FC = () => {
 
   const funcOptions = pluginState.functions.map((f, i) => {
     return (
-      <option key={i} value={f}>
+      <option className="" key={i} value={f}>
         {f}
       </option>
     );
@@ -124,21 +122,48 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Header />
-      <div className="container">
+      <div className="md:container md:mx-auto">
         <WelcomeBanner />
 
-        <div className="module-upload-wrapper">
-          <URLInput onChange={handleInputChange} defaultUrl={pluginState.defaultUrl} currentUrl={pluginState.url} />
+        {
+          // new module uploader//
+        }
 
-          <FunctionDropDownMenu
-            title="Function Name:"
-            onChange={handleInputChange}
-            options={funcOptions}
-            value={pluginState.func_name}
-          />
+        <div className="md:container md:mx-auto  border border-black">
+          <div className="flex  flex-wrap p-5 items-center justify-start gap-4 border border-black text-xl text-black font-bold text-2xl">
+            <input type="file" id="selected_file" className="hidden" />
+            <input
+              type="button"
+              value="Upload Module ▼"
+              className="border-none rounded  basis-1/12  py-2 px-4 hover:cursor-pointer  bg-button-background hover:bg-secondary-dark hover:border-secondary-dark  hover:border "
+              onClick={() => {
+                //@ts-ignore
+                document.getElementById('selected_file').click();
+              }}
+            />
+            <div className="basis-full flex-col flex justify-start  items-start">
+              <label htmlFor="url_text_input" className=" pb-1 px-4  ">
+                Module Url:
+              </label>
+              <input
+                type="text"
+                className=" border  rounded font-normal  text-lg mx-4 w-full py-3 px-4
+              text-lg font-sans  font-normal"
+                placeholder={pluginState.defaultUrl}
+                value={pluginState.url}
+                onChange={handleInputChange}
+                name="url"
+              />
+            </div>
+            <FunctionDropDownMenu
+              title="Function Name:"
+              onChange={handleInputChange}
+              options={funcOptions}
+              value={pluginState.func_name}
+            />
+          </div>
         </div>
-
-        <div className="plugin-input-output-wrapper">
+        <div className=" grid grid-cols-2 gap-4 h-160 max-h-screen columns-2 border-solid p-5 my-10 border-black border-2 ">
           <InputTextArea
             handleDrop={handleDrop}
             onChange={handleInputChange}
@@ -157,7 +182,7 @@ const App: React.FC = () => {
           />
         </div>
 
-        <div>
+        <div className="">
           <Button onClick={handleOnRun} title="Run Plugin" />
         </div>
       </div>

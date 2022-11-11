@@ -7,10 +7,10 @@
   align-items: center;
 }
 
-.container {
+/* .container {
   max-width: 1500px;
   margin: 0 auto;
-}
+} */
 
 @media (min-width: 1200px) {
   .plugin-input-output-wrapper {

@@ -1,17 +1,71 @@
 :root {
-  --default-font-size: 1.6rem;
-  --default-label-padding: 1rem;
+  /* --default-font-size: 'text-base'; */
+  --default-font-family: 'font-sans';
+  /* --default-label-padding: 1rem; */
   --max-width: 1400px;
-}
+  --ifm-font-family-base: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif,
+    BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  --ifm-font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 
-@media (min-width: 768px) {
-  :root {
-    --default-font-size: 1.8rem;
-    --default-label-padding: 2rem;
-  }
-}
-@media (min-width: 1200px) {
-  :root {
-    /* --default-font-size: 2rem; */
-  }
+  --ifm-font-size-base: 100%;
+
+  --ifm-color-white: #fff;
+  --ifm-color-black: #000;
+  --ifm-color-gray-0: var(--ifm-color-white);
+  --ifm-color-gray-100: #f5f6f7;
+  --ifm-color-gray-200: #ebedf0;
+  --ifm-color-gray-300: #dadde1;
+  --ifm-color-gray-400: #ccd0d5;
+  --ifm-color-gray-500: #bec3c9;
+  --ifm-color-gray-600: #8d949e;
+  --ifm-color-gray-700: #606770;
+  --ifm-color-gray-800: #444950;
+  --ifm-color-gray-900: #1c1e21;
+  --ifm-color-gray-1000: var(--ifm-color-black);
+  --ifm-color-emphasis-0: var(--ifm-color-gray-0);
+  --ifm-color-emphasis-100: var(--ifm-color-gray-100);
+  --ifm-color-emphasis-200: var(--ifm-color-gray-200);
+  --ifm-color-emphasis-300: var(--ifm-color-gray-300);
+  --ifm-color-emphasis-400: var(--ifm-color-gray-400);
+  --ifm-color-emphasis-600: var(--ifm-color-gray-600);
+  --ifm-color-emphasis-700: var(--ifm-color-gray-700);
+  --ifm-color-emphasis-800: var(--ifm-color-gray-800);
+  --ifm-color-emphasis-900: var(--ifm-color-gray-900);
+  --ifm-color-emphasis-1000: var(--ifm-color-gray-1000);
+
+  --ifm-color-scheme: light;
+  --ifm-dark-value: 10%;
+  --ifm-darker-value: 15%;
+  --ifm-darkest-value: 30%;
+  --ifm-light-value: 15%;
+  --ifm-lighter-value: 30%;
+  --ifm-lightest-value: 50%;
+  --ifm-contrast-background-value: 90%;
+  --ifm-contrast-foreground-value: 70%;
+  --ifm-contrast-background-dark-value: 70%;
+  --ifm-contrast-foreground-dark-value: 90%;
+
+  --ifm-color-gray-1000: var(--ifm-color-black);
+  --ifm-color-emphasis-0: var(--ifm-color-gray-0);
+  --ifm-color-emphasis-100: var(--ifm-color-gray-100);
+  --ifm-color-emphasis-200: var(--ifm-color-gray-200);
+  --ifm-color-emphasis-300: var(--ifm-color-gray-300);
+  --ifm-color-emphasis-400: var(--ifm-color-gray-400);
+  --ifm-color-emphasis-600: var(--ifm-color-gray-600);
+  --ifm-color-emphasis-700: var(--ifm-color-gray-700);
+  --ifm-color-emphasis-800: var(--ifm-color-gray-800);
+  --ifm-color-emphasis-900: var(--ifm-color-gray-900);
+  --ifm-color-emphasis-1000: var(--ifm-color-gray-1000);
+  --ifm-color-content: var(--ifm-color-emphasis-900);
+  --ifm-color-content-inverse: var(--ifm-color-emphasis-0);
+  --ifm-color-content-secondary: #525860;
+  --ifm-background-color: transparent;
+  --ifm-background-surface-color: var(--ifm-color-content-inverse);
+  --ifm-global-border-width: 1px;
+  --ifm-global-radius: 0.4rem;
+  --ifm-hover-overlay: rgba(0, 0, 0, 0.05);
+  --ifm-font-color-base: var(--ifm-color-content);
+  --ifm-font-color-base-inverse: var(--ifm-color-content-inverse);
+  --ifm-font-color-secondary: var(--ifm-color-content-secondary);
 }
