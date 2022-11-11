@@ -39,7 +39,7 @@ const PlainText: React.FC<OutputComponentProps> = ({ bytes }) => {
 
 // Create an Image component from a mime type
 const ImageOutput = (mimeType: string): React.FC<OutputComponentProps> => {
-  return ({ bytes }) => {
+  return function ImageOutputComponent({ bytes }) {
     const data = arrayTob64(bytes);
 
     return (
