@@ -61,9 +61,8 @@ const App: React.FC = () => {
     }
   };
 
-  const onInputKeyPress = (e: Event) => {
-    //@ts-ignore
-    if (e.keyCode === 13 && e.shiftKey === true) {
+  const onInputKeyPress = (e: KeyboardEvent) => {
+    if (e.keyCode === 13 && e.metaKey) {
       e.preventDefault();
       handleOnRun(e);
     }
