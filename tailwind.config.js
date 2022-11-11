@@ -85,7 +85,9 @@ module.exports = {
         900: '#1c1e21',
       },
       'header-background': '#2b2b2b',
-      'banner-background': '#fff69b',
+      'banner-background': 'rgba(255, 230, 164, 0.5)',
+      'primary-accent': '#D96146',
+
       'banner-border': '#b2a726',
       green: '#13ce66',
       yellow: '#ffc82c',
