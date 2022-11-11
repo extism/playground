@@ -1,12 +1,11 @@
 import React from 'react';
 import './Header.css';
-import ExtismLogo from '../../assets/extism-logo.png';
 
 const Header: React.FC = function () {
   return (
     <div className="h-20 flex items-center justify-start bg-black">
       <header className="flex gap-4 items-center mx-12 ">
-        <img src={ExtismLogo} width={40} height={40} alt="extism logo" />
+        <img src="https://extism.org/img/logo.svg" className="" width={50} height={50} alt="extism logo" />
         <h1
           className=" header-1 tracking-tight  text-3xl font-bold
         leading-snug text-white"
