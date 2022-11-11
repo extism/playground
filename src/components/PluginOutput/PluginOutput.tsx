@@ -11,7 +11,7 @@ interface PluginOutputProps {
 }
 
 const PluginOutput: React.FC<PluginOutputProps> = ({ output, mimeType, onChange }) => {
-  const OutputComponent = GetOutputComponent(mimeType, output);
+  const OutputComponent = GetOutputComponent(mimeType);
   const mimeOptions = MimeTypes.map((m, i) => <option key={i}>{m}</option>);
 
   return (
@@ -31,7 +31,9 @@ const PluginOutput: React.FC<PluginOutputProps> = ({ output, mimeType, onChange 
         >
           Plugin Output:
         </label>
-        <div className="border-solid  border-black border basis-full rounded flex">{OutputComponent}</div>
+        <div className="border-solid  border-black border basis-full rounded flex">
+          <OutputComponent bytes={output} />
+        </div>
       </div>
     </div>
   );
