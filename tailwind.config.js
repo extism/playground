@@ -87,6 +87,7 @@ module.exports = {
       'header-background': '#2b2b2b',
       'banner-background': 'rgba(255, 230, 164, 0.5)',
       'primary-accent': '#D96146',
+      'secondary-accent': '#FFE6A4',
 
       'banner-border': '#b2a726',
       green: '#13ce66',
