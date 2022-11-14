@@ -1,5 +1,5 @@
 import React from 'react';
-
+import arrayTob64 from '../../util/arrayToB64';
 type OutputComponentProps = {
   bytes: Uint8Array;
 };
@@ -75,12 +75,5 @@ const HTMLOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
     </div>
   );
 };
-
-function arrayTob64(buffer: Uint8Array) {
-  var binary = '';
-  var bytes = [].slice.call(buffer);
-  bytes.forEach((b) => (binary += String.fromCharCode(b)));
-  return window.btoa(binary);
-}
 
 export default GetOutputComponent;
