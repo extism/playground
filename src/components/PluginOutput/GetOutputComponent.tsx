@@ -58,10 +58,12 @@ const ImageOutput = (mimeType: string): React.FC<OutputComponentProps> => {
 const JSONOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
   const text = new TextDecoder().decode(bytes);
 
+  let data = JSON.parse(JSON.stringify(text, null, 4));
+  // console.log(data, 'data');
+
   return (
-    <div className="rounded h-128 border-none basis-full">
-      {text}
-      {/* <pre id="plugin-output-area"></pre> */}
+    <div className="rounded h-128 border-none basis-full flex">
+      <pre className="font-mono overflow-scroll break-all  whitespace-pre-wrap ">{data}</pre>
     </div>
   );
 };
@@ -69,11 +71,7 @@ const JSONOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
 const HTMLOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
   const text = new TextDecoder().decode(bytes);
 
-  return (
-    <div id="plugin-output-area" className=" rounded h-128 border-none basis-full">
-      {text}
-    </div>
-  );
+  return <div id="plugin-output-area" className="rounded h-128 border-none basis-full"></div>;
 };
 
 export default GetOutputComponent;
