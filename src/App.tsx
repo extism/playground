@@ -5,11 +5,9 @@ import './global.css';
 
 //components
 import Button from './components/Buttons/DefaultButton/Button';
-import FunctionDropDownMenu from './components/Buttons/DropDownMenu/FunctionDropDownMenu';
 import Header from './components/Header/Header';
 import InputTextArea from './components/PluginInput/InputTextArea';
 import PluginOutput from './components/PluginOutput/PluginOutput';
-import URLInput from './components/URLInput/URLInput';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
 
 interface PluginState {
@@ -113,7 +111,7 @@ const App: React.FC = () => {
 
   const funcOptions = pluginState.functions.map((f, i) => {
     return (
-      <option className="" key={i} value={f}>
+      <option key={i} value={f}>
         {f}
       </option>
     );
@@ -124,45 +122,58 @@ const App: React.FC = () => {
       <Header />
       <div className="md:container md:mx-auto">
         <WelcomeBanner />
-
-        {
-          // new module uploader//
-        }
-
-        <div className="md:container md:mx-auto  border border-black">
-          <div className="flex  flex-wrap p-5 items-center justify-start gap-4 border border-black text-xl text-black font-bold text-2xl">
+        <div className="md:flex py-4 px-2 gap-2  items-center ">
+          <div className=" flex basis-[12.3333%] items-center gap-4 ">
             <input type="file" id="selected_file" className="hidden" />
             <input
               type="button"
-              value="Upload Module ▼"
-              className="border-none rounded  basis-1/12  py-2 px-4 hover:cursor-pointer  bg-button-background hover:bg-secondary-dark hover:border-secondary-dark  hover:border "
+              value="Upload Module"
+              className="border-none basis-9/12 rounded min-h-[45px] rounded  basis-1/12  p-3 hover:cursor-pointer text-lg font-bold bg-gray-200 hover:bg-secondary-darker"
               onClick={() => {
                 //@ts-ignore
                 document.getElementById('selected_file').click();
               }}
             />
-            <div className="basis-full flex-col flex justify-start  items-start">
-              <label htmlFor="url_text_input" className=" pb-1 px-4  ">
-                Module Url:
-              </label>
-              <input
-                type="text"
-                className=" border  rounded font-normal  text-lg mx-4 w-full py-3 px-4
-              text-lg font-sans  font-normal"
-                placeholder={pluginState.defaultUrl}
-                value={pluginState.url}
-                onChange={handleInputChange}
-                name="url"
-              />
-            </div>
-            <FunctionDropDownMenu
-              title="Function Name:"
+            <span className="basis-2/12">or</span>
+          </div>
+
+          <div className="py-2   basis-10/12 items-center flex">
+            <b className="basis-2/12">Module URL:</b>
+            <input
+              className="basis-10/12 h-11 p-3 text-lg  text-mid-gray bg-background-lightest  hover:border-primary-accent"
+              type="text"
+              placeholder={pluginState.defaultUrl}
+              value={pluginState.url}
               onChange={handleInputChange}
-              options={funcOptions}
-              value={pluginState.func_name}
+              name="url"
             />
           </div>
+          <div className="basis-5/12  flex">
+            <div className="basis-full flex  items-center justify-end  ">
+              <label
+                className=" basis-3/4  h-11 flex gap-1 items-center  text-left  text-md text-mid-gray bg-background-lightest basis-4/6 rounded  p-3 "
+                htmlFor="func_name"
+              >
+                Function Name: <span className="font-mono text-string-red">{pluginState.func_name}</span>
+              </label>
+
+              <select
+                autoComplete="off"
+                required
+                name="func_name"
+                id="func_name"
+                value={pluginState.func_name}
+                onChange={(e) => {
+                  handleInputChange(e);
+                }}
+                className=" pt-10  bg-fit bg-dark-blue-button min-w-1/6 basis-1/6 bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative appearance-none "
+              >
+                {funcOptions}
+              </select>
+            </div>
+          </div>
         </div>
+
         <div className=" grid grid-cols-2 gap-4 h-160 max-h-screen columns-2 border-solid p-5 my-10 border-black border-2 ">
           <InputTextArea
             handleDrop={handleDrop}

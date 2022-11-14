@@ -30,7 +30,7 @@ module.exports = {
       'color-primary-contrast-background': '#ebf2fc',
       'color-primary-contrast-foreground': '#102445',
       'color-secondary-dark': '#d4d5d8',
-      'color-secondary-darker': '#c8c9cc',
+      'secondary-darker': '#c8c9cc',
       'color-secondary-darkest': '#a4a6a8',
       'color-secondary-light': '#eef0f2',
       'color-secondary-lighter': '#f1f2f5',
@@ -88,6 +88,11 @@ module.exports = {
       'banner-background': 'rgba(255, 230, 164, 0.5)',
       'primary-accent': '#D96146',
       'secondary-accent': '#FFE6A4',
+      'mid-gray': '#61676F',
+      'border-gray': '#DBDDE1',
+      'dark-blue-button': '#323845',
+      'background-light': '#F2F2F2',
+      'background-lightest': '#F6F8FA',
 
       'banner-border': '#b2a726',
       green: '#13ce66',
@@ -108,6 +113,9 @@ module.exports = {
       body: ['system-ui', '-apple-system', 'Segoe UI'],
     },
     extend: {
+      backgroundImage: {
+        'chevron-right': 'url("./src/assets/chevron-right.png")',
+      },
       height: {
         112: '28rem',
         128: '32rem',
