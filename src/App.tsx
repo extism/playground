@@ -100,7 +100,6 @@ const App: React.FC = () => {
         return { ...prevState, [e.name]: e.value };
       });
     }
-    e.preventDefault && e.preventDefault();
   };
 
   const handleOnRun = async (e?: any) => {
