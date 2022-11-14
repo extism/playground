@@ -21,7 +21,7 @@ const ModuleLoader: React.FC<Props> = function ({ onChange }) {
           return value;
         })
         .then((value) => {
-          const e = { target: { name, value } };
+          const e = { name, value };
           onChange(e as any);
         });
     }

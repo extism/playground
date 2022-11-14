@@ -35,7 +35,6 @@ const App: React.FC = () => {
 
   const [pluginState, setPluginState] = useState<PluginState>({
     defaultUrl: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
-
     moduleData: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
     input: new Uint8Array(),
     output: new Uint8Array(),
@@ -90,11 +89,18 @@ const App: React.FC = () => {
   };
 
   const handleInputChange = (e: any) => {
-    e.preventDefault && e.preventDefault();
+    if (e.preventDefault) {
+      e.preventDefault();
 
-    setPluginState((prevState) => {
-      return { ...prevState, [e.target.name]: e.target.value };
-    });
+      setPluginState((prevState) => {
+        return { ...prevState, [e.target.name]: e.target.value };
+      });
+    } else {
+      setPluginState((prevState) => {
+        return { ...prevState, [e.name]: e.value };
+      });
+    }
+    e.preventDefault && e.preventDefault();
   };
 
   const handleOnRun = async (e?: any) => {
@@ -118,6 +124,7 @@ const App: React.FC = () => {
     e.preventDefault();
     e.stopPropagation();
     let files = [...e.dataTransfer.files];
+
     if (files && files.length === 1) {
       let file = files[0];
 

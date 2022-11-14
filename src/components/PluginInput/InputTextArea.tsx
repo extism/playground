@@ -27,7 +27,7 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
   const inputChangeHandler = (e: any) => {
     const toEncoded = new TextEncoder().encode(e.target.value);
     setTextAreaValue(e.target.value);
-    onChange({ target: { name: 'input', value: toEncoded } });
+    onChange({ name: 'input', value: toEncoded });
   };
 
   const readFile = (file: Blob) => {
@@ -39,7 +39,7 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
         const uploadedFile = event.target?.result;
         const toEncoded = new TextEncoder().encode(uploadedFile);
         setTextAreaValue(uploadedFile);
-        onChange({ target: { name: 'input', value: toEncoded } });
+        onChange({ name: 'input', value: toEncoded });
         //  for future Ref: makes Iframe HTML File
         // const iframe = document.createElement('iframe');
         // iframe.srcdoc = uploadedFile;

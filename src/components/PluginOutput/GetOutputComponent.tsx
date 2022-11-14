@@ -59,7 +59,6 @@ const JSONOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
   const text = new TextDecoder().decode(bytes);
 
   let data = JSON.parse(JSON.stringify(text, null, 4));
-  // console.log(data, 'data');
 
   return (
     <div className="rounded h-128 border-none basis-full flex">
