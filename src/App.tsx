@@ -9,10 +9,16 @@ import Header from './components/Header/Header';
 import InputTextArea from './components/PluginInput/InputTextArea';
 import PluginOutput from './components/PluginOutput/PluginOutput';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
+import ModuleLoader from './components/Module-Loader/ModuleLoader';
 
+type ModuleUrl = string;
+type ModuleBytes = Uint8Array;
+
+type ModuleData = ModuleUrl | ModuleBytes;
 interface PluginState {
   defaultUrl: string;
-  url: string;
+  moduleData: ModuleData;
+
   input: Uint8Array;
   output: Uint8Array;
   inputMimeType: string;
@@ -24,13 +30,13 @@ interface PluginState {
 const App: React.FC = () => {
   /*
       invert url: http://localhost:3000/invert.wasm
-      html types
 
   */
 
   const [pluginState, setPluginState] = useState<PluginState>({
     defaultUrl: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
-    url: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
+
+    moduleData: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
     input: new Uint8Array(),
     output: new Uint8Array(),
     inputMimeType: 'text/plain',
@@ -40,17 +46,34 @@ const App: React.FC = () => {
   });
 
   useEffect(() => {
-    loadFunctions(pluginState.url);
-  }, [pluginState.url]);
+    loadFunctions();
+  }, [pluginState.moduleData]);
 
   const extismContext = useRef(new ExtismContext());
 
-  const loadFunctions = async (url: string) => {
+  const getManifest = () => {
+    let manifest: any;
+    switch (pluginState.moduleData.constructor) {
+      case String:
+        manifest = {
+          wasm: [{ path: pluginState.moduleData as string }],
+        };
+        break;
+
+      case Uint8Array:
+        manifest = {
+          wasm: [{ data: pluginState.moduleData as Uint8Array }],
+        };
+        break;
+    }
+    return manifest;
+  };
+  const loadFunctions = async () => {
     try {
-      const plugin = await extismContext.current.newPlugin({
-        wasm: [{ path: pluginState.url }],
-      });
+      let manifest = getManifest();
+      const plugin = await extismContext.current.newPlugin(manifest);
       const functions = await plugin.getExportedFunctions();
+
       setPluginState((prevState) => {
         return { ...prevState, functions: functions, func_name: functions[0] };
       });
@@ -78,9 +101,9 @@ const App: React.FC = () => {
     e && e.preventDefault && e.preventDefault();
 
     try {
-      let plugin = await extismContext.current.newPlugin({
-        wasm: [{ path: pluginState.url }],
-      });
+      const manifest = getManifest();
+      const plugin = await extismContext.current.newPlugin(manifest);
+
       let result = await plugin.call(pluginState.func_name, pluginState.input);
       let output = result;
 
@@ -117,35 +140,29 @@ const App: React.FC = () => {
     );
   });
 
+  // check pluginState.moduleData
+  let inputValue;
+  if (typeof pluginState.moduleData === 'string') {
+    inputValue = pluginState.moduleData;
+  } else {
+    inputValue = '';
+  }
   return (
     <div className="App">
       <Header />
       <div className="md:container md:mx-auto">
         <WelcomeBanner />
         <div className="md:flex py-4 px-2 gap-2  items-center ">
-          <div className=" flex basis-[12.3333%] items-center gap-4 ">
-            <input type="file" id="selected_file" className="hidden" />
-            <input
-              type="button"
-              value="Upload Module"
-              className="border-none basis-9/12 rounded min-h-[45px] rounded  basis-1/12  p-3 hover:cursor-pointer text-lg font-bold bg-gray-200 hover:bg-secondary-darker"
-              onClick={() => {
-                //@ts-ignore
-                document.getElementById('selected_file').click();
-              }}
-            />
-            <span className="basis-2/12">or</span>
-          </div>
-
-          <div className="py-2   basis-10/12 items-center flex">
+          <ModuleLoader onChange={handleInputChange} />
+          <div className="py-2 basis-10/12 items-center flex">
             <b className="basis-2/12">Module URL:</b>
             <input
               className="basis-10/12 h-11 p-3 text-lg  text-mid-gray bg-background-lightest  hover:border-primary-accent"
               type="text"
               placeholder={pluginState.defaultUrl}
-              value={pluginState.url}
+              value={inputValue}
               onChange={handleInputChange}
-              name="url"
+              name="moduleData"
             />
           </div>
           <div className="basis-5/12  flex">
@@ -163,9 +180,7 @@ const App: React.FC = () => {
                 name="func_name"
                 id="func_name"
                 value={pluginState.func_name}
-                onChange={(e) => {
-                  handleInputChange(e);
-                }}
+                onChange={handleInputChange}
                 className=" pt-10  bg-fit bg-dark-blue-button min-w-1/6 basis-1/6 bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative appearance-none "
               >
                 {funcOptions}
