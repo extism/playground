@@ -70,7 +70,11 @@ const JSONOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
 const HTMLOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
   const text = new TextDecoder().decode(bytes);
 
-  return <div id="plugin-output-area" className="rounded h-128 border-none basis-full"></div>;
+  return (
+    <div id="plugin-output-area" className="rounded h-128 border-none basis-full">
+      {text}
+    </div>
+  );
 };
 
 export default GetOutputComponent;
