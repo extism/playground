@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import './WelcomeBanner.css';
 
 const WelcomeBanner: React.FC = function () {
   const collapsibleDiv = useRef<HTMLDivElement>(null);
+  const [menuText, setMenuText] = useState('+');
   const toggleCollapsible = (event: React.MouseEvent<HTMLButtonElement>) => {
     var content = collapsibleDiv.current as HTMLDivElement;
     console.log(content.style.maxHeight, 'here');
@@ -10,8 +11,10 @@ const WelcomeBanner: React.FC = function () {
     if (content.style.maxHeight) {
       //@ts-ignore
       content.style.maxHeight = null;
+      setMenuText('+');
     } else {
       content.style.maxHeight = content.scrollHeight + 'px';
+      setMenuText('-');
     }
   };
   return (
@@ -23,7 +26,7 @@ const WelcomeBanner: React.FC = function () {
         <p className=" bg-banner-background rounded p-2 flex w-full justify-between">
           Help
           <span className="bg-black flex flex-col justify-center font-bold text-center text-white rounded-full w-5 h-5">
-            +
+            {menuText}
           </span>
         </p>
         <div ref={collapsibleDiv} className="max-h-0 overflow-hidden ease-out duration-300">
