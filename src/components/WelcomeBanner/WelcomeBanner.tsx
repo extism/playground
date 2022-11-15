@@ -18,9 +18,9 @@ const WelcomeBanner: React.FC = function () {
     }
   };
   return (
-    <div className="justify-end flex mt-2 mb-10">
+    <div className="flex mt-2  mb-10">
       <button
-        className="rounded border border-primary-accent border-solid  relative lg:min-w-[300px] flex  flex-col mb-10 "
+        className="rounded border border-primary-accent border-solid  relative w-[200px] md:min-w-[250px] lg:min-w-[300px] flex  flex-col mb-10 "
         onClick={toggleCollapsible}
       >
         <p className=" bg-banner-background rounded p-2 font-bold flex w-full justify-between">
@@ -34,8 +34,8 @@ const WelcomeBanner: React.FC = function () {
           ref={collapsibleDiv}
           className="max-h-0  bg-help-background border z-50 border-primary-accent border-solid  absolute top-10 rounded overflow-hidden ease-out duration-300"
         >
-          <div className="font-sans p-4    top rounded max-w-prose tracking-tighter   font-normal">
-            <div className="px-4">
+          <div className="font-sans p-4   flex flex-col top rounded max-w-prose tracking-tighter font-normal">
+            <div className="lg:px-4">
               <h1 className="font-bold text-left text-lg">Welcome to the Extism Playground! </h1>
             </div>
             <div className="flex py-4 pl-4 ">

@@ -164,7 +164,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Header />
-      <div className="md:container md:mx-auto">
+      <div className=" px-4  md:p-4 md:container md:mx-auto  ">
         <WelcomeBanner />
         <div className="form flex ">
           <form className="border border-solid border-black hover:border-primary-accent">
