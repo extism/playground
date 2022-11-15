@@ -10,7 +10,8 @@ import InputTextArea from './components/PluginInput/InputTextArea';
 import PluginOutput from './components/PluginOutput/PluginOutput';
 import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
 import ModuleLoader from './components/Module-Loader/ModuleLoader';
-
+import URLInput from './components/URLInput/URLInput';
+import Footer from './components/Footer/Footer';
 type ModuleUrl = string;
 type ModuleBytes = Uint8Array;
 
@@ -18,13 +19,13 @@ type ModuleData = ModuleUrl | ModuleBytes;
 interface PluginState {
   defaultUrl: string;
   moduleData: ModuleData;
-
   input: Uint8Array;
   output: Uint8Array;
   inputMimeType: string;
   outputMimeType: string;
   func_name: string;
   functions: string[];
+  moduleType: string;
 }
 
 const App: React.FC = () => {
@@ -42,6 +43,7 @@ const App: React.FC = () => {
     outputMimeType: 'text/plain',
     func_name: 'count_vowels',
     functions: [],
+    moduleType: '_url',
   });
 
   useEffect(() => {
@@ -90,7 +92,14 @@ const App: React.FC = () => {
 
   const handleInputChange = (e: any) => {
     if (e.preventDefault) {
+      if (e.target.name === 'moduleType') {
+        setPluginState((prevState) => {
+          return { ...prevState, [e.target.name]: e.target.value };
+        });
+        return;
+      }
       e.preventDefault();
+      e.stopPropagation();
 
       setPluginState((prevState) => {
         return { ...prevState, [e.target.name]: e.target.value };
@@ -146,7 +155,6 @@ const App: React.FC = () => {
     );
   });
 
-  // check pluginState.moduleData
   let inputValue;
   if (typeof pluginState.moduleData === 'string') {
     inputValue = pluginState.moduleData;
@@ -158,19 +166,57 @@ const App: React.FC = () => {
       <Header />
       <div className="md:container md:mx-auto">
         <WelcomeBanner />
+        <div className="form flex ">
+          <form className="border border-solid border-black hover:border-primary-accent">
+            <fieldset className="flex flex-col p-4">
+              <legend>How would you like to load your module?</legend>
+              <div className="flex gap-2">
+                <label className="basis-3/12 flex" htmlFor="use_url">
+                  Url
+                </label>
+                <div className="flex">
+                  <input
+                    className="w-4 h-4"
+                    onChange={handleInputChange}
+                    value="url"
+                    type="radio"
+                    defaultChecked
+                    name="moduleType"
+                    id="use_url"
+                  />
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <label className="basis-3/12 flex" htmlFor="use_module">
+                  Module
+                </label>
+                <div className="flex">
+                  <input
+                    className="w-4 h-4"
+                    value="module"
+                    onChange={handleInputChange}
+                    type="radio"
+                    name="moduleType"
+                    id="use_module"
+                  />
+                </div>
+              </div>
+            </fieldset>
+          </form>
+          {/* {typeof pluginState.moduleData === 'string' && <p>url</p>}
+          {typeof pluginState.moduleData === 'object' && <p>module</p>} */}
+        </div>
         <div className="md:flex py-4 px-2 gap-2  items-center ">
-          <ModuleLoader onChange={handleInputChange} />
-          <div className="py-2 basis-10/12 items-center flex">
-            <b className="basis-2/12">Module URL:</b>
-            <input
-              className="basis-10/12 h-11 p-3 text-lg  text-mid-gray bg-background-lightest  hover:border-primary-accent"
-              type="text"
-              placeholder={pluginState.defaultUrl}
-              value={inputValue}
+          {pluginState.moduleType === 'module' ? (
+            <ModuleLoader onChange={handleInputChange} />
+          ) : (
+            <URLInput
               onChange={handleInputChange}
-              name="moduleData"
+              defaultUrl={pluginState.defaultUrl}
+              url={typeof pluginState.moduleData === 'string' ? pluginState.moduleData : ''}
             />
-          </div>
+          )}
+
           <div className="basis-5/12  flex">
             <div className="basis-full flex  items-center justify-end  ">
               <label
@@ -187,7 +233,7 @@ const App: React.FC = () => {
                 id="func_name"
                 value={pluginState.func_name}
                 onChange={handleInputChange}
-                className=" pt-10  bg-fit bg-dark-blue-button min-w-1/6 basis-1/6 bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative appearance-none "
+                className=" pt-10  bg-fit bg-dark-blue min-w-1/6 basis-1/6 bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative appearance-none "
               >
                 {funcOptions}
               </select>
@@ -218,6 +264,7 @@ const App: React.FC = () => {
           <Button onClick={handleOnRun} title="Run Plugin" />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

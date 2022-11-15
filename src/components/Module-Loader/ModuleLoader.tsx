@@ -13,6 +13,8 @@ const ModuleLoader: React.FC<Props> = function ({ onChange }) {
     let ele = document.getElementById('selected_file') as HTMLInputElement;
     if (ele.files) {
       let file = ele.files[0];
+      console.log('filename', file);
+
       file
         .arrayBuffer()
         .then((buffer) => {
@@ -38,7 +40,6 @@ const ModuleLoader: React.FC<Props> = function ({ onChange }) {
           ele.click();
         }}
       />
-      <span className="basis-2/12">or</span>
     </div>
   );
 };

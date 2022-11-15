@@ -90,7 +90,7 @@ module.exports = {
       'secondary-accent': '#FFE6A4',
       'mid-gray': '#61676F',
       'border-gray': '#DBDDE1',
-      'dark-blue-button': '#323845',
+      'dark-blue': '#323845',
       'background-light': '#F2F2F2',
       'background-lightest': '#F6F8FA',
 
