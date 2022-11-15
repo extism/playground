@@ -32,15 +32,15 @@ const WelcomeBanner: React.FC = function () {
 
         <div
           ref={collapsibleDiv}
-          className="max-h-0  bg-help-background border z-50 border-primary-accent border-solid  absolute top-10 rounded overflow-hidden ease-out duration-300"
+          className="max-h-0  bg-help-background border z-10 border-primary-accent border-solid  absolute top-10 rounded overflow-hidden ease-out duration-300"
         >
-          <div className="font-sans p-4   flex flex-col top rounded max-w-prose tracking-tighter font-normal">
-            <div className="lg:px-4">
-              <h1 className="font-bold text-left text-lg">Welcome to the Extism Playground! </h1>
+          <div className="font-sans  md:p-2   flex flex-col top rounded max-w-prose tracking-tighter font-normal">
+            <div className="lg:px-2">
+              <h1 className="font-bold py-2  text-lg">Welcome to the Extism Playground! </h1>
             </div>
-            <div className="flex py-4 pl-4 ">
+            <div className="flex py-2 md:py-3 md:px-3">
               <ol className="list-none text-left gap-4 flex flex-col justify-center ">
-                <div className="flex  items-center gap-4">
+                <div className="flex  px-1 text-sm md:text-base items-start gap-2 md:gap-4 ">
                   <span className="bg-secondary-accent rounded-full w-8 h-8 text-center flex flex-col justify-center px-3 font-bold">
                     1
                   </span>
@@ -48,7 +48,8 @@ const WelcomeBanner: React.FC = function () {
                     Load your module via URL or by clicking <b>Upload Module</b>
                   </li>
                 </div>
-                <div className="flex items-center  gap-4">
+
+                <div className="flex px-1 text-sm md:text-base items-start  gap-2 md:gap-4">
                   <span className="bg-secondary-accent rounded-full w-8 h-8 text-center flex flex-col justify-center px-3 font-bold">
                     2
                   </span>
@@ -57,8 +58,8 @@ const WelcomeBanner: React.FC = function () {
                     function exported from your module
                   </li>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="bg-secondary-accent rounded-full w-8 h-8 text-center flex flex-col justify-center px-3 font-bold">
+                <div className="flex px-1 text-sm md:text-base items-start gap-2 md:gap-4">
+                  <span className="bg-secondary-accent rounded-full w-8 h-8 flex flex-col justify-center px-3 font-bold">
                     3
                   </span>
                   <li>
@@ -71,41 +72,6 @@ const WelcomeBanner: React.FC = function () {
         </div>
       </button>
     </div>
-    // <div className="font-sans p-4 my-4  bg-banner-background shadow border border-primary-accent border-solid rounded   font-normal">
-    //   <p className="text-xl text-left  mr-auto  w-11/12  max-w-full  font-normal ">
-    //     <b className="font-bold">Welcome to the Extism Playground! </b>
-    //     Run your Extism plugins in the browser and test with various inputs to verify outputs.
-    //   </p>
-    //   <div className="flex py-2 ">
-    //     <ol className="list-none text-left gap-4 flex flex-col justify-center ">
-    //       <div className="flex  items-center gap-4">
-    //         <span className="bg-secondary-accent rounded-full w-8 h-8 text-center flex flex-col justify-center px-3 font-bold">
-    //           1
-    //         </span>
-    //         <li>
-    //           Load your module via URL or by clicking <b>Upload Module</b>
-    //         </li>
-    //       </div>
-    //       <div className="flex items-center  gap-4">
-    //         <span className="bg-secondary-accent rounded-full w-8 h-8 text-center flex flex-col justify-center px-3 font-bold">
-    //           2
-    //         </span>
-    //         <li>
-    //           Choose what kind of input to provide (text, file, etc.), then choose the output type and pick a function
-    //           exported from your module
-    //         </li>
-    //       </div>
-    //       <div className="flex items-center gap-4">
-    //         <span className="bg-secondary-accent rounded-full w-8 h-8 text-center flex flex-col justify-center px-3 font-bold">
-    //           3
-    //         </span>
-    //         <li>
-    //           Hit <b>Run Plugin</b> to see its output
-    //         </li>
-    //       </div>
-    //     </ol>
-    //   </div>
-    // </div>
   );
 };
 
