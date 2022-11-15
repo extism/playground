@@ -13,29 +13,32 @@ const WelcomeBanner: React.FC = function () {
       content.style.maxHeight = null;
       setMenuText('+');
     } else {
-      content.style.maxHeight = content.scrollHeight + 'px';
+      content.style.maxHeight = content.scrollHeight + 50 + 'px';
       setMenuText('-');
     }
   };
   return (
-    <div className="w-fit flex">
+    <div className="justify-end flex mt-2 mb-10">
       <button
-        className=" border border-primary-accent border-solid flex basis-1/2 flex-col "
+        className="rounded border border-primary-accent border-solid  relative lg:min-w-[300px] flex  flex-col mb-10 "
         onClick={toggleCollapsible}
       >
-        <p className=" bg-banner-background rounded p-2 flex w-full justify-between">
+        <p className=" bg-banner-background rounded p-2 font-bold flex w-full justify-between">
           Help
           <span className="bg-black flex flex-col justify-center font-bold text-center text-white rounded-full w-5 h-5">
             {menuText}
           </span>
         </p>
-        <div ref={collapsibleDiv} className="max-h-0 overflow-hidden ease-out duration-300">
-          <div className="font-sans p-2   bg-banner-background shadow  rounded max-w-prose tracking-tighter   font-normal">
-            <p className="text-xl text-left  mr-auto  w-11/12  max-w-full  font-normal ">
-              <b className="font-bold">Welcome to the Extism Playground! </b>
-              Run your Extism plugins in the browser and test with various inputs to verify outputs.
-            </p>
-            <div className="flex py-2 ">
+
+        <div
+          ref={collapsibleDiv}
+          className="max-h-0  bg-help-background border z-50 border-primary-accent border-solid  absolute top-10 rounded overflow-hidden ease-out duration-300"
+        >
+          <div className="font-sans p-4    top rounded max-w-prose tracking-tighter   font-normal">
+            <div className="px-4">
+              <h1 className="font-bold text-left text-lg">Welcome to the Extism Playground! </h1>
+            </div>
+            <div className="flex py-4 pl-4 ">
               <ol className="list-none text-left gap-4 flex flex-col justify-center ">
                 <div className="flex  items-center gap-4">
                   <span className="bg-secondary-accent rounded-full w-8 h-8 text-center flex flex-col justify-center px-3 font-bold">
