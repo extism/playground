@@ -30,7 +30,14 @@ const ModuleLoader: React.FC<Props> = function ({ onChange }) {
   };
   return (
     <div className=" flex basis-[12.3333%] items-center gap-4 ">
-      <input onChange={onModuleInputChange} type="file" name="moduleData" id="selected_file" className="hidden" />
+      <input
+        onChange={onModuleInputChange}
+        type="file"
+        name="moduleData"
+        id="selected_file"
+        accept=".wasm"
+        className="hidden"
+      />
       <input
         type="button"
         value="Upload Module"

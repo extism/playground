@@ -166,8 +166,8 @@ const App: React.FC = () => {
       <Header />
       <div className=" px-4  md:p-4 md:container md:mx-auto  ">
         <WelcomeBanner />
-        <div className="form flex ">
-          <form className="border border-solid border-black hover:border-primary-accent">
+        <div className="form flex  ">
+          <form className="border  border-solid border-black hover:border-primary-accent">
             <fieldset className="flex flex-col p-4">
               <legend>How would you like to load your module?</legend>
               <div className="flex gap-2">
