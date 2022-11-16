@@ -106,6 +106,7 @@ module.exports = {
       teal: '#55c2da',
       extismPurple: '#4c31fc',
       'string-red': 'rgb(227, 17, 108)',
+      'var-blue': 'rgb(0, 0, 159)',
     },
     fontFamily: {
       sans: ['system-ui', '-apple-system', 'Segoe UI'],

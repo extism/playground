@@ -62,7 +62,12 @@ const JSONOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
 
   return (
     <div className="rounded h-128 border-none basis-full flex">
-      <pre className="font-mono overflow-scroll break-all  whitespace-pre-wrap ">{data}</pre>
+      <pre
+        className="font-mono basis-full
+       overflow-scroll break-all  whitespace-pre-wrap "
+      >
+        {data}
+      </pre>
     </div>
   );
 };

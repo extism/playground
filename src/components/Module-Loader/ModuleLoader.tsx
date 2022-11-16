@@ -1,7 +1,8 @@
 import React from 'react';
 
 interface Props {
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  // onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (fileData: { moduleData: Uint8Array; moduleName: string }) => void;
 }
 
 const ModuleLoader: React.FC<Props> = function ({ onChange }) {
@@ -13,18 +14,18 @@ const ModuleLoader: React.FC<Props> = function ({ onChange }) {
     let ele = document.getElementById('selected_file') as HTMLInputElement;
     if (ele.files) {
       let file = ele.files[0];
-      console.log('filename', file);
-
+      const moduleName = file.name;
       file
         .arrayBuffer()
         .then((buffer) => {
           const UINT_8 = new Uint8Array(buffer);
           value = UINT_8;
+
           return value;
         })
         .then((value) => {
-          const e = { name, value };
-          onChange(e as any);
+          const fileData = { moduleData: value, moduleName };
+          onChange(fileData);
         });
     }
   };

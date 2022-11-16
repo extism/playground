@@ -5,20 +5,28 @@ import GetOutputComponent from './GetOutputComponent';
 import './PluginOutput.css';
 interface PluginOutputProps {
   output: Uint8Array;
+  dispatch: (action: { type: string; payload: { outputMimeType: string } }) => void;
   input: Uint8Array;
-  onChange: any;
   mimeType: string;
 }
 
-const PluginOutput: React.FC<PluginOutputProps> = ({ output, mimeType, onChange }) => {
+const PluginOutput: React.FC<PluginOutputProps> = ({ output, mimeType, dispatch }) => {
   const OutputComponent = GetOutputComponent(mimeType);
   const mimeOptions = MimeTypes.map((m, i) => <option key={i}>{m}</option>);
+
+  const handleDropDownChange = (e: React.ChangeEvent) => {
+    const element = e.target as HTMLSelectElement;
+    const outputMimeType = element.value;
+    console.log(outputMimeType, 'here');
+
+    dispatch({ type: 'OUTPUT_MIME_TYPE', payload: { outputMimeType } });
+  };
 
   return (
     <div className="grid">
       <DropDownMenu
         title="Output Type"
-        onChange={onChange}
+        onChange={handleDropDownChange}
         options={mimeOptions}
         mimeType={mimeType}
         selectName={'outputMimeType'}

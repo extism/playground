@@ -7,6 +7,7 @@ interface InputTextAreaProps {
   label: string;
   dropDownTitle: string;
   mimeType: string;
+  dispatch: (action: { type: string; payload: { inputMimeType: string } }) => void;
   onChange: any;
   onKeyDown: any;
   handleDrop: any;
@@ -14,6 +15,7 @@ interface InputTextAreaProps {
 const InputTextArea: React.FC<InputTextAreaProps> = function ({
   input,
   handleDrop,
+  dispatch,
   label,
   dropDownTitle,
   mimeType,
@@ -27,19 +29,20 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
   const inputChangeHandler = (e: any) => {
     const toEncoded = new TextEncoder().encode(e.target.value);
     setTextAreaValue(e.target.value);
-    onChange({ name: 'input', value: toEncoded });
+    onChange({ input: toEncoded });
   };
 
   const readFile = (file: Blob) => {
     const reader = new FileReader();
 
-    if (file.type === 'text/html' || file.type === 'text/plain') {
+    if (file.type === 'text/html' || file.type === 'text/plain' || file.type === 'text/markdown') {
       reader.readAsText(file);
       reader.onload = (event: any) => {
         const uploadedFile = event.target?.result;
         const toEncoded = new TextEncoder().encode(uploadedFile);
         setTextAreaValue(uploadedFile);
-        onChange({ name: 'input', value: toEncoded });
+
+        onChange({ input: toEncoded });
         //  for future Ref: makes Iframe HTML File
         // const iframe = document.createElement('iframe');
         // iframe.srcdoc = uploadedFile;
@@ -53,8 +56,7 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
         drag_area_ref.current!.style.backgroundImage = `url(${uploaded_file})`;
       };
     }
-
-    // need a json reader...
+    setTextAreaValue('');
   };
 
   const onDropHandler = (event: any) => {
@@ -76,7 +78,7 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
     event.stopPropagation();
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'copy';
-      // event.dataTransfer.effectAllowed = 'copyMove';
+      event.dataTransfer.effectAllowed = 'copyMove';
     }
     drag_area_ref.current!.style.backgroundColor = '#a49cd6';
     drag_area_ref.current!.style.opacity = '0.5';
@@ -87,6 +89,11 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
     event.stopPropagation();
     drag_area_ref.current!.style.backgroundColor = 'white';
   };
+  const handleDropDownChange = (e: React.ChangeEvent) => {
+    const element = e.target as HTMLSelectElement;
+    const inputMimeType = element.value;
+    dispatch({ type: 'INPUT_MIME_TYPE', payload: { inputMimeType } });
+  };
 
   return (
     <div className="grid">
@@ -94,7 +101,7 @@ const InputTextArea: React.FC<InputTextAreaProps> = function ({
         mimeType={mimeType}
         selectName="inputMimeType"
         title={dropDownTitle}
-        onChange={onChange}
+        onChange={handleDropDownChange}
         options={mimeOptions}
       />
       <div className="flex flex-col h-128  self-stretch max-h-full ">

@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { ExtismContext } from '@extism/runtime-browser';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import './App.css';
 import './global.css';
 
@@ -25,59 +26,93 @@ interface PluginState {
   outputMimeType: string;
   func_name: string;
   functions: string[];
-  moduleType: string;
+  uploadType: string;
+  moduleName: string;
 }
+type PluginAction = {
+  type: string;
+  payload: any;
+};
+
+const pluginReducer = (state: PluginState, action: PluginAction) => {
+  switch (action.type) {
+    case 'INIT':
+      return { ...state, ...action.payload };
+    case 'UPLOAD_TYPE':
+      return { ...state, uploadType: action.payload };
+    case 'URL_INPUT':
+      return { ...state, ...action.payload };
+    case 'MODULE_INPUT':
+      return { ...state, ...action.payload };
+    case 'FUNCTION_DROPDOWN':
+      return { ...state, ...action.payload };
+    case 'FILE_DROP':
+      return { ...state, ...action.payload };
+    case 'ON_RUN':
+      return { ...state, ...action.payload };
+    case 'INPUT_CHANGE':
+      return { ...state, ...action.payload };
+    case 'OUTPUT_MIME_TYPE':
+      return { ...state, ...action.payload };
+    case 'INPUT_MIME_TYPE':
+      return { ...state, ...action.payload };
+    default:
+      return state;
+  }
+};
+/*
+      invert url: http://localhost:3000/invert.wasm
+https://raw.githubusercontent.com/extism/extism-fsnotify/main/apps/md2html/md2html.wasm
+https://githubusercontent.com/extism/playground/main/public/invert.wasm
+  */
+// for testing purposes only.
+const currentURL = 'https://raw.githubusercontent.com/extism/extism-fsnotify/main/apps/md2html/md2html.wasm';
+const getPluginURLName = (url: string) => {
+  const indexOfLastForwardSlash = url.lastIndexOf('/');
+  const pluginName = url.slice(indexOfLastForwardSlash + 1);
+  return pluginName;
+};
+
+const initialState = {
+  defaultUrl: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
+  moduleData: currentURL,
+  input: new Uint8Array(),
+  output: new Uint8Array(),
+  inputMimeType: 'text/plain',
+  outputMimeType: 'text/plain',
+  func_name: 'should_handle_file',
+  functions: [],
+  uploadType: 'url',
+  moduleName: getPluginURLName(currentURL),
+};
 
 const App: React.FC = () => {
-  /*
-      invert url: http://localhost:3000/invert.wasm
-
-  */
-
-  const [pluginState, setPluginState] = useState<PluginState>({
-    defaultUrl: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
-    moduleData: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
-    input: new Uint8Array(),
-    output: new Uint8Array(),
-    inputMimeType: 'text/plain',
-    outputMimeType: 'text/plain',
-    func_name: 'count_vowels',
-    functions: [],
-    moduleType: '_url',
-  });
+  const [state, dispatch] = useReducer(pluginReducer, initialState);
 
   useEffect(() => {
-    loadFunctions();
-  }, [pluginState.moduleData]);
+    async function loadModule() {
+      const manifest = getManifest(state.moduleData);
+      const pluginData = await loadFunctions(manifest);
+      if (pluginData) {
+        dispatch({
+          type: 'INIT',
+          payload: {
+            functions: pluginData,
+            func_name: pluginData[0],
+          },
+        });
+      }
+    }
+    loadModule();
+  }, []);
 
   const extismContext = useRef(new ExtismContext());
 
-  const getManifest = () => {
-    let manifest: any;
-    switch (pluginState.moduleData.constructor) {
-      case String:
-        manifest = {
-          wasm: [{ path: pluginState.moduleData as string }],
-        };
-        break;
-
-      case Uint8Array:
-        manifest = {
-          wasm: [{ data: pluginState.moduleData as Uint8Array }],
-        };
-        break;
-    }
-    return manifest;
-  };
-  const loadFunctions = async () => {
+  const loadFunctions = async (manifest: any) => {
     try {
-      let manifest = getManifest();
       const plugin = await extismContext.current.newPlugin(manifest);
       const functions = await plugin.getExportedFunctions();
-
-      setPluginState((prevState) => {
-        return { ...prevState, functions: functions, func_name: functions[0] };
-      });
+      return functions;
     } catch (error) {
       console.log('ERROR IN LOAD', error);
     }
@@ -90,40 +125,91 @@ const App: React.FC = () => {
     }
   };
 
-  const handleInputChange = (e: any) => {
-    if (e.preventDefault) {
-      if (e.target.name === 'moduleType') {
-        setPluginState((prevState) => {
-          return { ...prevState, [e.target.name]: e.target.value };
-        });
-        return;
-      }
-      e.preventDefault();
-      e.stopPropagation();
+  const handleFunctionDropDownChange = (e: any) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-      setPluginState((prevState) => {
-        return { ...prevState, [e.target.name]: e.target.value };
-      });
-    } else {
-      setPluginState((prevState) => {
-        return { ...prevState, [e.name]: e.value };
-      });
+    dispatch({ type: 'FUNCTION_DROPDOWN', payload: { func_name: e.target.value } });
+  };
+  const getManifest = (moduleData: string | Uint8Array) => {
+    let manifest: any;
+    switch (moduleData.constructor) {
+      case String:
+        manifest = {
+          wasm: [{ path: moduleData as string }],
+        };
+        break;
+
+      case Uint8Array:
+        manifest = {
+          wasm: [{ data: moduleData as Uint8Array }],
+        };
+        break;
     }
+    return manifest;
+  };
+  const handleInputURLChange = async (e: any) => {
+    const pluginName = getPluginURLName(e.target.value);
+
+    try {
+      let manifest = getManifest(e.target.value);
+      let pluginData = await loadFunctions(manifest);
+      console.log(manifest, ' in handl');
+
+      if (pluginData) {
+        dispatch({
+          type: 'URL_INPUT',
+          payload: {
+            moduleData: e.target.value,
+            functions: pluginData,
+            func_name: pluginData[0],
+            moduleName: pluginName,
+          },
+        });
+      }
+    } catch (error) {
+      console.log('ERROR', error);
+    }
+  };
+
+  const handleFileInputChange = async (fileData: { moduleData: Uint8Array; moduleName: string }) => {
+    const { moduleData, moduleName } = fileData;
+
+    try {
+      let manifest = getManifest(moduleData);
+      let pluginData = await loadFunctions(manifest);
+      if (pluginData) {
+        dispatch({
+          type: 'MODULE_INPUT',
+          payload: {
+            moduleData,
+            functions: pluginData,
+            func_name: pluginData[0],
+            moduleName,
+          },
+        });
+      }
+    } catch (error) {
+      console.log('error getting file', error);
+    }
+  };
+
+  const handleInputChange = (inputData: { input: Uint8Array }) => {
+    const { input } = inputData;
+    dispatch({ type: 'INPUT_CHANGE', payload: { input } });
   };
 
   const handleOnRun = async (e?: any) => {
     e && e.preventDefault && e.preventDefault();
 
     try {
-      const manifest = getManifest();
+      const manifest = getManifest(state.moduleData);
       const plugin = await extismContext.current.newPlugin(manifest);
 
-      let result = await plugin.call(pluginState.func_name, pluginState.input);
+      let result = await plugin.call(state.func_name, state.input);
       let output = result;
 
-      setPluginState((prevState) => {
-        return { ...prevState, output: output };
-      });
+      dispatch({ type: 'ON_RUN', payload: { output } });
     } catch (error) {
       console.log('Error in handleOnRun:', error);
     }
@@ -132,22 +218,18 @@ const App: React.FC = () => {
     e.preventDefault();
     e.stopPropagation();
     let files = [...e.dataTransfer.files];
-
     if (files && files.length === 1) {
       let file = files[0];
-
       file.arrayBuffer().then((b: Iterable<number>) => {
-        setPluginState((prevState) => {
-          return { ...prevState, input: new Uint8Array(b) };
-        });
-        handleOnRun();
+        dispatch({ type: 'FILE_DROP', payload: { input: new Uint8Array(b) } });
       });
+      handleOnRun();
     } else {
       throw Error('Only one file please');
     }
   };
 
-  const funcOptions = pluginState.functions.map((f, i) => {
+  const funcOptions = state.functions.map((f: string, i: number) => {
     return (
       <option key={i} value={f}>
         {f}
@@ -155,12 +237,6 @@ const App: React.FC = () => {
     );
   });
 
-  let inputValue;
-  if (typeof pluginState.moduleData === 'string') {
-    inputValue = pluginState.moduleData;
-  } else {
-    inputValue = '';
-  }
   return (
     <div className="App">
       <Header />
@@ -177,11 +253,13 @@ const App: React.FC = () => {
                 <div className="flex">
                   <input
                     className="w-4 h-4"
-                    onChange={handleInputChange}
+                    onChange={() => {
+                      dispatch({ type: 'UPLOAD_TYPE', payload: 'url' });
+                    }}
                     value="url"
                     type="radio"
                     defaultChecked
-                    name="moduleType"
+                    name="uploadType"
                     id="use_url"
                   />
                 </div>
@@ -194,70 +272,80 @@ const App: React.FC = () => {
                   <input
                     className="w-4 h-4"
                     value="module"
-                    onChange={handleInputChange}
+                    onChange={() => {
+                      dispatch({ type: 'UPLOAD_TYPE', payload: 'module' });
+                    }}
                     type="radio"
-                    name="moduleType"
+                    name="uploadType"
                     id="use_module"
                   />
                 </div>
               </div>
             </fieldset>
           </form>
-          {/* {typeof pluginState.moduleData === 'string' && <p>url</p>}
-          {typeof pluginState.moduleData === 'object' && <p>module</p>} */}
         </div>
         <div className="md:flex py-4 px-2 gap-2  items-center ">
-          {pluginState.moduleType === 'module' ? (
-            <ModuleLoader onChange={handleInputChange} />
+          {state.uploadType === 'module' ? (
+            <ModuleLoader onChange={handleFileInputChange} />
           ) : (
             <URLInput
-              onChange={handleInputChange}
-              defaultUrl={pluginState.defaultUrl}
-              url={typeof pluginState.moduleData === 'string' ? pluginState.moduleData : ''}
+              onChange={handleInputURLChange}
+              defaultUrl={state.defaultUrl}
+              url={typeof state.moduleData === 'string' ? state.moduleData : ''}
             />
           )}
+        </div>
+        <div className="flex p-2 flex-col md:gap-4 items-start border border-black borer-solid">
+          <div>
+            <p>
+              Plugin Name: <span className="font-semibold text-primary-accent">{state.moduleName}</span>
+            </p>
+          </div>
 
-          <div className="basis-5/12  flex">
-            <div className="basis-full flex  items-center justify-end  ">
-              <label
-                className=" basis-3/4  h-11 flex gap-1 items-center  text-left  text-md text-mid-gray bg-background-lightest basis-4/6 rounded  p-3 "
-                htmlFor="func_name"
-              >
-                Function Name: <span className="font-mono text-string-red">{pluginState.func_name}</span>
-              </label>
+          <div className="flex gap-2 items-center">
+            <span>Functions:</span>
+            <p className="flex gap-4">
+              {state.functions.map((func: string, i: number) => {
+                const isSelected = func === state.func_name;
 
-              <select
-                autoComplete="off"
-                required
-                name="func_name"
-                id="func_name"
-                value={pluginState.func_name}
-                onChange={handleInputChange}
-                className=" pt-10  bg-fit bg-dark-blue min-w-1/6 basis-1/6 bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative appearance-none "
-              >
-                {funcOptions}
-              </select>
-            </div>
+                let className;
+                if (isSelected) {
+                  className =
+                    '  saturate-200 scale-95 transition  duration-200 font-bold  border border-solid border-primary-accent shadow-inner shadow-gray-400 text-green   ';
+                } else {
+                  className = '0 transition shadow-slate-900 shadow border-l-2  border-b-2 ';
+                }
+                return (
+                  <button
+                    key={i}
+                    className={className + ' rounded p-[3px]'}
+                    onClick={() => dispatch({ type: 'FUNCTION_DROPDOWN', payload: { func_name: func } })}
+                  >
+                    <span className="text-inherit shadow-inherit ">{func}</span>
+                  </button>
+                );
+              })}
+            </p>
           </div>
         </div>
-
-        <div className=" grid grid-cols-2 gap-4 h-160 max-h-screen columns-2 border-solid p-5 my-10 border-black border-2 ">
+        <div className="flex my-10 bg-blue/40 outline backdrop-brightness-75  box-shadow-2xl ">
+          <p className="font-medium flex gap-2 ">
+            Selected Function: <span className="font-mono text-string-red">{state.func_name}</span>
+          </p>
+        </div>
+        <div className="grid grid-cols-2 gap-4 h-160 max-h-screen columns-2 border-solid p-5 my-10 border-black border-2 ">
           <InputTextArea
             handleDrop={handleDrop}
+            dispatch={dispatch}
             onChange={handleInputChange}
             label="Plugin Input"
             dropDownTitle="Input Type"
-            input={pluginState.input}
-            mimeType={pluginState.inputMimeType}
+            input={state.input}
+            mimeType={state.inputMimeType}
             onKeyDown={onInputKeyPress}
           />
 
-          <PluginOutput
-            input={pluginState.input}
-            output={pluginState.output}
-            onChange={handleInputChange}
-            mimeType={pluginState.outputMimeType}
-          />
+          <PluginOutput input={state.input} output={state.output} dispatch={dispatch} mimeType={state.outputMimeType} />
         </div>
 
         <div className="">

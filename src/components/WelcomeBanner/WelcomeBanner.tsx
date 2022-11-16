@@ -1,6 +1,11 @@
 import React, { useRef, useState } from 'react';
 import './WelcomeBanner.css';
-
+///      <p className="text-xl text-left  mr-auto  w-11/12  max-w-full  font-normal ">
+{
+  /* <b className="font-bold">Welcome to the Extism Playground! </b>
+Run your Extism plugins in the browser and test with various inputs to verify outputs.
+</p> */
+}
 const WelcomeBanner: React.FC = function () {
   const collapsibleDiv = useRef<HTMLDivElement>(null);
   const [menuText, setMenuText] = useState('+');
@@ -35,9 +40,9 @@ const WelcomeBanner: React.FC = function () {
           className="max-h-0  bg-help-background border z-10 border-primary-accent border-solid  absolute top-10 rounded overflow-hidden ease-out duration-300"
         >
           <div className="font-sans  md:p-2   flex flex-col top rounded max-w-prose tracking-tighter font-normal">
-            <div className="lg:px-2">
+            {/* <div className="lg:px-2">
               <h1 className="font-bold py-2  text-lg">Welcome to the Extism Playground! </h1>
-            </div>
+            </div> */}
             <div className="flex py-2 md:py-3 md:px-3">
               <ol className="list-none text-left gap-4 flex flex-col justify-center ">
                 <div className="flex  px-1 text-sm md:text-base items-start gap-2 md:gap-4 ">
