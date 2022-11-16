@@ -7,6 +7,49 @@
   align-items: center;
 }
 
+.folder {
+  width: 420px;
+  height: 310px;
+  margin: 5em auto 2em;
+
+  border-radius: 5px 25px 25px 25px;
+  filter: drop-shadow(0 0 0.75rem grey);
+
+  background: white;
+  position: relative;
+}
+
+.folder::before {
+  content: '';
+  position: absolute;
+  top: -18px;
+  left: 0;
+  width: 200px;
+  height: 25px;
+  background: white;
+  border-radius: 25px 0 0 0;
+  clip-path: path('M 0 0 L 160 0 C 185 2, 175 16, 200 18 L 0 50 z');
+}
+.folder::after {
+  content: '';
+  position: absolute;
+  left: 40px;
+  width: 85px;
+  height: 5px;
+  top: -18px;
+  background: #7036e9;
+  border-radius: 0 0 5px 5px;
+}
+/* .folder::after {
+  content: '';
+  position: absolute;
+  left: 40px;
+  width: 85px;
+  height: 5px;
+  top: -18px;
+  background: #7036e9;
+  border-radius: 0 0 5px 5px;
+} */
 /* .container {
   max-width: 1500px;
   margin: 0 auto;

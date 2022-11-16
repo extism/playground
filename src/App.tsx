@@ -9,8 +9,9 @@ import Button from './components/Buttons/DefaultButton/Button';
 import Header from './components/Header/Header';
 import InputTextArea from './components/PluginInput/InputTextArea';
 import PluginOutput from './components/PluginOutput/PluginOutput';
-import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
+import HelpMenu from './components/Drop-Down/HelpMenu';
 import ModuleLoader from './components/Module-Loader/ModuleLoader';
+import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
 import URLInput from './components/URLInput/URLInput';
 import Footer from './components/Footer/Footer';
 type ModuleUrl = string;
@@ -241,7 +242,7 @@ const App: React.FC = () => {
     <div className="App">
       <Header />
       <div className=" px-4  md:p-4 md:container mx-auto  ">
-        <WelcomeBanner />
+        <HelpMenu />
         <div className="form flex  ">
           <form className="border  border-solid border-black hover:border-primary-accent">
             <fieldset className="flex flex-col p-4">
@@ -294,7 +295,30 @@ const App: React.FC = () => {
               url={typeof state.moduleData === 'string' ? state.moduleData : ''}
             />
           )}
+          <div className="basis-5/12  flex">
+            <div className="basis-full flex  items-center justify-end  ">
+              <label
+                className=" basis-3/4  h-11 flex gap-1 items-center  text-left  text-md text-mid-gray bg-background-lightest basis-4/6 rounded  p-3 "
+                htmlFor="func_name"
+              >
+                Function Name: <span className="font-mono text-string-red">{state.func_name}</span>
+              </label>
+
+              <select
+                autoComplete="off"
+                required
+                name="func_name"
+                id="func_name"
+                value={state.func_name}
+                onChange={handleFunctionDropDownChange}
+                className=" pt-10  bg-fit bg-dark-blue min-w-1/6 basis-1/6 bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative appearance-none "
+              >
+                {funcOptions}
+              </select>
+            </div>
+          </div>
         </div>
+
         <div className="flex p-2 flex-col md:gap-4 items-start border border-black borer-solid">
           <div>
             <p>
@@ -328,6 +352,7 @@ const App: React.FC = () => {
             </p>
           </div>
         </div>
+
         <div className="flex my-10 bg-blue/40 outline backdrop-brightness-75  box-shadow-2xl ">
           <p className="font-medium flex gap-2 ">
             Selected Function: <span className="font-mono text-string-red">{state.func_name}</span>
