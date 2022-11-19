@@ -63,7 +63,7 @@ const PluginInput: React.FC<PluginInputProps> = function ({
   return (
     <div className="border-black h-full border-2 border-solid max-h-full self-stretch basis-full rounded relative ">
       <div
-        className="md:h-128 w-full "
+        className="lg:h-128 w-full "
         ref={drag_area_ref}
         onDrop={onDrop}
         onDragLeave={onDragLeave}

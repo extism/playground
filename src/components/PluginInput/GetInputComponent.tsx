@@ -157,7 +157,7 @@ const ImageInput = (mimeType: string): React.FC<InputComponentProps> => {
       <div onDragOver={onDragOver} onDrop={onDrop} className="input-image-component-wrapper">
         <img
           onDragStart={onDragStart}
-          className="object-contain rounded max-h-full w-full"
+          className="object-contain rounded max-h-full w-full md:h-[100%]"
           id="plugin-input-textarea"
           src={`data:${mimeType};base64,${data}`}
           alt=""

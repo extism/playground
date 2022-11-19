@@ -59,27 +59,3 @@ const ModuleLoader: React.FC<Props> = function ({ onChange, moduleName }) {
 };
 
 export default ModuleLoader;
-
-/**
- *
- *
- *     <div className=" flex basis-[12.3333%] items-center gap-4 ">
-      <input
-        onChange={onModuleInputChange}
-        type="file"
-        name="moduleData"
-        id="selected_file"
-        accept=".wasm"
-        className="hidden"
-      />
-      <input
-        type="button"
-        value="Upload Module"
-        className="border-none basis-9/12 rounded min-h-[45px] rounded  basis-1/12  p-3 hover:cursor-pointer text-lg font-bold bg-gray-200 hover:bg-secondary-darker"
-        onClick={(e) => {
-          const ele = document.getElementById('selected_file') as HTMLInputElement;
-          ele.click();
-        }}
-      />
-    </div>
- */

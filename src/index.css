@@ -17,7 +17,7 @@
 
   .output-image-component-wrapper,
   .input-image-component-wrapper {
-    min-height: 100%;
+    height: 100%;
   }
   .card {
     background-color: theme('colors.white');
@@ -28,7 +28,6 @@
   @media (min-width: 728px) {
     .output-image-component-wrapper,
     .input-image-component-wrapper {
-      min-height: 32rem;
     }
   }
 }
