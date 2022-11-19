@@ -12,9 +12,13 @@
     "@types/node": "^16.18.3",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
+    "jsonpath": "^1.1.1",
+    "jsonpath-plus": "^7.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "react-syntax-highlighter-virtualized-renderer": "^1.1.0",
     "typescript": "^4.8.4",
     "web-vitals": "^2.1.4"
   },
@@ -43,6 +47,8 @@
     ]
   },
   "devDependencies": {
+    "@types/jsonpath": "^0.2.0",
+    "@types/react-syntax-highlighter": "^15.5.5",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.18",
     "tailwindcss": "^3.2.3"

@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .output-component {
+  }
+
+  .input-text-component,
+  .output-text-component {
+    height: 100%;
+    width: 100%;
+    min-height: 20rem;
+    resize: none;
+    border: none;
+  }
+
+  .output-image-component-wrapper,
+  .input-image-component-wrapper {
+    min-height: 100%;
+  }
+  .card {
+    background-color: theme('colors.white');
+    border-radius: theme('borderRadius.lg');
+    padding: theme('spacing.6');
+    box-shadow: theme('boxShadow.xl');
+  }
+  @media (min-width: 728px) {
+    .output-image-component-wrapper,
+    .input-image-component-wrapper {
+      min-height: 32rem;
+    }
+  }
+}
 @layer base {
   html {
     font-family: system-ui, -apple-system, sans-serif;

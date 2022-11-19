@@ -5,8 +5,6 @@ const HelpMenu: React.FC = function () {
   const [menuText, setMenuText] = useState('+');
   const toggleCollapsible = (event: React.MouseEvent<HTMLButtonElement>) => {
     var content = collapsibleDiv.current as HTMLDivElement;
-    console.log(content.style.maxHeight, 'here');
-
     if (content.style.maxHeight) {
       //@ts-ignore
       content.style.maxHeight = null;

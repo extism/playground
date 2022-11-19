@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 // import Button from '../Buttons/DefaultButton/Button';
 import './URLInput.css';
 
@@ -24,12 +24,13 @@ const URLInput: React.FC<URLInputProps> = ({ onChange, url, defaultUrl }) => {
     }
   };
   return (
-    <div className="py-2 basis-10/12 items-center flex">
-      <b className="basis-2/12">Module URL:</b>
+    <div className="flex  items-center  py-1  basis-full  sm:gap-2  ">
+      <b className=" py-1 pr-1 font-semibold text-sm md:font-bold md:text-lg">Module URL:</b>
       <input
         onKeyDown={onInputKeydown}
         onBlur={onInputBlur}
-        className="basis-10/12 accent-black h-11 p-3 text-lg  text-mid-gray bg-background-lightest  hover:border-primary-accent"
+        className="text-mid-gray bg-background-lightest hover:border-primary-accent w-9/12  sm:h-8  md:h-11 md:w-9/12 lg:w-[80%] "
+        // className=" text-mid-gray bg-background-lightest  hover:border-primary-accent w-10/12 p-2  text-sm  accent-black md:basis-10/12  md:h-11 md:p-3 md:text-lg  "
         type="url"
         pattern="https://.*"
         required

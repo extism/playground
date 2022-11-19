@@ -1,19 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ExtismContext } from '@extism/runtime-browser';
-import React, { useEffect, useReducer, useRef, useState } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 import './App.css';
 import './global.css';
 
 //components
-import Button from './components/Buttons/DefaultButton/Button';
-import Header from './components/Header/Header';
-import InputTextArea from './components/PluginInput/InputTextArea';
-import PluginOutput from './components/PluginOutput/PluginOutput';
-import HelpMenu from './components/Drop-Down/HelpMenu';
-import ModuleLoader from './components/Module-Loader/ModuleLoader';
-import WelcomeBanner from './components/WelcomeBanner/WelcomeBanner';
-import URLInput from './components/URLInput/URLInput';
+import DropDownMenu from './components/Buttons/DropDownMenu/DropDownMenu';
 import Footer from './components/Footer/Footer';
+import Header from './components/Header/Header';
+import ModuleLoader from './components/Module-Loader/ModuleLoader';
+import PluginInput from './components/PluginInput/PluginInput';
+import PluginOutput from './components/PluginOutput/PluginOutput';
+import URLInput from './components/URLInput/URLInput';
+import { MimeTypes } from './util/MimeTypes';
 type ModuleUrl = string;
 type ModuleBytes = Uint8Array;
 
@@ -28,7 +27,9 @@ interface PluginState {
   func_name: string;
   functions: string[];
   uploadType: string;
-  moduleName: string;
+  moduleName: boolean | string;
+  isError: boolean;
+  errorMessage: string;
 }
 type PluginAction = {
   type: string;
@@ -53,10 +54,20 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
       return { ...state, ...action.payload };
     case 'INPUT_CHANGE':
       return { ...state, ...action.payload };
+    case 'OUTPUT_CHANGE':
+      return { ...state, ...action.payload };
     case 'OUTPUT_MIME_TYPE':
       return { ...state, ...action.payload };
     case 'INPUT_MIME_TYPE':
       return { ...state, ...action.payload };
+    case 'ERROR_ON_RUN':
+      let { error } = action.payload;
+      return state;
+    case 'ERROR_ON_INPUT':
+      error = action.payload;
+      console.log('ERRORDSPAATCH', error);
+
+      return state;
     default:
       return state;
   }
@@ -67,7 +78,7 @@ https://raw.githubusercontent.com/extism/extism-fsnotify/main/apps/md2html/md2ht
 https://githubusercontent.com/extism/playground/main/public/invert.wasm
   */
 // for testing purposes only.
-const currentURL = 'https://raw.githubusercontent.com/extism/extism-fsnotify/main/apps/md2html/md2html.wasm';
+const currentURL = 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm';
 const getPluginURLName = (url: string) => {
   const indexOfLastForwardSlash = url.lastIndexOf('/');
   const pluginName = url.slice(indexOfLastForwardSlash + 1);
@@ -84,7 +95,9 @@ const initialState = {
   func_name: 'should_handle_file',
   functions: [],
   uploadType: 'url',
-  moduleName: getPluginURLName(currentURL),
+  moduleName: false,
+  isError: false,
+  errorMessage: '',
 };
 
 const App: React.FC = () => {
@@ -155,7 +168,6 @@ const App: React.FC = () => {
     try {
       let manifest = getManifest(e.target.value);
       let pluginData = await loadFunctions(manifest);
-      console.log(manifest, ' in handl');
 
       if (pluginData) {
         dispatch({
@@ -164,7 +176,6 @@ const App: React.FC = () => {
             moduleData: e.target.value,
             functions: pluginData,
             func_name: pluginData[0],
-            moduleName: pluginName,
           },
         });
       }
@@ -212,24 +223,27 @@ const App: React.FC = () => {
 
       dispatch({ type: 'ON_RUN', payload: { output } });
     } catch (error) {
-      console.log('Error in handleOnRun:', error);
+      // dispatch({ type: 'ERROR_ON_RUN', payload: { error } });
+      console.log('ERROR IN RUN', error);
     }
   };
-  const handleDrop = (e: any) => {
+  const handleDrop = async (e: any) => {
     e.preventDefault();
     e.stopPropagation();
     let files = [...e.dataTransfer.files];
     if (files && files.length === 1) {
       let file = files[0];
+
       file.arrayBuffer().then((b: Iterable<number>) => {
         dispatch({ type: 'FILE_DROP', payload: { input: new Uint8Array(b) } });
       });
-      handleOnRun();
     } else {
       throw Error('Only one file please');
     }
-  };
 
+    handleOnRun();
+  };
+  const mimeOptions = MimeTypes.map((m, i) => <option key={i}>{m}</option>);
   const funcOptions = state.functions.map((f: string, i: number) => {
     return (
       <option key={i} value={f}>
@@ -239,55 +253,61 @@ const App: React.FC = () => {
   });
 
   return (
-    <div className="App">
+    <div
+      className="h-[100vh] sm:flex flex-col"
+      onDragOver={(e: React.DragEvent) => {
+        e.preventDefault();
+      }}
+    >
       <Header />
-      <div className=" px-4  md:p-4 md:container mx-auto  ">
-        <HelpMenu />
-        <div className="form flex  ">
-          <form className="border  border-solid border-black hover:border-primary-accent">
-            <fieldset className="flex flex-col p-4">
-              <legend>How would you like to load your module?</legend>
-              <div className="flex gap-2">
-                <label className="basis-3/12 flex" htmlFor="use_url">
-                  Url
-                </label>
-                <div className="flex">
-                  <input
-                    className="w-4 h-4"
-                    onChange={() => {
-                      dispatch({ type: 'UPLOAD_TYPE', payload: 'url' });
-                    }}
-                    value="url"
-                    type="radio"
-                    defaultChecked
-                    name="uploadType"
-                    id="use_url"
-                  />
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <label className="basis-3/12 flex" htmlFor="use_module">
-                  Module
-                </label>
-                <div className="flex">
-                  <input
-                    className="w-4 h-4"
-                    value="module"
-                    onChange={() => {
-                      dispatch({ type: 'UPLOAD_TYPE', payload: 'module' });
-                    }}
-                    type="radio"
-                    name="uploadType"
-                    id="use_module"
-                  />
-                </div>
-              </div>
-            </fieldset>
+      <div
+        onDragOver={(e: React.DragEvent) => {
+          e.preventDefault();
+        }}
+        className="px-4  md:p-4 md:container mx-auto flex-[1_0_auto]  "
+        // className=" px-4  md:p-4 md:container mx-auto  "
+      >
+        <div className="md:flex  my-2 px-2  md:gap-2 font-bold md:items-center">
+          <label className="w-[200px] text-sm  font-semibold md:text-base md:font-bold md:text-lg lg:w-2/12  ">
+            Load Module From:
+          </label>
+          <form className=" text-sm md:flex basis-10/12 md:items-center md:gap-4 ">
+            <div className="sm:flex basis-1/12 gap-2">
+              <input
+                className=""
+                onChange={() => {
+                  dispatch({ type: 'UPLOAD_TYPE', payload: 'url' });
+                }}
+                value="url"
+                type="radio"
+                defaultChecked
+                name="uploadType"
+                id="use_url"
+              />
+              <label htmlFor="use_url">URL</label>
+            </div>
+            <div className="flex basis-1/12 gap-2">
+              <input
+                className=""
+                value="module"
+                onChange={() => {
+                  dispatch({ type: 'UPLOAD_TYPE', payload: 'module' });
+                }}
+                type="radio"
+                name="uploadType"
+                id="use_module"
+              />
+
+              <label className="" htmlFor="use_module">
+                Local File
+              </label>
+            </div>
           </form>
         </div>
-        <div className="md:flex py-4 px-2 gap-2  items-center ">
+
+        <div className="flex flex-wrap sm:flex-nowrap  md:flex-nowrap md:my-4 md:py-2 md:px-2 gap-2  items-center ">
           {state.uploadType === 'module' ? (
-            <ModuleLoader onChange={handleFileInputChange} />
+            <ModuleLoader moduleName={state.moduleName ? state.moduleName : null} onChange={handleFileInputChange} />
           ) : (
             <URLInput
               onChange={handleInputURLChange}
@@ -295,10 +315,11 @@ const App: React.FC = () => {
               url={typeof state.moduleData === 'string' ? state.moduleData : ''}
             />
           )}
-          <div className="basis-5/12  flex">
-            <div className="basis-full flex  items-center justify-end  ">
+          <div className="flex">
+            <div className="flex py-2  justify-between md:items-center md:justify-end  ">
               <label
-                className=" basis-3/4  h-11 flex gap-1 items-center  text-left  text-md text-mid-gray bg-background-lightest basis-4/6 rounded  p-3 "
+                className="flex items-center text-sm text-mid-gray bg-background-lightest "
+                // className="basis-3/4  h-11 flex gap-1 items-center text-md text-mid-gray bg-background-lightest basis-4/6 rounded  m:p-3 "
                 htmlFor="func_name"
               >
                 Function Name: <span className="font-mono text-string-red">{state.func_name}</span>
@@ -311,7 +332,8 @@ const App: React.FC = () => {
                 id="func_name"
                 value={state.func_name}
                 onChange={handleFunctionDropDownChange}
-                className=" pt-10  bg-fit bg-dark-blue min-w-1/6 basis-1/6 bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative appearance-none "
+                className=" appearance-none bg-fit bg-no-repeat bg-center pt-6 w-6 h-8  bg-[url('/src/assets/chevron-right.png')] bg-dark-blue   "
+                // className=" pt-10  bg-fit bg-dark-blue min-w-1/6 basis-1/6 bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative appearance-none "
               >
                 {funcOptions}
               </select>
@@ -319,62 +341,76 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex p-2 flex-col md:gap-4 items-start border border-black borer-solid">
-          <div>
-            <p>
-              Plugin Name: <span className="font-semibold text-primary-accent">{state.moduleName}</span>
-            </p>
+        <div className=" flex flex-col lg:flex-row  max-h-screen gap-4 border-solid mt-8 ">
+          <div className="flex flex-col  basis-6/12">
+            <div className="flex items-center basis-1/12 md:gap-4 lg:gap-6">
+              <label
+                className="text-white bg-black pt-3 md:min-h-[40px] md:mt-auto lg:font-bold  px-4 rounded-t-lg"
+                htmlFor="plugin-input-textarea"
+              >
+                Plugin input:
+              </label>
+              <DropDownMenu
+                mimeType={state.inputMimeType}
+                selectName="inputMimeType"
+                title={'Input'}
+                options={mimeOptions}
+                onChange={(e: React.ChangeEvent) => {
+                  const element = e.target as HTMLSelectElement;
+                  const inputMimeType = element.value;
+                  dispatch({ type: 'INPUT_MIME_TYPE', payload: { inputMimeType } });
+                }}
+              />
+            </div>
+            <PluginInput
+              handleDrop={handleDrop}
+              dispatch={dispatch}
+              onChange={handleInputChange}
+              label="Plugin Input"
+              dropDownTitle="Input Type"
+              input={state.input}
+              mimeType={state.inputMimeType}
+              onKeyDown={onInputKeyPress}
+              handleOnRun={handleOnRun}
+            />
           </div>
-
-          <div className="flex gap-2 items-center">
-            <span>Functions:</span>
-            <p className="flex gap-4">
-              {state.functions.map((func: string, i: number) => {
-                const isSelected = func === state.func_name;
-
-                let className;
-                if (isSelected) {
-                  className =
-                    '  saturate-200 scale-95 transition  duration-200 font-bold  border border-solid border-primary-accent shadow-inner shadow-gray-400 text-green   ';
-                } else {
-                  className = '0 transition shadow-slate-900 shadow border-l-2  border-b-2 ';
-                }
-                return (
-                  <button
-                    key={i}
-                    className={className + ' rounded p-[3px]'}
-                    onClick={() => dispatch({ type: 'FUNCTION_DROPDOWN', payload: { func_name: func } })}
-                  >
-                    <span className="text-inherit shadow-inherit ">{func}</span>
-                  </button>
-                );
-              })}
-            </p>
+          <div className="flex flex-col basis-6/12 ">
+            <div className="flex basis-1/12 items-center   justify-between  md:gap-4 lg:gap-6">
+              <label
+                className="text-white bg-black pt-2   md:min-h-[40px] md:mt-auto lg:font-bold   px-4 rounded-t-lg"
+                htmlFor="plugin-output-textarea"
+              >
+                Plugin Output:
+              </label>
+              <DropDownMenu
+                mimeType={state.outputMimeType}
+                selectName="outputMimeType"
+                title="Output"
+                options={mimeOptions}
+                onChange={(e: React.ChangeEvent) => {
+                  const element = e.target as HTMLSelectElement;
+                  const outputMimeType = element.value;
+                  dispatch({ type: 'OUTPUT_MIME_TYPE', payload: { outputMimeType } });
+                }}
+              />
+            </div>
+            <PluginOutput
+              input={state.input}
+              output={state.output}
+              dispatch={dispatch}
+              mimeType={state.outputMimeType}
+            />
           </div>
         </div>
-
-        <div className="flex my-10 bg-blue/40 outline backdrop-brightness-75  box-shadow-2xl ">
-          <p className="font-medium flex gap-2 ">
-            Selected Function: <span className="font-mono text-string-red">{state.func_name}</span>
-          </p>
-        </div>
-        <div className="grid grid-cols-2 gap-4 h-160 max-h-screen columns-2 border-solid p-5 my-10 border-black border-2 ">
-          <InputTextArea
-            handleDrop={handleDrop}
-            dispatch={dispatch}
-            onChange={handleInputChange}
-            label="Plugin Input"
-            dropDownTitle="Input Type"
-            input={state.input}
-            mimeType={state.inputMimeType}
-            onKeyDown={onInputKeyPress}
-          />
-
-          <PluginOutput input={state.input} output={state.output} dispatch={dispatch} mimeType={state.outputMimeType} />
-        </div>
-
-        <div className="">
-          <Button onClick={handleOnRun} title="Run Plugin" />
+        <div className="flex gap-4 mt-4 w-1/2 justify-end ">
+          <button
+            className=" basis-2/12 p-4 rounded bg-extismPurple text-white lg:text-xl font-semibold hover:bg-teal active:bg-teal focus:outline-none focus:ring focus:ring-violet-300 hover:text-black "
+            onClick={handleOnRun}
+            title="Run Plugin"
+          >
+            Run Plugin
+          </button>
+          <div></div>
         </div>
       </div>
       <Footer />
@@ -383,3 +419,22 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+/**
+ *
+ *
+ *
+ *
+ *
+ *  <div className="flex basis-[12.333%] p-3 flex items-center justify-end ">
+              <button
+                className=" p-4 rounded bg-extismPurple text-white text-2xl font-semibold hover:bg-teal active:bg-teal focus:outline-none focus:ring focus:ring-violet-300 hover:text-black "
+                onClick={handleOnRun}
+                title="Run Plugin"
+              >
+                Run Plugin
+              </button>
+            </div>
+
+                      <div className="basis-full flex basis-[12.333%] p-3 flex items-center justify-end "></div>
+ */

@@ -3,9 +3,10 @@ import React from 'react';
 interface Props {
   // onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChange: (fileData: { moduleData: Uint8Array; moduleName: string }) => void;
+  moduleName: string | null;
 }
 
-const ModuleLoader: React.FC<Props> = function ({ onChange }) {
+const ModuleLoader: React.FC<Props> = function ({ onChange, moduleName }) {
   const onModuleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     event.stopPropagation();
@@ -30,7 +31,39 @@ const ModuleLoader: React.FC<Props> = function ({ onChange }) {
     }
   };
   return (
-    <div className=" flex basis-[12.3333%] items-center gap-4 ">
+    <div className=" py-2 basis-10/12 gap-4 items-center flex ">
+      <input
+        onChange={onModuleInputChange}
+        type="file"
+        name="moduleData"
+        id="selected_file"
+        accept=".wasm"
+        className="hidden"
+      />
+      <input
+        type="button"
+        value="Upload Module"
+        className="border-none basis-2/12 rounded    p-2 hover:cursor-pointer text-lg font-bold bg-gray-200 hover:bg-secondary-darker"
+        onClick={(e) => {
+          const ele = document.getElementById('selected_file') as HTMLInputElement;
+          ele.click();
+        }}
+      />
+      {moduleName ? (
+        <p className="basis-10/12  h-11 p-2 text-lg   flex ">{moduleName}</p>
+      ) : (
+        <p className="text-mid-gray ">No file chosen</p>
+      )}
+    </div>
+  );
+};
+
+export default ModuleLoader;
+
+/**
+ *
+ *
+ *     <div className=" flex basis-[12.3333%] items-center gap-4 ">
       <input
         onChange={onModuleInputChange}
         type="file"
@@ -49,7 +82,4 @@ const ModuleLoader: React.FC<Props> = function ({ onChange }) {
         }}
       />
     </div>
-  );
-};
-
-export default ModuleLoader;
+ */
