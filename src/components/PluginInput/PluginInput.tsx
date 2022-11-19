@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import GetInputComponent from './GetPluginInput';
+import GetInputComponent from './GetInputComponent';
 
 import './InputTextArea.css';
 interface PluginInputProps {

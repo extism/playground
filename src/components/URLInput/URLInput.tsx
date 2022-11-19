@@ -24,12 +24,12 @@ const URLInput: React.FC<URLInputProps> = ({ onChange, url, defaultUrl }) => {
     }
   };
   return (
-    <div className="flex  items-center  py-1  basis-full  sm:gap-2  ">
-      <b className=" py-1 pr-1 font-semibold text-sm md:font-bold md:text-lg">Module URL:</b>
+    <div className="flex flex-col    py-1  basis-full  sm:gap-2 sm:flex-row sm:items-center sm:basis-3/4 ">
+      <b className=" py-1 pr-1 font-semibold text-sm md:font-bold md:text-lg lg:w-[20%]">Module URL:</b>
       <input
         onKeyDown={onInputKeydown}
         onBlur={onInputBlur}
-        className="text-mid-gray bg-background-lightest hover:border-primary-accent w-9/12  sm:h-8  md:h-11 md:w-9/12 lg:w-[80%] "
+        className="text-mid-gray bg-background-lightest hover:border-primary-accent w-9/12  sm:h-10  md:h-11 md:w-9/12 lg:w-[80%] "
         // className=" text-mid-gray bg-background-lightest  hover:border-primary-accent w-10/12 p-2  text-sm  accent-black md:basis-10/12  md:h-11 md:p-3 md:text-lg  "
         type="url"
         pattern="https://.*"

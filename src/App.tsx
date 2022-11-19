@@ -254,7 +254,7 @@ const App: React.FC = () => {
 
   return (
     <div
-      className="h-[100vh] sm:flex flex-col"
+      className="h-[100%] sm:flex flex-col"
       onDragOver={(e: React.DragEvent) => {
         e.preventDefault();
       }}
@@ -264,11 +264,10 @@ const App: React.FC = () => {
         onDragOver={(e: React.DragEvent) => {
           e.preventDefault();
         }}
-        className="px-4  md:p-4 md:container mx-auto flex-[1_0_auto]  "
-        // className=" px-4  md:p-4 md:container mx-auto  "
+        className="px-4  md:p-4 md:container md:mx-auto flex-[1_0_auto]  "
       >
         <div className="md:flex  my-2 px-2  md:gap-2 font-bold md:items-center">
-          <label className="w-[200px] text-sm  font-semibold md:text-base md:font-bold md:text-lg lg:w-2/12  ">
+          <label className="w-[200px] text-sm  font-semibold md:text-base md:font-bold md:text-lg lg:w-[20%] xl:max-w-[175px] ">
             Load Module From:
           </label>
           <form className=" text-sm md:flex basis-10/12 md:items-center md:gap-4 ">
@@ -284,7 +283,9 @@ const App: React.FC = () => {
                 name="uploadType"
                 id="use_url"
               />
-              <label htmlFor="use_url">URL</label>
+              <label className="text-sm md:text-lg" htmlFor="use_url">
+                URL
+              </label>
             </div>
             <div className="flex basis-1/12 gap-2">
               <input
@@ -298,14 +299,17 @@ const App: React.FC = () => {
                 id="use_module"
               />
 
-              <label className="" htmlFor="use_module">
+              <label className="text-sm md:min-w-[5rem] md:text-lg" htmlFor="use_module">
                 Local File
               </label>
             </div>
           </form>
         </div>
-
-        <div className="flex flex-wrap sm:flex-nowrap  md:flex-nowrap md:my-4 md:py-2 md:px-2 gap-2  items-center ">
+        {/* MODULE SWITCH CONTAINER */}
+        <div
+          id="---moduleloaderSwitchContainer"
+          className="flex flex-wrap justify-end items-end sm:flex-nowrap md:flex-nowrap md:my-4 md:py-2 md:px-2 md:items-center gap-2 "
+        >
           {state.uploadType === 'module' ? (
             <ModuleLoader moduleName={state.moduleName ? state.moduleName : null} onChange={handleFileInputChange} />
           ) : (
@@ -315,14 +319,13 @@ const App: React.FC = () => {
               url={typeof state.moduleData === 'string' ? state.moduleData : ''}
             />
           )}
-          <div className="flex">
-            <div className="flex py-2  justify-between md:items-center md:justify-end  ">
+          <div id="FUNCTION DROPDOWN HOLDER" className="flex grow justify-end sm:basis-1/2  md:items-center">
+            <div className="flex justify-between items-end  p-1 sm:items-center md:items-center md:justify-end ">
               <label
-                className="flex items-center text-sm text-mid-gray bg-background-lightest "
-                // className="basis-3/4  h-11 flex gap-1 items-center text-md text-mid-gray bg-background-lightest basis-4/6 rounded  m:p-3 "
+                className=" text-left  text-sm text-mid-gray bg-background-lightest  rounded flex  p-3 font-semibold h-11 md:h-11 md:flex gap-1 items-center rounded "
                 htmlFor="func_name"
               >
-                Function Name: <span className="font-mono text-string-red">{state.func_name}</span>
+                Function Name: <span className="font-mono text-string-red font-medium">{state.func_name}</span>
               </label>
 
               <select
@@ -332,7 +335,8 @@ const App: React.FC = () => {
                 id="func_name"
                 value={state.func_name}
                 onChange={handleFunctionDropDownChange}
-                className=" appearance-none bg-fit bg-no-repeat bg-center pt-6 w-6 h-8  bg-[url('/src/assets/chevron-right.png')] bg-dark-blue   "
+                className=" pt-10  bg-fit bg-dark-blue  bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative overflow-hidden appearance-none "
+                // className=" appearance-none bg-fit bg-no-repeat bg-center pt-6 w-6 h-8  bg-[url('/src/assets/chevron-right.png')] bg-dark-blue   "
                 // className=" pt-10  bg-fit bg-dark-blue min-w-1/6 basis-1/6 bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative appearance-none "
               >
                 {funcOptions}
@@ -340,10 +344,11 @@ const App: React.FC = () => {
             </div>
           </div>
         </div>
+        {/* ==========MODULE SWITCH CONTAINER  END====*/}
 
         <div className=" flex flex-col lg:flex-row  max-h-screen gap-4 border-solid mt-8 ">
           <div className="flex flex-col  basis-6/12">
-            <div className="flex items-center basis-1/12 md:gap-4 lg:gap-6">
+            <div className="flex  md:gap-4 lg:gap-6">
               <label
                 className="text-white bg-black pt-3 md:min-h-[40px] md:mt-auto lg:font-bold  px-4 rounded-t-lg"
                 htmlFor="plugin-input-textarea"
