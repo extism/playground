@@ -1,16 +1,17 @@
 import React from 'react';
 import GetOutputComponent from './GetOutputComponent';
-
 import './PluginOutput.css';
+
 interface PluginOutputProps {
   output: Uint8Array;
   dispatch: (action: { type: string; payload: any }) => void;
   input: Uint8Array;
   mimeType: string;
+  loading: boolean;
 }
 
-const PluginOutput: React.FC<PluginOutputProps> = ({ output, mimeType, dispatch }) => {
-  const OutputComponent = GetOutputComponent(mimeType);
+const PluginOutput: React.FC<PluginOutputProps> = ({ output, loading, mimeType, dispatch }) => {
+  const OutputComponent = GetOutputComponent(loading, mimeType);
 
   return (
     <div className="border-black border-2  border-solid max-h-full self-stretch basis-full ">

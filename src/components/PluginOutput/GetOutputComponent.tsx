@@ -3,6 +3,7 @@ import arrayTob64 from '../../util/arrayToB64';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dark, oneLight, materialOceanic, coldarkCold } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { JSONPath } from 'jsonpath-plus';
+import Spinner from '../Spinner/Spinner';
 
 import TESTJSON from '../../assets/test.json';
 type OutputComponentProps = {
@@ -19,7 +20,9 @@ function _base64ToArrayBuffer(base64: string) {
   return bytes.buffer;
 }
 
-const GetOutputComponent = (outputType: string): React.FC<OutputComponentProps> => {
+const GetOutputComponent = (loading: boolean, outputType: string): React.FC<OutputComponentProps> => {
+  if (loading) return LoadingScreen;
+
   switch (outputType) {
     case 'application/json':
       return JSONOutput;
@@ -36,6 +39,12 @@ const GetOutputComponent = (outputType: string): React.FC<OutputComponentProps> 
       return PlainText;
   }
 };
+
+const LoadingScreen: React.FC<OutputComponentProps> = ({ }) => {
+  return <div className="flex items-center justify-center">
+    <Spinner/ >
+  </div>
+}
 
 const PlainText: React.FC<OutputComponentProps> = ({ bytes }) => {
   const text = new TextDecoder().decode(bytes);
