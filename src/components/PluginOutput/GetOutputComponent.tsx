@@ -1,24 +1,16 @@
-import React, { useRef, useState } from 'react';
-import arrayTob64 from '../../util/arrayToB64';
+import React, { useRef } from 'react';
+import arrayTob64 from '../../lib/arrayToB64';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { dark, oneLight, materialOceanic, coldarkCold } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { JSONPath } from 'jsonpath-plus';
 import Spinner from '../Spinner/Spinner';
-
+import { DispatchFunc } from '../../types';
 import TESTJSON from '../../assets/test.json';
+
 type OutputComponentProps = {
   bytes: Uint8Array;
-  dispatch: any;
+  dispatch: DispatchFunc;
 };
-function _base64ToArrayBuffer(base64: string) {
-  var binary_string = window.atob(base64);
-  var len = binary_string.length;
-  var bytes = new Uint8Array(len);
-  for (var i = 0; i < len; i++) {
-    bytes[i] = binary_string.charCodeAt(i);
-  }
-  return bytes.buffer;
-}
 
 const GetOutputComponent = (loading: boolean, outputType: string): React.FC<OutputComponentProps> => {
   if (loading) return LoadingScreen;
@@ -40,7 +32,7 @@ const GetOutputComponent = (loading: boolean, outputType: string): React.FC<Outp
   }
 };
 
-const LoadingScreen: React.FC<OutputComponentProps> = ({ }) => {
+const LoadingScreen: React.FC<OutputComponentProps> = () => {
   return <div className="flex items-center justify-center py-50">
     <Spinner />
   </div>
@@ -51,7 +43,7 @@ const PlainText: React.FC<OutputComponentProps> = ({ bytes }) => {
 
   return (
     <textarea
-      className="output-text-component rounded p-2  "
+      className="output-text-component rounded p-2"
       id="plugin-output-area"
       name="output"
       disabled
@@ -86,7 +78,7 @@ const MarkdownOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
   return (
     <div id="plugin-output-area" className="output-text-component">
       <SyntaxHighlighter
-        className="break-all  max-h-full w-full  overflow-scroll whitespace-pre-wrap"
+        className="break-all max-h-full w-full  overflow-scroll whitespace-pre-wrap"
         language="markdown"
         wrapLongLines={true}
         style={oneLight}
@@ -106,7 +98,7 @@ const JSONOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
   return (
     <div className="output-text-component">
       <SyntaxHighlighter
-        className="bg-blue break-all  max-h-full w-full overflow-scroll whitespace-pre-wrap"
+        className="bg-blue break-all max-h-full w-full overflow-scroll whitespace-pre-wrap"
         language="json"
         wrapLongLines={true}
         style={oneLight}
@@ -118,22 +110,20 @@ const JSONOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
     </div>
   );
 };
+
 const ImageOutput = (mimeType: string): React.FC<OutputComponentProps> => {
-  return function ImageOutputComponent({ bytes, dispatch }) {
+  return function ImageOutputComponent({ bytes }) {
     const data = arrayTob64(bytes);
     const outputImageRef = useRef<HTMLImageElement>(null);
-
-    const onDragPreventDefault = (e: React.DragEvent) => {
-      e.preventDefault();
-    };
 
     const onDragStart = (e: React.DragEvent) => {
       e.dataTransfer.setData('text/uri-list', outputImageRef.current!.src);
       e.dataTransfer.dropEffect = 'move';
       e.dataTransfer.effectAllowed = 'all';
     };
+    
     return (
-      <div onDragOver={onDragPreventDefault} onDrop={onDragPreventDefault} className="output-image-component-wrapper">
+      <div className="output-image-component-wrapper">
         <img
           ref={outputImageRef}
           draggable

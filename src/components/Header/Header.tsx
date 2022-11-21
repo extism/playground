@@ -1,7 +1,6 @@
 import React from 'react';
-import './Header.css';
 
-const Header: React.FC = function () {
+const Header: React.FC = () => {
   return (
     <div className="h-20 flex items-center justify-start bg-black">
       <header className="flex gap-4 items-center mx-12 ">

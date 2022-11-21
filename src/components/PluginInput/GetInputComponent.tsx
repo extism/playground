@@ -1,11 +1,12 @@
 import React from 'react';
-import arrayTob64 from '../../util/arrayToB64';
+import arrayTob64 from '../../lib/arrayToB64';
 
 type InputComponentProps = {
   bytes: Uint8Array;
   dispatch?: any;
   inputChangeHandler?: any;
 };
+
 function _base64ToArrayBuffer(base64: string) {
   var binary_string = window.atob(base64);
   var len = binary_string.length;
@@ -41,6 +42,7 @@ const PlainText: React.FC<InputComponentProps> = ({ bytes, dispatch }) => {
     const toEncoded = new TextEncoder().encode(e.target.value);
     dispatch({ type: 'INPUT_CHANGE', payload: { input: toEncoded } });
   };
+
   return (
     <textarea
       className="input-text-component p-2 "
