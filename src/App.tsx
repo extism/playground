@@ -129,8 +129,8 @@ const App: React.FC = () => {
   const loadFunctions = async (manifest: any) => {
     try {
       const plugin = await extismContext.current.newPlugin(manifest);
-      const functions = await plugin.getExportedFunctions();
-      return functions;
+      const functions = await plugin.getExports();
+      return Object.keys(functions).filter(x => !x.startsWith("__") && x !== "memory")
     } catch (error) {
       console.log('ERROR IN LOAD', error);
     }
