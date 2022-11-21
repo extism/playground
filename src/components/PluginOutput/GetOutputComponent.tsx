@@ -41,8 +41,8 @@ const GetOutputComponent = (loading: boolean, outputType: string): React.FC<Outp
 };
 
 const LoadingScreen: React.FC<OutputComponentProps> = ({ }) => {
-  return <div className="flex items-center justify-center py-15">
-    <Spinner/ >
+  return <div className="flex items-center justify-center py-50">
+    <Spinner />
   </div>
 }
 
