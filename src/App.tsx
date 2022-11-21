@@ -30,6 +30,7 @@ interface PluginState {
   moduleName: boolean | string;
   isError: boolean;
   errorMessage: string;
+  loading: boolean;
 }
 type PluginAction = {
   type: string;
@@ -49,6 +50,8 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
     case 'FUNCTION_DROPDOWN':
       return { ...state, ...action.payload };
     case 'FILE_DROP':
+      return { ...state, ...action.payload };
+    case 'ON_CALL':
       return { ...state, ...action.payload };
     case 'ON_RUN':
       return { ...state, ...action.payload };
@@ -98,6 +101,7 @@ const initialState = {
   moduleName: false,
   isError: false,
   errorMessage: '',
+  loading: false,
 };
 
 const App: React.FC = () => {
@@ -218,10 +222,12 @@ const App: React.FC = () => {
       const manifest = getManifest(state.moduleData);
       const plugin = await extismContext.current.newPlugin(manifest);
 
+      dispatch({ type: 'ON_CALL', payload: { loading: true } });
+
       let result = await plugin.call(state.func_name, state.input);
       let output = result;
 
-      dispatch({ type: 'ON_RUN', payload: { output } });
+      dispatch({ type: 'ON_RUN', payload: { output, loading: false } });
     } catch (error) {
       // dispatch({ type: 'ERROR_ON_RUN', payload: { error } });
       console.log('ERROR IN RUN', error);
@@ -400,6 +406,7 @@ const App: React.FC = () => {
               />
             </div>
             <PluginOutput
+              loading={state.loading}
               input={state.input}
               output={state.output}
               dispatch={dispatch}
@@ -440,6 +447,5 @@ export default App;
                 Run Plugin
               </button>
             </div>
-
                       <div className="basis-full flex basis-[12.333%] p-3 flex items-center justify-end "></div>
  */
