@@ -4,7 +4,7 @@
   "private": true,
   "license": "BSD-3-Clause",
   "dependencies": {
-    "@extism/runtime-browser": "0.0.1-rc.10",
+    "@extism/runtime-browser": "0.0.1-rc.13",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
