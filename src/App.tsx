@@ -276,39 +276,35 @@ const App: React.FC = () => {
           <label className="w-[200px] text-sm  font-semibold md:text-base md:font-bold md:text-lg lg:w-[20%] xl:max-w-[175px] ">
             Load Module From:
           </label>
-          <form className=" text-sm md:flex basis-10/12 md:items-center md:gap-4 ">
-            <div className="sm:flex basis-1/12 gap-2">
-              <input
-                className=""
-                onChange={() => {
-                  dispatch({ type: 'UPLOAD_TYPE', payload: 'url' });
-                }}
-                value="url"
-                type="radio"
-                defaultChecked
-                name="uploadType"
-                id="use_url"
-              />
-              <label className="text-sm md:text-lg" htmlFor="use_url">
-                URL
-              </label>
-            </div>
-            <div className="flex basis-1/12 gap-2">
-              <input
-                className=""
-                value="module"
-                onChange={() => {
-                  dispatch({ type: 'UPLOAD_TYPE', payload: 'module' });
-                }}
-                type="radio"
-                name="uploadType"
-                id="use_module"
-              />
+          <form className="text-sm md:flex basis-10/12 md:items-center md:gap-2">
+            <input
+              className=""
+              onChange={() => {
+                dispatch({ type: 'UPLOAD_TYPE', payload: 'url' });
+              }}
+              value="url"
+              type="radio"
+              defaultChecked
+              name="uploadType"
+              id="use_url"
+            />
+            <label className="text-sm md:text-lg" htmlFor="use_url">
+              URL
+            </label>
+            <input
+              className=""
+              value="module"
+              onChange={() => {
+                dispatch({ type: 'UPLOAD_TYPE', payload: 'module' });
+              }}
+              type="radio"
+              name="uploadType"
+              id="use_module"
+            />
 
-              <label className="text-sm md:min-w-[5rem] md:text-lg" htmlFor="use_module">
-                Local File
-              </label>
-            </div>
+            <label className="text-sm md:min-w-[5rem] md:text-lg" htmlFor="use_module">
+              Local File
+            </label>
           </form>
         </div>
         {/* MODULE SWITCH CONTAINER */}
@@ -331,7 +327,7 @@ const App: React.FC = () => {
                 className=" text-left  text-sm text-mid-gray bg-background-lightest  rounded flex  p-3 font-semibold h-11 md:h-11 md:flex gap-1 items-center rounded "
                 htmlFor="func_name"
               >
-                Function Name: <span className="font-mono text-string-red font-medium">{state.func_name}</span>
+                Function Name:
               </label>
 
               <select
@@ -341,7 +337,7 @@ const App: React.FC = () => {
                 id="func_name"
                 value={state.func_name}
                 onChange={handleFunctionDropDownChange}
-                className=" pt-10  bg-fit bg-dark-blue  bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative overflow-hidden appearance-none "
+                className=""
                 // className=" appearance-none bg-fit bg-no-repeat bg-center pt-6 w-6 h-8  bg-[url('/src/assets/chevron-right.png')] bg-dark-blue   "
                 // className=" pt-10  bg-fit bg-dark-blue min-w-1/6 basis-1/6 bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative appearance-none "
               >
@@ -364,7 +360,7 @@ const App: React.FC = () => {
               <DropDownMenu
                 mimeType={state.inputMimeType}
                 selectName="inputMimeType"
-                title={'Input'}
+                title={'Input Type'}
                 options={mimeOptions}
                 onChange={(e: React.ChangeEvent) => {
                   const element = e.target as HTMLSelectElement;
@@ -396,7 +392,7 @@ const App: React.FC = () => {
               <DropDownMenu
                 mimeType={state.outputMimeType}
                 selectName="outputMimeType"
-                title="Output"
+                title="Output Type"
                 options={mimeOptions}
                 onChange={(e: React.ChangeEvent) => {
                   const element = e.target as HTMLSelectElement;
