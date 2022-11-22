@@ -18,14 +18,14 @@ const DropDownMenu: React.FC<DropDownMenuProps> = function ({ title, onChange, o
         className=" md:h-11 md:flex gap-1 items-center  text-left  text-sm text-mid-gray bg-background-lightest  rounded  p-3 font-semibold "
         htmlFor="func_name"
       >
-        {title}: <span className="font-mono font-medium text-string-red">{mimeType}</span>
+        {title}:
       </label>
       <select
         name={selectName}
         id="func_name"
         required
         // className="funcName border-solid border-black"
-        className=" pt-10  bg-fit bg-dark-blue  bg-no-repeat bg-center  bg-[url('/src/assets/chevron-right.png')] basis-1/12 h-11 w-8 rounded relative overflow-hidden appearance-none "
+        className=""
         value={mimeType}
         onChange={onChange}
       >
