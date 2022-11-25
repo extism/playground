@@ -8,14 +8,10 @@ interface PluginInputProps {
   dispatch: DispatchFunc;
 }
 
-const PluginInput: React.FC<PluginInputProps> = function ({
-  input,
-  dispatch,
-  mimeType,
-}) {
+const PluginInput: React.FC<PluginInputProps> = function ({ input, dispatch, mimeType }) {
   const InputComponent = GetInputComponent(mimeType);
   const drag_area_ref = useRef<HTMLDivElement>(null);
-  
+
   const onDragLeave = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -53,9 +49,15 @@ const PluginInput: React.FC<PluginInputProps> = function ({
   };
 
   return (
-    <div className="border-black h-full border-2 border-solid max-h-full self-stretch basis-full rounded relative ">
+    <div
+      className="border-black border-2 border-solid  rounded
+h-[20rem]
+lg:h-80
+xl:h-96
+"
+    >
       <div
-        className="lg:h-128 w-full "
+        className="h-full w-full "
         ref={drag_area_ref}
         onDrop={onDrop}
         onDragLeave={onDragLeave}

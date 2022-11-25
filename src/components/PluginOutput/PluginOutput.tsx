@@ -14,8 +14,14 @@ const PluginOutput: React.FC<PluginOutputProps> = ({ output, loading, mimeType, 
   const OutputComponent = GetOutputComponent(loading, mimeType);
 
   return (
-    <div className="border-black border-2 border-solid max-h-full self-stretch basis-full ">
-      <div className="md:h-128 w-full ">
+    <div
+      className="border-black border-2 border-solid  rounded
+    h-[20rem]
+    lg:h-80
+    xl:h-96
+    "
+    >
+      <div className="h-full w-full ">
         <OutputComponent dispatch={dispatch} bytes={output} />
       </div>
     </div>

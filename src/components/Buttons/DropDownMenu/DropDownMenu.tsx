@@ -6,7 +6,7 @@ interface DropDownMenuProps {
   options?: any;
   mimeType: string;
   selectName: string;
-};
+}
 
 const DropDownMenu: React.FC<DropDownMenuProps> = function ({ title, onChange, options, mimeType, selectName }) {
   return (
@@ -24,8 +24,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = function ({ title, onChange, o
         name={selectName}
         id="func_name"
         required
-        // className="funcName border-solid border-black"
-        className=""
+        className="hover:cursor-pointer"
         value={mimeType}
         onChange={onChange}
       >

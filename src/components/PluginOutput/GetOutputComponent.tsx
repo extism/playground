@@ -33,22 +33,18 @@ const GetOutputComponent = (loading: boolean, outputType: string): React.FC<Outp
 };
 
 const LoadingScreen: React.FC<OutputComponentProps> = () => {
-  return <div className="flex items-center justify-center py-50">
-    <Spinner />
-  </div>
-}
+  return (
+    <div className="flex items-center justify-center py-50">
+      <Spinner />
+    </div>
+  );
+};
 
 const PlainText: React.FC<OutputComponentProps> = ({ bytes }) => {
   const text = new TextDecoder().decode(bytes);
 
   return (
-    <textarea
-      className="output-text-component rounded p-2"
-      id="plugin-output-area"
-      name="output"
-      disabled
-      value={text}
-    >
+    <textarea className="output-text-component rounded p-2" id="plugin-output-area" name="output" disabled value={text}>
       {text}
     </textarea>
   );
@@ -121,14 +117,14 @@ const ImageOutput = (mimeType: string): React.FC<OutputComponentProps> => {
       e.dataTransfer.dropEffect = 'move';
       e.dataTransfer.effectAllowed = 'all';
     };
-    
+
     return (
       <div className="output-image-component-wrapper">
         <img
           ref={outputImageRef}
           draggable
           onDragStart={onDragStart}
-          className="object-contain rounded max-h-full w-full"
+          className="object-contain h-full rounded max-h-full w-full"
           id="plugin-output-area"
           src={`data:${mimeType};base64,${data}`}
           alt=""

@@ -94,7 +94,8 @@ module.exports = {
       'dark-blue': '#323845',
       'background-light': '#F2F2F2',
       'background-lightest': '#F6F8FA',
-
+      'config-background': 'rgb(234 87 59 / 10%)',
+      'config-border': 'rgb(234 87 59)',
       'banner-border': '#b2a726',
       green: '#13ce66',
       yellow: '#ffc82c',
@@ -134,7 +135,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
+  plugins: [require('@tailwindcss/forms')],
 };
