@@ -3,17 +3,17 @@ import React, { useRef, useState } from 'react';
 const HelpMenu: React.FC = function () {
   const collapsibleDiv = useRef<HTMLDivElement>(null);
   const [menuText, setMenuText] = useState('+');
-  const toggleCollapsible = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleCollapsible = (_event: React.MouseEvent<HTMLButtonElement>) => {
     var content = collapsibleDiv.current as HTMLDivElement;
     if (content.style.maxHeight) {
-      //@ts-ignore
-      content.style.maxHeight = null;
+      content.style.maxHeight = "none";
       setMenuText('+');
     } else {
       content.style.maxHeight = content.scrollHeight + 50 + 'px';
       setMenuText('-');
     }
   };
+  
   return (
     <div className="flex mt-2  mb-10">
       <button

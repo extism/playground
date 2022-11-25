@@ -1,19 +1,17 @@
 import React from 'react';
-import './DropDownMenu.css';
 
 interface DropDownMenuProps {
   title: string;
-  onChange: any;
+  onChange: React.ChangeEventHandler<HTMLSelectElement>;
   options?: any;
   mimeType: string;
   selectName: string;
-}
+};
+
 const DropDownMenu: React.FC<DropDownMenuProps> = function ({ title, onChange, options, mimeType, selectName }) {
   return (
     <div
-      onDragOver={(e: React.DragEvent) => {
-        e.preventDefault();
-      }}
+      onDragOver={(e: React.DragEvent) => e.preventDefault()}
       className=" flex items-center lg:min-w-[200px] ml-auto justify-end  "
     >
       <label
@@ -29,7 +27,7 @@ const DropDownMenu: React.FC<DropDownMenuProps> = function ({ title, onChange, o
         // className="funcName border-solid border-black"
         className=""
         value={mimeType}
-        onChange={(e) => onChange(e)}
+        onChange={onChange}
       >
         {options}
       </select>

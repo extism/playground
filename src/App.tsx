@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ExtismContext } from '@extism/runtime-browser';
 import React, { useEffect, useReducer, useRef } from 'react';
-import './App.css';
 import './global.css';
 
 //components
@@ -12,57 +11,25 @@ import ModuleLoader from './components/Module-Loader/ModuleLoader';
 import PluginInput from './components/PluginInput/PluginInput';
 import PluginOutput from './components/PluginOutput/PluginOutput';
 import URLInput from './components/URLInput/URLInput';
-import { MimeTypes } from './util/MimeTypes';
-type ModuleUrl = string;
-type ModuleBytes = Uint8Array;
-
-type ModuleData = ModuleUrl | ModuleBytes;
-interface PluginState {
-  defaultUrl: string;
-  moduleData: ModuleData;
-  input: Uint8Array;
-  output: Uint8Array;
-  inputMimeType: string;
-  outputMimeType: string;
-  func_name: string;
-  functions: string[];
-  uploadType: string;
-  moduleName: boolean | string;
-  isError: boolean;
-  errorMessage: string;
-  loading: boolean;
-}
-type PluginAction = {
-  type: string;
-  payload: any;
-};
+import { MimeTypes } from './lib/MimeTypes';
+import { PluginState, PluginAction } from './types';
 
 const pluginReducer = (state: PluginState, action: PluginAction) => {
   switch (action.type) {
     case 'INIT':
+    case 'URL_INPUT':
+    case 'MODULE_INPUT':
+    case 'FUNCTION_DROPDOWN':
+    case 'FILE_DROP':
+    case 'ON_RUN':
+    case 'ON_CALL':
+    case 'INPUT_CHANGE':
+    case 'OUTPUT_CHANGE':
+    case 'OUTPUT_MIME_TYPE':
+    case 'INPUT_MIME_TYPE':
       return { ...state, ...action.payload };
     case 'UPLOAD_TYPE':
       return { ...state, uploadType: action.payload };
-    case 'URL_INPUT':
-      return { ...state, ...action.payload };
-    case 'MODULE_INPUT':
-      return { ...state, ...action.payload };
-    case 'FUNCTION_DROPDOWN':
-      return { ...state, ...action.payload };
-    case 'FILE_DROP':
-      return { ...state, ...action.payload };
-    case 'ON_CALL':
-      return { ...state, ...action.payload };
-    case 'ON_RUN':
-      return { ...state, ...action.payload };
-    case 'INPUT_CHANGE':
-      return { ...state, ...action.payload };
-    case 'OUTPUT_CHANGE':
-      return { ...state, ...action.payload };
-    case 'OUTPUT_MIME_TYPE':
-      return { ...state, ...action.payload };
-    case 'INPUT_MIME_TYPE':
-      return { ...state, ...action.payload };
     case 'ERROR_ON_RUN':
       let { error } = action.payload;
       return state;
@@ -75,6 +42,7 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
       return state;
   }
 };
+
 /*
       invert url: http://localhost:3000/invert.wasm
 https://raw.githubusercontent.com/extism/extism-fsnotify/main/apps/md2html/md2html.wasm
@@ -95,7 +63,7 @@ const initialState = {
   output: new Uint8Array(),
   inputMimeType: 'text/plain',
   outputMimeType: 'text/plain',
-  func_name: 'should_handle_file',
+  func_name: 'count_vowels',
   functions: [],
   uploadType: 'url',
   moduleName: false,
@@ -136,19 +104,13 @@ const App: React.FC = () => {
     }
   };
 
-  const onInputKeyPress = (e: KeyboardEvent) => {
-    if (e.keyCode === 13 && e.metaKey) {
-      e.preventDefault();
-      handleOnRun(e);
-    }
-  };
-
-  const handleFunctionDropDownChange = (e: any) => {
+  const handleFunctionDropDownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault();
     e.stopPropagation();
 
     dispatch({ type: 'FUNCTION_DROPDOWN', payload: { func_name: e.target.value } });
   };
+
   const getManifest = (moduleData: string | Uint8Array) => {
     let manifest: any;
     switch (moduleData.constructor) {
@@ -166,7 +128,8 @@ const App: React.FC = () => {
     }
     return manifest;
   };
-  const handleInputURLChange = async (e: any) => {
+
+  const handleInputURLChange = async (e: React.FocusEvent<HTMLInputElement>) => {
     const pluginName = getPluginURLName(e.target.value);
 
     try {
@@ -210,13 +173,8 @@ const App: React.FC = () => {
     }
   };
 
-  const handleInputChange = (inputData: { input: Uint8Array }) => {
-    const { input } = inputData;
-    dispatch({ type: 'INPUT_CHANGE', payload: { input } });
-  };
-
-  const handleOnRun = async (e?: any) => {
-    e && e.preventDefault && e.preventDefault();
+  const handleOnRun = async (e?: React.MouseEvent<HTMLButtonElement>) => {
+    e && e.preventDefault();
 
     try {
       const manifest = getManifest(state.moduleData);
@@ -233,22 +191,7 @@ const App: React.FC = () => {
       console.log('ERROR IN RUN', error);
     }
   };
-  const handleDrop = async (e: any) => {
-    e.preventDefault();
-    e.stopPropagation();
-    let files = [...e.dataTransfer.files];
-    if (files && files.length === 1) {
-      let file = files[0];
-
-      file.arrayBuffer().then((b: Iterable<number>) => {
-        dispatch({ type: 'FILE_DROP', payload: { input: new Uint8Array(b) } });
-      });
-    } else {
-      throw Error('Only one file please');
-    }
-
-    handleOnRun();
-  };
+ 
   const mimeOptions = MimeTypes.map((m, i) => <option key={i}>{m}</option>);
   const funcOptions = state.functions.map((f: string, i: number) => {
     return (
@@ -370,15 +313,9 @@ const App: React.FC = () => {
               />
             </div>
             <PluginInput
-              handleDrop={handleDrop}
               dispatch={dispatch}
-              onChange={handleInputChange}
-              label="Plugin Input"
-              dropDownTitle="Input Type"
               input={state.input}
               mimeType={state.inputMimeType}
-              onKeyDown={onInputKeyPress}
-              handleOnRun={handleOnRun}
             />
           </div>
           <div className="flex flex-col basis-6/12 ">

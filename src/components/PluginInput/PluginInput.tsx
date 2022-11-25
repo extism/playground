@@ -1,32 +1,21 @@
 import React, { useRef } from 'react';
+import { DispatchFunc } from '../../types';
 import GetInputComponent from './GetInputComponent';
 
-import './InputTextArea.css';
 interface PluginInputProps {
   input: Uint8Array;
-  label: string;
-  dropDownTitle: string;
   mimeType: string;
-  dispatch: (action: { type: string; payload: any }) => void;
-  handleOnRun: any;
-  onChange: any;
-  onKeyDown: any;
-  handleDrop: any;
+  dispatch: DispatchFunc;
 }
+
 const PluginInput: React.FC<PluginInputProps> = function ({
   input,
-  handleDrop,
   dispatch,
-  label,
-  dropDownTitle,
   mimeType,
-  onChange,
-  onKeyDown,
-  handleOnRun,
 }) {
   const InputComponent = GetInputComponent(mimeType);
   const drag_area_ref = useRef<HTMLDivElement>(null);
-
+  
   const onDragLeave = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -48,6 +37,9 @@ const PluginInput: React.FC<PluginInputProps> = function ({
   const onDrop = async (e: React.DragEvent) => {
     e.preventDefault();
     const files = e.dataTransfer.files;
+    if (files.length > 1) {
+      throw Error('Only one file please');
+    }
     const file = files[0];
     if (file) {
       const type = file.type;
