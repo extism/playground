@@ -216,11 +216,11 @@ const App: React.FC = () => {
         className="px-4  md:p-4 md:container md:mx-auto flex-[1_0_auto]  "
       >
         <div
-          className="bg-config-background border-2 border-solid border-config-border p-2
-          lg:grid lg:flex-col lg:flex-
+          className="CONFIG___  border-2 border-solid p-2
+          lg:grid
         "
         >
-          <div className="md:flex  my-2 px-4  md:gap-2 font-bold md:items-center ">
+          <div className=" LOADMODULEFROM__ md:flex  my-2 px-4  md:gap-2 font-bold  md:items-center ">
             <label className="w-[200px] text-sm  font-semibold md:text-base md:font-bold md:text-lg lg:w-[20%] xl:max-w-[175px]">
               Load Module From:
             </label>
@@ -257,7 +257,7 @@ const App: React.FC = () => {
           </div>
 
           <div
-            className=" gap-2 flex flex-wrap justify-start items-end sm:flex-nowrap
+            className=" MODULE_URL___   gap-2 flex flex-wrap justify-start items-end sm:flex-nowrap
             md:my-4 md:py-2 md:px-2 md:items-center
 
              "
@@ -265,12 +265,26 @@ const App: React.FC = () => {
             {state.uploadType === 'module' ? (
               <ModuleLoader moduleName={state.moduleName ? state.moduleName : null} onChange={handleFileInputChange} />
             ) : (
-              <URLInput
-                //@ts-ignore
-                onChange={handleInputURLChange}
-                defaultUrl={state.defaultUrl}
-                url={typeof state.moduleData === 'string' ? state.moduleData : ''}
-              />
+              <div className="flex basis-full items-center">
+                <URLInput
+                  //@ts-ignore
+                  onChange={handleInputURLChange}
+                  defaultUrl={state.defaultUrl}
+                  url={typeof state.moduleData === 'string' ? state.moduleData : ''}
+                />
+                <button
+                  className="p-2 rounded  text-white
+              bg-extismPurple
+              lg:text-xl lg:font-bold
+              hover:ring hover:ring-black hover:ring-2
+              hover:opacity-95
+              "
+                  onClick={handleOnRun}
+                  title="Run Plugin"
+                >
+                  Fetch Module
+                </button>
+              </div>
             )}
           </div>
           <div className="flex grow justify-end sm:basis-1/2  md:items-center">

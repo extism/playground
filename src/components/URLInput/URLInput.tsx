@@ -20,7 +20,11 @@ const URLInput: React.FC<URLInputProps> = ({ onChange, url, defaultUrl }) => {
   };
 
   return (
-    <div className="flex flex-col py-1 basis-full sm:gap-2 sm:flex-row sm:items-center sm:basis-3/4 ">
+    <div
+      className="flex flex-col py-1 basis-full sm:gap-2 sm:flex-row sm:items-center sm:basis-3/4
+      lg:basis-9/12
+    "
+    >
       <b className=" py-1 pr-1 font-semibold text-sm md:font-bold md:text-lg ">Module URL:</b>
       <input
         onKeyDown={onInputKeydown}
