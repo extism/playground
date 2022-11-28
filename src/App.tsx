@@ -215,7 +215,11 @@ const App: React.FC = () => {
         }}
         className="px-4  md:p-4 md:container md:mx-auto flex-[1_0_auto]  "
       >
-        <div className="bg-config-background border-2 border-solid border-config-border p-2">
+        <div
+          className="bg-config-background border-2 border-solid border-config-border p-2
+          lg:grid lg:flex-col lg:flex-
+        "
+        >
           <div className="md:flex  my-2 px-4  md:gap-2 font-bold md:items-center ">
             <label className="w-[200px] text-sm  font-semibold md:text-base md:font-bold md:text-lg lg:w-[20%] xl:max-w-[175px]">
               Load Module From:
@@ -252,7 +256,12 @@ const App: React.FC = () => {
             </form>
           </div>
 
-          <div className="flex flex-wrap justify-start items-end sm:flex-nowrap md:flex-nowrap md:my-4 md:py-2 md:px-2 md:items-center gap-2 ">
+          <div
+            className=" gap-2 flex flex-wrap justify-start items-end sm:flex-nowrap
+            md:my-4 md:py-2 md:px-2 md:items-center
+
+             "
+          >
             {state.uploadType === 'module' ? (
               <ModuleLoader moduleName={state.moduleName ? state.moduleName : null} onChange={handleFileInputChange} />
             ) : (
@@ -320,14 +329,18 @@ const App: React.FC = () => {
           </div>
           <div
             className="flex w-full mx-auto
-          lg:w-1/4 lg:row-start-2 lg:self-start lg:justify-self-end
-          lg:m-0
+          lg:w-1/3 lg:row-start-2 lg:self-start lg:justify-self-end lg:m-0
+
           "
           >
             <button
-              className="p-2 rounded bg-black text-white grow mb-12
-                lg:text-lg lg:font-semibold
-                hover:text-black hover:bg-config-border focus:ring-violet-300 focus:outline-none focus:ring"
+              className="p-2 rounded  text-white grow mb-12
+              bg-extismPurple
+              lg:text-xl lg:font-bold lg:p-3
+              xl:p-5
+              hover:ring hover:ring-black hover:ring-2
+              hover:opacity-95
+              "
               onClick={handleOnRun}
               title="Run Plugin"
             >
@@ -335,7 +348,7 @@ const App: React.FC = () => {
             </button>
           </div>
           <div className="flex flex-col basis-6/12 ">
-            <div className="flex basis-1/12    justify-between  md:gap-4 lg:gap-6">
+            <div className="flex basis-1/12   justify-between  md:gap-4 lg:gap-6">
               <label
                 className="text-white bg-black pt-2   md:min-h-[40px] md:mt-auto lg:font-bold   px-4 rounded-t-lg"
                 htmlFor="plugin-output-textarea"
