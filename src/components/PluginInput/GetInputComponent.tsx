@@ -157,9 +157,17 @@ const ImageInput = (mimeType: string): React.FC<InputComponentProps> => {
     const onDragOver = (e: React.DragEvent) => {
       e.preventDefault();
     };
+    console.log('data', data === '');
 
     return (
-      <div onDragOver={onDragOver} onDrop={onDrop} className="input-image-component-wrapper">
+      <div
+        onDragOver={onDragOver}
+        onDrop={onDrop}
+        className="input-image-component-wrapper
+        relative text-[#c3c7cd] opacity-95
+      "
+      >
+        {data === '' && <p className="absolute left-8 p-1"> drag image file here</p>}
         <img
           onDragStart={onDragStart}
           className="object-contain rounded max-h-full w-full md:h-[100%]"
