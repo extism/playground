@@ -22,11 +22,14 @@ const URLInput: React.FC<URLInputProps> = ({ onChange, url, defaultUrl }) => {
     onChange(e);
   };
   return (
-    <div className="flex basis-full items-center">
+    <div
+      className="flex basis-full items-center
+    xl:basis-[90%]
+    "
+    >
       <div
         className="flex flex-col py-1 basis-full sm:gap-2 sm:flex-row sm:items-center sm:basis-3/4
-      lg:basis-9/12
-    "
+      lg:basis-9/12"
       >
         <b className=" py-1 pr-1 font-semibold text-sm md:font-bold md:text-lg ">Module URL:</b>
         <input
@@ -43,9 +46,13 @@ const URLInput: React.FC<URLInputProps> = ({ onChange, url, defaultUrl }) => {
         />
       </div>
       <button
-        className="p-2 rounded  text-white
-                 bg-extismPurple
+        className="p-2 rounded
+        text-sm font-medium
+
+
+                bg-gray-200
                 lg:text-xl lg:font-bold
+                hover:cursor-pointer hover:bg-secondary-darker
                 hover:ring hover:ring-black hover:ring-2
                 hover:opacity-95
                 "
@@ -55,7 +62,7 @@ const URLInput: React.FC<URLInputProps> = ({ onChange, url, defaultUrl }) => {
         }}
         title="Fetch Module"
       >
-        Fetch Module
+        Load Module
       </button>
     </div>
   );

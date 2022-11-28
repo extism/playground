@@ -15,8 +15,8 @@ const ModuleLoader: React.FC<Props> = function ({ onChange, moduleName }) {
       const moduleName = file.name;
       file
         .arrayBuffer()
-        .then(buffer => new Uint8Array(buffer))
-        .then(moduleData => onChange({moduleData, moduleName}))
+        .then((buffer) => new Uint8Array(buffer))
+        .then((moduleData) => onChange({ moduleData, moduleName }));
     }
   };
 
@@ -33,8 +33,11 @@ const ModuleLoader: React.FC<Props> = function ({ onChange, moduleName }) {
       <input
         type="button"
         value="Upload Module"
-        className="border-none basis-2/12 rounded    p-2 hover:cursor-pointer text-lg font-bold bg-gray-200 hover:bg-secondary-darker"
-        onClick={e => {
+        className="border-none basis-2/12 rounded    p-2 hover:cursor-pointer text-lg font-bold bg-gray-200 hover:bg-secondary-darker
+        hover:ring hover:ring-black hover:ring-2
+        hover:opacity-95
+        "
+        onClick={(e) => {
           const ele = document.getElementById('selected_file') as HTMLInputElement;
           ele.click();
         }}

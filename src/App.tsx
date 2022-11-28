@@ -256,10 +256,8 @@ const App: React.FC = () => {
           </div>
 
           <div
-            className=" MODULE_URL___   gap-2 flex flex-wrap justify-start items-end sm:flex-nowrap
-            md:my-4 md:py-2 md:px-2 md:items-center
-
-             "
+            className="gap-2 flex flex-wrap justify-start items-end sm:flex-nowrap
+             md:py-2 md:px-2 md:items-center"
           >
             {state.uploadType === 'module' ? (
               <ModuleLoader moduleName={state.moduleName ? state.moduleName : null} onChange={handleFileInputChange} />
@@ -271,36 +269,85 @@ const App: React.FC = () => {
               />
             )}
           </div>
-          <div className="flex grow justify-end sm:basis-1/2  md:items-center">
-            <div className="flex justify-between items-end  p-1 sm:items-center md:items-center md:justify-end ">
-              <label
-                className=" text-left  text-sm text-mid-gray bg-background-lightest  rounded flex  p-3 font-semibold h-11 md:h-11 md:flex gap-1 items-center rounded "
-                htmlFor="func_name"
-              >
-                Function Name:
-              </label>
+          <div
+            className="flex grow
+          sm:basis-1/2
+          md:items-center"
+          ></div>
+        </div>
+        <div
+          className="flex items-center gap-2  mt-3
+        xl:w-[49.5%]
+        "
+        >
+          <div
+            className="flex
+            basis-1/4
+            xl:basis-3/4
+          "
+          >
+            <label
+              className=" items-center rounded text-left  text-sm text-black bg-background-lightest
+              font-semibold h-11
+              px-3
+              md:p-3
+              basis-1/2 md:h-11 md:flex gap-1
+              xl:h-[62px]
+              xl:text-base
+"
+              htmlFor="func_name"
+            >
+              Function Name:
+            </label>
 
-              <select
-                autoComplete="off"
-                required
-                name="func_name"
-                id="func_name"
-                value={state.func_name}
-                onChange={handleFunctionDropDownChange}
-                className="hover:cursor-pointer"
-              >
-                {funcOptions}
-              </select>
-            </div>
+            <select
+              autoComplete="off"
+              required
+              name="func_name"
+              id="func_name"
+              value={state.func_name}
+              onChange={handleFunctionDropDownChange}
+              className="hover:cursor-pointer
+              basis-1/2
+              lg:text-base
+              xl:text-lg
+              "
+            >
+              {funcOptions}
+            </select>
+          </div>
+          <div
+            className="
+            flex grow basis-full
+            lg:basis-1/12
+            xl:basis-0
+            xl:justify-end
+          "
+          >
+            <button
+              className="p-2 rounded grow basis-full text-white
+            bg-extismPurple
+            font-semibold
+            lg:text-xl lg:font-bold lg:p-3
+
+            xl:w-[268px]
+            xl:basis-[unset]
+            xl:p-4   xl:grow-0
+            hover:ring hover:ring-black hover:ring-2
+            hover:opacity-95
+            "
+              onClick={handleOnRun}
+              title="Run Plugin"
+            >
+              Run Plugin
+            </button>
           </div>
         </div>
-
         <div
           className=" flex flex-col
-        border-solid mt-8
+        border-solid mt-4
         lg:gap-x-4  lg:gap-y-2 lg:grid
         lg:grid-rows-[1fr_auto] lg:grid-cols-2
-
         "
         >
           <div className="flex flex-col basis-6/12">
@@ -325,7 +372,7 @@ const App: React.FC = () => {
             </div>
             <PluginInput dispatch={dispatch} input={state.input} mimeType={state.inputMimeType} />
           </div>
-          <div
+          {/* <div
             className="flex w-full mx-auto
           lg:w-1/3 lg:row-start-2 lg:self-start lg:justify-self-end lg:m-0
 
@@ -344,7 +391,7 @@ const App: React.FC = () => {
             >
               Run Plugin
             </button>
-          </div>
+          </div> */}
           <div className="flex flex-col basis-6/12 ">
             <div className="flex basis-1/12   justify-between  md:gap-4 lg:gap-6">
               <label
