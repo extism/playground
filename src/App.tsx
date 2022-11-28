@@ -129,18 +129,17 @@ const App: React.FC = () => {
     return manifest;
   };
 
-  const handleInputURLChange = async (e: React.FocusEvent<HTMLInputElement>) => {
-    const pluginName = getPluginURLName(e.target.value);
-
+  const handleInputURLChange = async (e: React.FocusEvent<HTMLInputElement> | string) => {
+    const manifestData = typeof e === 'string' ? e : e.target.value;
     try {
-      let manifest = getManifest(e.target.value);
+      let manifest = getManifest(manifestData);
       let pluginData = await loadFunctions(manifest);
 
       if (pluginData) {
         dispatch({
           type: 'URL_INPUT',
           payload: {
-            moduleData: e.target.value,
+            moduleData: manifestData,
             functions: pluginData,
             func_name: pluginData[0],
           },
@@ -265,26 +264,11 @@ const App: React.FC = () => {
             {state.uploadType === 'module' ? (
               <ModuleLoader moduleName={state.moduleName ? state.moduleName : null} onChange={handleFileInputChange} />
             ) : (
-              <div className="flex basis-full items-center">
-                <URLInput
-                  //@ts-ignore
-                  onChange={handleInputURLChange}
-                  defaultUrl={state.defaultUrl}
-                  url={typeof state.moduleData === 'string' ? state.moduleData : ''}
-                />
-                <button
-                  className="p-2 rounded  text-white
-              bg-extismPurple
-              lg:text-xl lg:font-bold
-              hover:ring hover:ring-black hover:ring-2
-              hover:opacity-95
-              "
-                  onClick={handleOnRun}
-                  title="Run Plugin"
-                >
-                  Fetch Module
-                </button>
-              </div>
+              <URLInput
+                onChange={handleInputURLChange}
+                defaultUrl={state.defaultUrl}
+                url={typeof state.moduleData === 'string' ? state.moduleData : ''}
+              />
             )}
           </div>
           <div className="flex grow justify-end sm:basis-1/2  md:items-center">
