@@ -157,7 +157,6 @@ const ImageInput = (mimeType: string): React.FC<InputComponentProps> => {
     const onDragOver = (e: React.DragEvent) => {
       e.preventDefault();
     };
-    console.log('data', data === '');
 
     return (
       <div
