@@ -48,6 +48,7 @@ const PlainText: React.FC<InputComponentProps> = ({ bytes, dispatch }) => {
       className="input-text-component p-2 "
       id="plugin-input-textarea"
       name="input"
+      placeholder="enter text or drag file here..."
       onChange={inputChangeHandler}
       value={text}
     ></textarea>
@@ -66,6 +67,7 @@ const HTMLInput: React.FC<InputComponentProps> = ({ bytes, dispatch }) => {
       contentEditable
       suppressContentEditableWarning
       id="plugin-output-area"
+      placeholder="enter text or drag file here..."
       className="input-text-component p-2"
       value={text}
       onChange={inputChangeHandler}
@@ -84,6 +86,7 @@ const MarkdownInput: React.FC<InputComponentProps> = ({ bytes, dispatch }) => {
     <textarea
       contentEditable
       suppressContentEditableWarning
+      placeholder="enter text or drag file here..."
       id="plugin-output-area"
       className="input-text-component p-2"
       value={text}
@@ -105,6 +108,7 @@ const JSONInput: React.FC<InputComponentProps> = ({ bytes, dispatch }): any => {
     <textarea
       className="input-text-component font-mono  p-2 "
       id="plugin-input-textarea"
+      placeholder="enter text or drag file here..."
       rows={15}
       name="input"
       onChange={inputChangeHandler}
@@ -153,7 +157,6 @@ const ImageInput = (mimeType: string): React.FC<InputComponentProps> => {
     const onDragOver = (e: React.DragEvent) => {
       e.preventDefault();
     };
-    console.log('IRENER');
 
     return (
       <div onDragOver={onDragOver} onDrop={onDrop} className="input-image-component-wrapper">

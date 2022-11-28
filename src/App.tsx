@@ -35,7 +35,7 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
       return state;
     case 'ERROR_ON_INPUT':
       error = action.payload;
-      console.log('ERRORDSPAATCH', error);
+      console.log('ERROR_DISPATCH', error);
 
       return state;
     default:

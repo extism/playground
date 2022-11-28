@@ -58,7 +58,6 @@ const URLInput: React.FC<URLInputProps> = ({ onChange, url, defaultUrl }) => {
                 "
         onClick={() => {
           onChange(urlInput);
-          console.log('here', urlInput);
         }}
         title="Fetch Module"
       >
