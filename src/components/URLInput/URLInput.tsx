@@ -23,38 +23,52 @@ const URLInput: React.FC<URLInputProps> = ({ onChange, url, defaultUrl }) => {
   };
   return (
     <div
-      className="flex basis-full items-center
-    xl:basis-[90%]
-    "
+      className="flex flex-col gap-1  basis-full  py-2
+        sm:gap-2 sm:flex-row sm:flex-wrap sm:items-center
+        lg:flex-nowrap
+        "
     >
-      <div
-        className="flex flex-col py-1 basis-full sm:gap-2 sm:flex-row sm:items-center sm:basis-3/4
-      lg:basis-9/12"
+      <label
+        htmlFor="url_module_text_input"
+        className=" font-medium text-sm max-w-[100px]
+        sm:font-semibold sm:text-base
+        md:text-lg md:max-w-[115px]
+        md:font-bold lg:w-1/3
+        "
       >
-        <b className=" py-1 pr-1 font-semibold text-sm md:font-bold md:text-lg ">Module URL:</b>
-        <input
-          onBlur={onBlur}
-          onKeyDown={onInputKeydown}
-          className="w-9/12 sm:h-10 md:h-11 md:w-9/12 lg:w-[80%]"
-          type="url"
-          pattern="https://.*"
-          required
-          placeholder={defaultUrl}
-          value={urlInput}
-          onChange={handleURLChange}
-          name="moduleData"
-        />
-      </div>
+        Module URL:
+      </label>
+      <input
+        id="url_module_text_input"
+        onBlur={onBlur}
+        onKeyDown={onInputKeydown}
+        className=" basis-full  text-sm
+        sm:text-base
+        lg:basis-[10/12] lg:max-w-[600px] lg:text-lg
+        xl:basis-11/12 xl:max-w-[750px]
+        2xl:max-w-[unset]
+
+"
+        type="url"
+        pattern="https://.*"
+        required
+        placeholder={defaultUrl}
+        value={urlInput}
+        onChange={handleURLChange}
+        name="moduleData"
+      />
       <button
         className="p-2 rounded
-        text-sm font-medium
-
-
-                bg-gray-200
-                lg:text-xl lg:font-bold
-                hover:cursor-pointer hover:bg-secondary-darker
-                hover:ring hover:ring-black hover:ring-2
-                hover:opacity-95
+         text-base
+         font-semibold
+         sm:basis-full
+         sm:mx-auto
+         bg-gray-200
+         lg:text-xl lg:font-bold
+         lg:basis-1/5
+         hover:cursor-pointer hover:bg-secondary-darker
+         hover:ring hover:ring-black hover:ring-2
+         hover:opacity-95
                 "
         onClick={() => {
           onChange(urlInput);

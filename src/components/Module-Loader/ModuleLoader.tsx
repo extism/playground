@@ -16,7 +16,12 @@ const ModuleLoader: React.FC<Props> = function ({ onChange, moduleName }) {
       file
         .arrayBuffer()
         .then((buffer) => new Uint8Array(buffer))
-        .then((moduleData) => onChange({ moduleData, moduleName }));
+        .then((moduleData) => onChange({ moduleData, moduleName }))
+        .catch((error) => console.log('error!', error))
+        .finally(() => {
+          //@ts-ignore
+          ele.value = null;
+        });
     }
   };
 

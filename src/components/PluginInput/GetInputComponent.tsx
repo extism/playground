@@ -144,7 +144,7 @@ const ImageInput = (mimeType: string): React.FC<InputComponentProps> => {
             dispatch({ type: 'INPUT_CHANGE', payload: { input } });
           });
         } catch (error) {
-          console.log('ERROr in input for real', error);
+          console.log('Error In Get Input Component', error);
         }
       }
     };

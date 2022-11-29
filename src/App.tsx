@@ -7,12 +7,13 @@ import './global.css';
 import DropDownMenu from './components/Buttons/DropDownMenu/DropDownMenu';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
-import ModuleLoader from './components/Module-Loader/ModuleLoader';
+import InputLoaderSwitch from './components/Module-Config/InputLoaderSwitch';
+import ModuleConfig from './components/Module-Config/ModuleConfig';
 import PluginInput from './components/PluginInput/PluginInput';
 import PluginOutput from './components/PluginOutput/PluginOutput';
-import URLInput from './components/URLInput/URLInput';
+import Alert from './components/Errors/Alert';
 import { MimeTypes } from './lib/MimeTypes';
-import { PluginState, PluginAction } from './types';
+import { PluginAction, PluginState } from './types';
 
 const pluginReducer = (state: PluginState, action: PluginAction) => {
   switch (action.type) {
@@ -31,13 +32,24 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
     case 'UPLOAD_TYPE':
       return { ...state, uploadType: action.payload };
     case 'ERROR_ON_RUN':
-      let { error } = action.payload;
-      return state;
     case 'ERROR_ON_INPUT':
-      error = action.payload;
-      console.log('ERROR_DISPATCH', error);
+    case 'ERROR_ON_LOAD':
+      let { error } = action.payload;
+      let message = error.message || '';
+      const defaultMessage = 'Something went wrong.\nPlease check your inputs and plugin configuration!';
 
-      return state;
+      if (message.includes('wasi_unstable')) {
+        message = 'WASI files are not supported in the browser yet';
+      } else if (message.includes('unreachable')) {
+        message = '';
+      } else {
+        message = defaultMessage;
+      }
+
+      return { ...state, isError: true, errorMessage: message };
+
+    case 'DISMISS_ERROR':
+      return { ...state, isError: false, errorMessage: '', loading: false };
     default:
       return state;
   }
@@ -50,11 +62,6 @@ https://githubusercontent.com/extism/playground/main/public/invert.wasm
   */
 // for testing purposes only.
 const currentURL = 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm';
-const getPluginURLName = (url: string) => {
-  const indexOfLastForwardSlash = url.lastIndexOf('/');
-  const pluginName = url.slice(indexOfLastForwardSlash + 1);
-  return pluginName;
-};
 
 const initialState = {
   defaultUrl: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
@@ -89,6 +96,7 @@ const App: React.FC = () => {
         });
       }
     }
+
     loadModule();
   }, []);
 
@@ -101,6 +109,7 @@ const App: React.FC = () => {
       return Object.keys(functions).filter((x) => !x.startsWith('__') && x !== 'memory');
     } catch (error) {
       console.log('ERROR IN LOAD', error);
+      dispatch({ type: 'ERROR_ON_LOAD', payload: { error } });
     }
   };
 
@@ -186,8 +195,7 @@ const App: React.FC = () => {
 
       dispatch({ type: 'ON_RUN', payload: { output, loading: false } });
     } catch (error) {
-      // dispatch({ type: 'ERROR_ON_RUN', payload: { error } });
-      console.log('ERROR IN RUN', error);
+      dispatch({ type: 'ERROR_ON_RUN', payload: { error } });
     }
   };
 
@@ -208,6 +216,7 @@ const App: React.FC = () => {
       }}
     >
       <Header />
+
       <div
         onDragOver={(e: React.DragEvent) => {
           e.preventDefault();
@@ -215,76 +224,34 @@ const App: React.FC = () => {
         className="px-4  md:p-4 md:container md:mx-auto flex-[1_0_auto]  "
       >
         <div
-          className="CONFIG___  border-2 border-solid p-2
-          lg:grid
-        "
+          id="CONFIG-INPUT-CONTAINER"
+          className="border-2 border-solid p-2
+          lg:grid"
         >
-          <div className=" LOADMODULEFROM__ md:flex  my-2 px-4  md:gap-2 font-bold  md:items-center ">
-            <label className="w-[200px] text-sm  font-semibold md:text-base md:font-bold md:text-lg lg:w-[20%] xl:max-w-[175px]">
-              Load Module From:
-            </label>
-            <form className="text-sm md:flex basis-10/12 md:items-center md:gap-2">
-              <input
-                className="form-radio"
-                onChange={() => {
-                  dispatch({ type: 'UPLOAD_TYPE', payload: 'url' });
-                }}
-                value="url"
-                type="radio"
-                defaultChecked
-                name="uploadType"
-                id="use_url"
-              />
-              <label className="text-sm md:text-lg" htmlFor="use_url">
-                URL
-              </label>
-              <input
-                className="form-radio"
-                value="module"
-                onChange={() => {
-                  dispatch({ type: 'UPLOAD_TYPE', payload: 'module' });
-                }}
-                type="radio"
-                name="uploadType"
-                id="use_module"
-              />
-
-              <label className="text-sm md:min-w-[5rem] md:text-lg" htmlFor="use_module">
-                Local File
-              </label>
-            </form>
-          </div>
-
-          <div
-            className="gap-2 flex flex-wrap justify-start items-end sm:flex-nowrap
-             md:py-2 md:px-2 md:items-center"
-          >
-            {state.uploadType === 'module' ? (
-              <ModuleLoader moduleName={state.moduleName ? state.moduleName : null} onChange={handleFileInputChange} />
-            ) : (
-              <URLInput
-                onChange={handleInputURLChange}
-                defaultUrl={state.defaultUrl}
-                url={typeof state.moduleData === 'string' ? state.moduleData : ''}
-              />
-            )}
-          </div>
-          <div
-            className="flex grow
-          sm:basis-1/2
-          md:items-center"
-          ></div>
+          <ModuleConfig dispatch={dispatch} uploadType={state.uploadType} />
+          <InputLoaderSwitch
+            dispatch={dispatch}
+            isError={state.isError}
+            errorMessage={state.errorMessage}
+            onModuleChange={handleFileInputChange}
+            onURLChange={handleInputURLChange}
+            defaultUrl={state.defaultUrl}
+            url={state.url}
+            moduleName={state.moduleName}
+            uploadType={state.uploadType}
+            moduleData={state.moduleData}
+          />
         </div>
         <div
           className="flex items-center gap-2  mt-3
-        xl:w-[49.5%]
-        "
+          xl:w-[49.5%]
+          "
         >
           <div
             className="flex
             basis-1/4
             xl:basis-3/4
-          "
+            "
           >
             <label
               className=" items-center rounded text-left  text-sm text-black bg-background-lightest
@@ -294,7 +261,7 @@ const App: React.FC = () => {
               basis-1/2 md:h-11 md:flex gap-1
               xl:h-[62px]
               xl:text-base
-"
+              "
               htmlFor="func_name"
             >
               Function Name:
@@ -322,20 +289,20 @@ const App: React.FC = () => {
             lg:basis-1/12
             xl:basis-0
             xl:justify-end
-          "
+            "
           >
             <button
               className="p-2 rounded grow basis-full text-white
-            bg-extismPurple
-            font-semibold
-            lg:text-xl lg:font-bold lg:p-3
+              bg-extismPurple
+              font-semibold
+              lg:text-xl lg:font-bold lg:p-3
 
-            xl:w-[268px]
-            xl:basis-[unset]
-            xl:p-4   xl:grow-0
-            hover:ring hover:ring-black hover:ring-2
-            hover:opacity-95
-            "
+              xl:w-[268px]
+              xl:basis-[unset]
+              xl:p-4   xl:grow-0
+              hover:ring hover:ring-black hover:ring-2
+              hover:opacity-95
+              "
               onClick={handleOnRun}
               title="Run Plugin"
             >
@@ -343,12 +310,22 @@ const App: React.FC = () => {
             </button>
           </div>
         </div>
+        {state.isError && (
+          <div
+            className="w-full relative
+          sm:w-2/3 sm:mx-auto
+          lg:w-1/2
+          "
+          >
+            <Alert message={state.errorMessage} dispatch={dispatch} />
+          </div>
+        )}
         <div
           className=" flex flex-col
-        border-solid mt-4
-        lg:gap-x-4  lg:gap-y-2 lg:grid
-        lg:grid-rows-[1fr_auto] lg:grid-cols-2
-        "
+          border-solid mt-4
+          lg:gap-x-4  lg:gap-y-2 lg:grid
+          lg:grid-rows-[1fr_auto] lg:grid-cols-2
+          "
         >
           <div className="flex flex-col basis-6/12">
             <div className="flex  md:gap-4 lg:gap-6">
@@ -372,26 +349,7 @@ const App: React.FC = () => {
             </div>
             <PluginInput dispatch={dispatch} input={state.input} mimeType={state.inputMimeType} />
           </div>
-          {/* <div
-            className="flex w-full mx-auto
-          lg:w-1/3 lg:row-start-2 lg:self-start lg:justify-self-end lg:m-0
 
-          "
-          >
-            <button
-              className="p-2 rounded  text-white grow mb-12
-              bg-extismPurple
-              lg:text-xl lg:font-bold lg:p-3
-              xl:p-5
-              hover:ring hover:ring-black hover:ring-2
-              hover:opacity-95
-              "
-              onClick={handleOnRun}
-              title="Run Plugin"
-            >
-              Run Plugin
-            </button>
-          </div> */}
           <div className="flex flex-col basis-6/12 ">
             <div className="flex basis-1/12   justify-between  md:gap-4 lg:gap-6">
               <label
