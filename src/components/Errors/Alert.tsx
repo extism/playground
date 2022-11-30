@@ -11,49 +11,73 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
   };
   return (
     <div
-      className="absolute z-50 bg-black  p-1
-     sm:w-full
-     "
+      id="content"
+      className="absolute z-50 bg-color-warning-lighter
+      left-0 right-0 ml-auto mr-auto
+      rounded-lg
+      outline outline-2
+      w-[325px]
+      md:w-[450px]
+      lg:w-[550px]"
     >
       <div
-        className=" relative flex  border shadow bg-color-warning-lighter card items-center
-        gap-1
-      "
-      >
-        <div
-          className=" rounded-lg pr-2 text-sm
-        md:flex
-        "
-          role="alert"
-        >
-          <svg className="w-10 h-10 inline mr-3" fill="red" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path
-              fillRule="evenodd"
-              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-        </div>
-        <div className="flex flex-col  flex-wrap ">
-          <p className="text-center text-base font-semibold">Sorry... </p>
-          <p
-            className=" p-1 text-base font-medium
+        className="SVG_CONTAINER
+         bg-error-background
+         flex justify-center py-3 rounded-lg border-b-2  rounded-b-none border-black
 
-          "
-          >
-            {message}
-          </p>
-        </div>
-        <button
-          className="w-1/3 rounded bg-white flex items-center justify-center
-        text-md outline outline-1 shadow shadow-black font-bold max-w-[40px] ml-2
-        hover:ring hover:ring-black hover:ring-2
-        hover:cursor-pointer
-        hover:opacity-95
         "
+        role="alert"
+      >
+        <svg
+          onClick={dismissError}
+          version="1.1"
+          id="Capa_1"
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          viewBox="0 0 50 50"
+          className="w-12 h-12 my-1 overflow-visible "
+          style={{ background: '0 0 50 50' }}
+          xmlSpace="preserve"
+        >
+          <circle style={{ fill: '#D75A4A', stroke: '#FFFFFF', strokeWidth: 4 }} cx="25" cy="25" r="25" />
+          <polyline
+            style={{ fill: 'none', stroke: '#FFFFFF', strokeWidth: 4, strokeLinecap: 'round', strokeMiterlimit: 10 }}
+            points="16,34 25,25 34,16
+	"
+          />
+          <polyline
+            style={{ fill: 'none', stroke: '#FFFFFF', strokeWidth: 4, strokeLinecap: 'round', strokeMiterlimit: 10 }}
+            points="16,16 25,25 34,34"
+          />
+        </svg>
+      </div>
+      <div
+        className="
+          card flex flex-col justify-center gap-1
+          px-12 pt-2
+          text-center rounded-t-none "
+      >
+        <p className="font-bold text-lg">Error!</p>
+        <p
+          className="text-base
+           md:text-lg"
+        >
+          {message}
+        </p>
+        <button
+          className="rounded-lg bg-close-button-background
+           text-white text-base
+           flex items-center justify-center
+           grow  font-bold
+           my-2 h-9
+           lg:max-w-[300px] self-center w-1/2
+           hover:ring hover:ring-black hover:ring-2
+           hover:cursor-pointer
+           hover:opacity-95"
           onClick={dismissError}
         >
-          x
+          Close
         </button>
       </div>
     </div>

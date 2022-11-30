@@ -36,7 +36,7 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
     case 'ERROR_ON_LOAD':
       let { error } = action.payload;
       let message = error.message || '';
-      const defaultMessage = 'Something went wrong.\nPlease check your inputs and plugin configuration!';
+      const defaultMessage = 'Please check your inputs and plugin configuration!';
 
       if (message.includes('wasi_unstable')) {
         message = 'WASI files are not supported in the browser yet';
@@ -312,10 +312,11 @@ const App: React.FC = () => {
         </div>
         {state.isError && (
           <div
-            className="w-full relative
-          sm:w-2/3 sm:mx-auto
-          lg:w-1/2
-          "
+            className=""
+            //   className="w-full relative
+            // sm:w-2/3 sm:mx-auto
+            // lg:w-1/2
+            // "
           >
             <Alert message={state.errorMessage} dispatch={dispatch} />
           </div>

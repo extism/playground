@@ -97,6 +97,8 @@ module.exports = {
       'config-background': 'rgb(234 87 59 / 10%)',
       'config-border': 'rgb(234 87 59)',
       'banner-border': '#b2a726',
+      'error-background': '#ff6c69',
+      'close-button-background': '#374761',
       green: '#13ce66',
       yellow: '#ffc82c',
       black: '#1a1a1a',
