@@ -14,6 +14,8 @@ import PluginOutput from './components/PluginOutput/PluginOutput';
 import Alert from './components/Errors/Alert';
 import { MimeTypes } from './lib/MimeTypes';
 import { PluginAction, PluginState } from './types';
+import RunButton from './components/Buttons/RunPlugin/RunButton';
+import SelectFunctionDropDown from './components/Drop-Down/SelectFunctionDropDown';
 
 const pluginReducer = (state: PluginState, action: PluginAction) => {
   switch (action.type) {
@@ -245,74 +247,15 @@ const App: React.FC = () => {
           xl:w-[49.5%]
           "
         >
-          <div
-            className="flex
-            basis-1/4
-            xl:basis-3/4
-            "
-          >
-            <label
-              className=" items-center rounded text-left  text-sm text-black bg-background-lightest
-              font-semibold h-11
-              px-3
-              md:p-3
-              basis-1/2 md:h-11 md:flex gap-1
-              xl:h-[62px]
-              xl:text-base
-              "
-              htmlFor="func_name"
-            >
-              Function Name:
-            </label>
+          <SelectFunctionDropDown
+            handleFunctionDropDownChange={handleFunctionDropDownChange}
+            func_name={state.func_name}
+            functions={state.functions}
+          />
 
-            <select
-              autoComplete="off"
-              required
-              name="func_name"
-              id="func_name"
-              value={state.func_name}
-              onChange={handleFunctionDropDownChange}
-              className="hover:cursor-pointer
-              basis-1/2
-              lg:text-base
-              xl:text-lg
-              "
-            >
-              {funcOptions}
-            </select>
-          </div>
-          <div
-            className="
-            flex grow basis-full
-            lg:basis-1/12
-            xl:basis-0
-            xl:justify-end
-            "
-          >
-            <button
-              className="p-2 rounded grow basis-full text-white
-              bg-extismPurple
-              font-semibold
-              lg:text-xl lg:font-bold lg:p-3
-
-              xl:w-[268px]
-              xl:basis-[unset]
-              xl:p-4   xl:grow-0
-              hover:ring hover:ring-black hover:ring-2
-              hover:opacity-95
-              "
-              onClick={handleOnRun}
-              title="Run Plugin"
-            >
-              Run Plugin
-            </button>
-          </div>
+          <RunButton handleOnRun={handleOnRun} />
         </div>
-        {state.isError && (
-          <div className="">
-            <Alert message={state.errorMessage} dispatch={dispatch} />
-          </div>
-        )}
+        {state.isError && <Alert message={state.errorMessage} dispatch={dispatch} />}
         <div
           className=" flex flex-col
           border-solid mt-4

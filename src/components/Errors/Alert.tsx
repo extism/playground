@@ -10,63 +10,64 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
     dispatch({ type: 'DISMISS_ERROR', payload: null });
   };
   return (
-    <div
-      id="content"
-      className="absolute z-50 bg-color-warning-lighter
+    <div className="">
+      <div
+        id="content"
+        className="absolute z-50 bg-color-warning-lighter
       left-0 right-0 ml-auto mr-auto
       rounded-lg
       outline outline-2
       w-[325px]
       md:w-[450px]
       lg:w-[550px]"
-    >
-      <div
-        className="SVG_CONTAINER
+      >
+        <div
+          className="SVG_CONTAINER
          bg-error-background
          flex justify-center py-3 rounded-lg border-b-2  rounded-b-none border-black
 
         "
-        role="alert"
-      >
-        <svg
-          onClick={dismissError}
-          version="1.1"
-          id="Capa_1"
-          xmlns="http://www.w3.org/2000/svg"
-          x="0px"
-          y="0px"
-          viewBox="0 0 50 50"
-          className="w-12 h-12 my-1 overflow-visible "
-          style={{ background: '0 0 50 50' }}
-          xmlSpace="preserve"
+          role="alert"
         >
-          <circle style={{ fill: '#D75A4A', stroke: '#FFFFFF', strokeWidth: 4 }} cx="25" cy="25" r="25" />
-          <polyline
-            style={{ fill: 'none', stroke: '#FFFFFF', strokeWidth: 4, strokeLinecap: 'round', strokeMiterlimit: 10 }}
-            points="16,34 25,25 34,16
+          <svg
+            onClick={dismissError}
+            version="1.1"
+            id="Capa_1"
+            xmlns="http://www.w3.org/2000/svg"
+            x="0px"
+            y="0px"
+            viewBox="0 0 50 50"
+            className="w-12 h-12 my-1 overflow-visible "
+            style={{ background: '0 0 50 50' }}
+            xmlSpace="preserve"
+          >
+            <circle style={{ fill: '#D75A4A', stroke: '#FFFFFF', strokeWidth: 4 }} cx="25" cy="25" r="25" />
+            <polyline
+              style={{ fill: 'none', stroke: '#FFFFFF', strokeWidth: 4, strokeLinecap: 'round', strokeMiterlimit: 10 }}
+              points="16,34 25,25 34,16
 	"
-          />
-          <polyline
-            style={{ fill: 'none', stroke: '#FFFFFF', strokeWidth: 4, strokeLinecap: 'round', strokeMiterlimit: 10 }}
-            points="16,16 25,25 34,34"
-          />
-        </svg>
-      </div>
-      <div
-        className="
+            />
+            <polyline
+              style={{ fill: 'none', stroke: '#FFFFFF', strokeWidth: 4, strokeLinecap: 'round', strokeMiterlimit: 10 }}
+              points="16,16 25,25 34,34"
+            />
+          </svg>
+        </div>
+        <div
+          className="
           card flex flex-col justify-center gap-1
           px-12 pt-2
           text-center rounded-t-none "
-      >
-        <p className="font-bold text-lg">Error!</p>
-        <p
-          className="text-base
-           md:text-lg"
         >
-          {message}
-        </p>
-        <button
-          className="rounded-lg bg-close-button-background
+          <p className="font-bold text-lg">Error!</p>
+          <p
+            className="text-base
+           md:text-lg"
+          >
+            {message}
+          </p>
+          <button
+            className="rounded-lg bg-close-button-background
            text-white text-base
            flex items-center justify-center
            grow  font-bold
@@ -75,10 +76,11 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
            hover:ring hover:ring-black hover:ring-2
            hover:cursor-pointer
            hover:opacity-95"
-          onClick={dismissError}
-        >
-          Close
-        </button>
+            onClick={dismissError}
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );
