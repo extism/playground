@@ -33,17 +33,18 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
       return { ...state, ...action.payload };
     case 'UPLOAD_TYPE':
       return { ...state, uploadType: action.payload };
+    case 'ERROR_ON_DROP':
     case 'ERROR_ON_RUN':
     case 'ERROR_ON_INPUT':
     case 'ERROR_ON_LOAD':
       let { error } = action.payload;
-      let message = error.message || '';
       const defaultMessage = 'Please check your inputs and plugin configuration!';
+      let message = defaultMessage;
 
       if (message.includes('wasi_unstable')) {
         message = 'WASI files are not supported in the browser yet';
-      } else {
-        message = defaultMessage;
+      } else if (action.type === 'ERROR_ON_DROP') {
+        message = error.message;
       }
 
       return { ...state, isError: true, errorMessage: message };

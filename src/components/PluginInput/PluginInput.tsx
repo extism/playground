@@ -32,20 +32,26 @@ const PluginInput: React.FC<PluginInputProps> = function ({ input, dispatch, mim
 
   const onDrop = async (e: React.DragEvent) => {
     e.preventDefault();
-    const files = e.dataTransfer.files;
-    if (files.length > 1) {
-      throw Error('Only one file please');
-    }
-    const file = files[0];
-    if (file) {
-      const type = file.type;
-      file.arrayBuffer().then((b: ArrayBuffer) => {
-        dispatch({ type: 'INPUT_MIME_TYPE', payload: { inputMimeType: type, input: new Uint8Array(b) } });
-      });
-    }
+    try {
+      const files = e.dataTransfer.files;
+      if (files.length > 1) {
+        const error = new Error();
+        error.message = 'Only one file please';
+        throw new Error('Only one file please');
+      }
+      const file = files[0];
+      if (file) {
+        const type = file.type;
+        file.arrayBuffer().then((b: ArrayBuffer) => {
+          dispatch({ type: 'INPUT_MIME_TYPE', payload: { inputMimeType: type, input: new Uint8Array(b) } });
+        });
+      }
 
-    drag_area_ref.current!.style.backgroundColor = 'white';
-    drag_area_ref.current!.style.opacity = '1';
+      drag_area_ref.current!.style.backgroundColor = 'white';
+      drag_area_ref.current!.style.opacity = '1';
+    } catch (error) {
+      dispatch({ type: 'ERROR_ON_DROP', payload: { error } });
+    }
   };
 
   return (
