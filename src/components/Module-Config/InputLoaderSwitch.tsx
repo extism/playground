@@ -28,7 +28,7 @@ const InputLoaderSwitch: React.FC<InputLoaderSwitchProps> = ({
     <div
       className="gap-2 flex flex-wrap justify-start items-end
       sm:flex-nowrap
-      md:py-2 md:px-2 md:items-center
+      md:py-2 md: md:items-center
    "
     >
       {uploadType === 'module' ? (
