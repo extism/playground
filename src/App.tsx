@@ -309,13 +309,7 @@ const App: React.FC = () => {
           </div>
         </div>
         {state.isError && (
-          <div
-            className=""
-            //   className="w-full relative
-            // sm:w-2/3 sm:mx-auto
-            // lg:w-1/2
-            // "
-          >
+          <div className="">
             <Alert message={state.errorMessage} dispatch={dispatch} />
           </div>
         )}
