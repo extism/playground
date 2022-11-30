@@ -2,7 +2,6 @@ import React from 'react';
 import { DispatchFunc, ModuleData } from '../../types';
 import ModuleLoader from '../Module-Loader/ModuleLoader';
 import URLInput from '../URLInput/URLInput';
-import Alert from '../Errors/Alert';
 interface InputLoaderSwitchProps {
   dispatch: DispatchFunc;
   isError: boolean;
