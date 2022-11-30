@@ -40,8 +40,6 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
 
       if (message.includes('wasi_unstable')) {
         message = 'WASI files are not supported in the browser yet';
-      } else if (message.includes('unreachable')) {
-        message = '';
       } else {
         message = defaultMessage;
       }
