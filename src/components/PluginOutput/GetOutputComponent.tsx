@@ -7,6 +7,7 @@ import Spinner from '../Spinner/Spinner';
 import { DispatchFunc } from '../../types';
 import TESTJSON from '../../assets/test.json';
 
+
 type OutputComponentProps = {
   bytes: Uint8Array;
   dispatch: DispatchFunc;
@@ -55,16 +56,12 @@ const HTMLOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
 
   return (
     <div id="plugin-output-area" className="output-text-component">
-      <SyntaxHighlighter
-        className="bg-blue break-all p-2 overflow-scroll max-h-full whitespace-pre-wrap"
-        language="xml-doc"
-        wrapLongLines={true}
-        style={oneLight}
-        codeTagProps={{ style: { wordBreak: 'break-word' } }}
-        customStyle={{ margin: 0 }}
-      >
-        {text}
-      </SyntaxHighlighter>
+        <iframe
+          title="html-output"
+          width="100%"
+          height="100%"
+          srcDoc={text}
+        ></iframe>
     </div>
   );
 };
