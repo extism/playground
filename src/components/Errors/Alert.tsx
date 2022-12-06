@@ -57,29 +57,39 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
           className="
           card flex flex-col justify-center gap-1
           px-12 pt-2
-          text-center rounded-t-none "
+          text-center rounded-t-none rounded-b-none"
         >
           <p className="font-bold text-lg">Error!</p>
           <p
             className="text-base
-           md:text-lg"
+            md:text-lg"
           >
-            {message}
+            <pre
+              className="overflow-y-auto  overflow-x-hidden  whitespace-pre-wrap
+              max-h-[175px]
+              sm:max-h-[300px]
+              "
+            >
+              {message}
+            </pre>
           </p>
           <button
             className="rounded-lg bg-close-button-background
-           text-white text-base
-           flex items-center justify-center
-           grow  font-bold
-           my-2 h-9
-           lg:max-w-[300px] self-center w-1/2
-           hover:ring hover:ring-black hover:ring-2
-           hover:cursor-pointer
-           hover:opacity-95"
+            text-white text-base
+            flex items-center justify-center
+            grow  font-bold
+            my-2 h-9
+            lg:max-w-[300px] self-center w-1/2
+            hover:ring hover:ring-black hover:ring-2
+            hover:cursor-pointer
+            hover:opacity-95"
             onClick={dismissError}
           >
             Close
           </button>
+        </div>
+        <div className="flex justify-center">
+          <small className=" p-2 block text-center font-semibold">Note: All errors are logged in the console</small>
         </div>
       </div>
     </div>
