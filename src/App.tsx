@@ -38,16 +38,9 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
     case 'ERROR_ON_INPUT':
     case 'ERROR_ON_LOAD':
       let { error } = action.payload;
-      console.error(error)
+      console.error(error);
       const defaultMessage = 'Please check your inputs and plugin configuration!';
-      let message = defaultMessage;
-
-      if (message.includes('wasi_unstable')) {
-        message = 'WASI files are not supported in the browser yet';
-      } else if (action.type === 'ERROR_ON_DROP') {
-        message = error.message;
-      }
-
+      let message = error.message ? error.message : defaultMessage;
 
       return { ...state, isError: true, errorMessage: message };
 
@@ -203,13 +196,6 @@ const App: React.FC = () => {
   };
 
   const mimeOptions = MimeTypes.map((m, i) => <option key={i}>{m}</option>);
-  const funcOptions = state.functions.map((f: string, i: number) => {
-    return (
-      <option key={i} value={f}>
-        {f}
-      </option>
-    );
-  });
 
   return (
     <div
