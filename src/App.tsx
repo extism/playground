@@ -38,7 +38,7 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
     case 'ERROR_ON_INPUT':
     case 'ERROR_ON_LOAD':
       let { error } = action.payload;
-      console.error(error, 'console error');
+      console.error(error);
 
       const defaultMessage = 'Please check your inputs and plugin configuration!';
       let message = error.message ? error.toString() : defaultMessage;
