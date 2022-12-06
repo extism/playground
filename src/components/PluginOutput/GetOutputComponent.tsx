@@ -63,7 +63,7 @@ const HTMLOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
           srcDoc={text}
           referrerPolicy="no-referrer"
           allow="fullscreen"
-          sandbox="allow-script"
+          sandbox="allow-scripts"
         ></iframe>
     </div>
   );
