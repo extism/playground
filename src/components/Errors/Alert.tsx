@@ -60,7 +60,7 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
           text-center rounded-t-none rounded-b-none"
         >
           <p className="font-bold text-lg">Error!</p>
-          <p
+          <div
             className="text-base
             md:text-lg"
           >
@@ -72,7 +72,7 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
             >
               {message}
             </pre>
-          </p>
+          </div>
           <button
             className="rounded-lg bg-close-button-background
             text-white text-base
