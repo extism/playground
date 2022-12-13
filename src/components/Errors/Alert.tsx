@@ -9,6 +9,52 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
   const dismissError = () => {
     dispatch({ type: 'DISMISS_ERROR', payload: null });
   };
+
+  const renderMessage = () => {
+    return message === `Sorry! We currently don't support WASI.` ? (
+      <div
+        className="text-base
+    md:text-lg"
+      >
+        <pre
+          className="overflow-y-auto whitespace-pre-wrap
+      max-h-[175px]
+      sm:max-h-[300px]
+      md:overflow-x-hidden
+      "
+        >
+          {message}
+          Track the issue at{' '}
+          <a
+            className="text-color-danger-dark underline
+            hover:underline-offset-2
+            hover:font-semibold
+            "
+            target="_blank"
+            rel="noreferrer"
+            href="https://github.com/extism/extism/issues/160"
+          >
+            https://github.com/extism/extism/issues/160
+          </a>
+        </pre>
+      </div>
+    ) : (
+      <div
+        className="text-base
+            md:text-lg"
+      >
+        <pre
+          className="overflow-y-auto whitespace-pre-wrap
+              max-h-[175px]
+              sm:max-h-[300px]
+              md:overflow-x-hidden
+              "
+        >
+          {message}
+        </pre>
+      </div>
+    );
+  };
   return (
     <div className="">
       <div
@@ -61,20 +107,8 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
           text-center rounded-t-none rounded-b-none"
         >
           <p className="font-bold text-lg">Error!</p>
-          <div
-            className="text-base
-            md:text-lg"
-          >
-            <pre
-              className="overflow-y-auto whitespace-pre-wrap
-              max-h-[175px]
-              sm:max-h-[300px]
-              md:overflow-x-hidden
-              "
-            >
-              {message}
-            </pre>
-          </div>
+
+          {renderMessage()}
           <button
             className="rounded-lg bg-close-button-background
             text-white text-base
