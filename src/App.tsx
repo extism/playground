@@ -42,7 +42,7 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
 
       const defaultMessage = 'Please check your inputs and plugin configuration!';
       let message = error.message ? error.toString() : defaultMessage;
-      if (message.includes('wasi_snapshot_preview_1') || message.includes('wasi_unstable')) {
+      if (message.includes('wasi_snapshot_preview1') || message.includes('wasi_unstable')) {
         message = `Sorry! We currently don't support WASI.`;
       }
       return { ...state, isError: true, errorMessage: message };
