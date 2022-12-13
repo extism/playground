@@ -56,7 +56,8 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
         <div
           className="
           card flex flex-col justify-center gap-1
-          px-12 pt-2
+          px-8
+           pt-2
           text-center rounded-t-none rounded-b-none"
         >
           <p className="font-bold text-lg">Error!</p>
@@ -65,9 +66,10 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
             md:text-lg"
           >
             <pre
-              className="overflow-y-auto  overflow-x-hidden  whitespace-pre-wrap
+              className="overflow-y-auto whitespace-pre-wrap
               max-h-[175px]
               sm:max-h-[300px]
+              md:overflow-x-hidden
               "
             >
               {message}
