@@ -43,7 +43,7 @@ const pluginReducer = (state: PluginState, action: PluginAction) => {
       const defaultMessage = 'Please check your inputs and plugin configuration!';
       let message = error.message ? error.toString() : defaultMessage;
       if (message.includes('wasi_snapshot_preview1') || message.includes('wasi_unstable')) {
-        message = `Sorry! We currently don't support WASI.`;
+        message = `Sorry, WASI is currently not supported in the Playground. For now, use the Extism CLI to test WASI plug-ins.`;
       }
       return { ...state, isError: true, errorMessage: message };
 

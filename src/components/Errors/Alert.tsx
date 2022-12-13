@@ -11,7 +11,8 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
   };
 
   const renderMessage = () => {
-    return message === `Sorry! We currently don't support WASI.` ? (
+    return message ===
+      `Sorry, WASI is currently not supported in the Playground. For now, use the Extism CLI to test WASI plug-ins.` ? (
       <div
         className="text-base
     md:text-lg"
@@ -24,7 +25,9 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
       "
         >
           {message}
-          Track the issue at{' '}
+          <br />
+          Track the issue here:
+          <br />
           <a
             className="text-color-danger-dark underline
             hover:underline-offset-2
