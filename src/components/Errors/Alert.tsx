@@ -9,6 +9,55 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
   const dismissError = () => {
     dispatch({ type: 'DISMISS_ERROR', payload: null });
   };
+
+  const renderMessage = () => {
+    return message ===
+      `Sorry, WASI is currently not supported in the Playground. For now, use the Extism CLI to test WASI plug-ins.` ? (
+      <div
+        className="text-base
+    md:text-lg"
+      >
+        <pre
+          className="overflow-y-auto whitespace-pre-wrap
+      max-h-[175px]
+      sm:max-h-[300px]
+      md:overflow-x-hidden
+      "
+        >
+          {message}
+          <br />
+          Track the issue here:
+          <br />
+          <a
+            className="text-color-danger-dark underline
+            hover:underline-offset-2
+            hover:font-semibold
+            "
+            target="_blank"
+            rel="noreferrer"
+            href="https://github.com/extism/extism/issues/160"
+          >
+            https://github.com/extism/extism/issues/160
+          </a>
+        </pre>
+      </div>
+    ) : (
+      <div
+        className="text-base
+            md:text-lg"
+      >
+        <pre
+          className="overflow-y-auto whitespace-pre-wrap
+              max-h-[175px]
+              sm:max-h-[300px]
+              md:overflow-x-hidden
+              "
+        >
+          {message}
+        </pre>
+      </div>
+    );
+  };
   return (
     <div className="">
       <div
@@ -56,23 +105,13 @@ const Alert: React.FC<AlertProps> = ({ message, dispatch }) => {
         <div
           className="
           card flex flex-col justify-center gap-1
-          px-12 pt-2
+          px-8
+           pt-2
           text-center rounded-t-none rounded-b-none"
         >
           <p className="font-bold text-lg">Error!</p>
-          <div
-            className="text-base
-            md:text-lg"
-          >
-            <pre
-              className="overflow-y-auto  overflow-x-hidden  whitespace-pre-wrap
-              max-h-[175px]
-              sm:max-h-[300px]
-              "
-            >
-              {message}
-            </pre>
-          </div>
+
+          {renderMessage()}
           <button
             className="rounded-lg bg-close-button-background
             text-white text-base
