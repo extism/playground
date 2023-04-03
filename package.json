@@ -28,7 +28,7 @@
     ]
   },
   "dependencies": {
-    "@extism/runtime-browser": "0.2.2",
+    "@extism/runtime-browser": "^0.2.7",
     "jsonpath": "^1.1.1",
     "jsonpath-plus": "^7.2.0",
     "react": "^18.2.0",
