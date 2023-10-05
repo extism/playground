@@ -1,7 +1,5 @@
 # Extism Playground
 
-> **Note**: This tool is currently a work-in-progress and is changing rapidly
-
 You can find it hosted here: [https://playground.extism.org/](https://playground.extism.org/)
 
 The Extism Playground allows you to run and experiment with Extism Plugins in the browser
