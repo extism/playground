@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ExtismContext } from '@extism/runtime-browser';
+import { createPlugin } from '@extism/extism';
 import React, { useEffect, useReducer, useRef } from 'react';
 import './global.css';
 
@@ -57,10 +57,13 @@ https://raw.githubusercontent.com/extism/extism-fsnotify/main/apps/md2html/md2ht
 https://githubusercontent.com/extism/playground/main/public/invert.wasm
   */
 // for testing purposes only.
-const currentURL = 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm';
+
+// latest namespace (extism:host/env)
+// const currentURL = 'https://modsurfer.dylibso.workers.dev/api/v1/module/93898457953d30d016f712ccf4336ce7e9971db5f7f3aff1edd252764f75d5d7.wasm';
+const currentURL = 'https://modsurfer.dylibso.workers.dev/api/v1/module/cf29364cb62d3bc4de8654b187fae9cf50174634760eb995b1745650e7a38b41.wasm';
 
 const initialState = {
-  defaultUrl: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
+  defaultUrl: 'https://modsurfer.dylibso.workers.dev/api/v1/module/cf29364cb62d3bc4de8654b187fae9cf50174634760eb995b1745650e7a38b41.wasm',
   moduleData: currentURL,
   input: new Uint8Array(),
   output: new Uint8Array(),
@@ -87,7 +90,7 @@ const App: React.FC = () => {
           type: 'INIT',
           payload: {
             functions: pluginData,
-            func_name: pluginData[0],
+            func_name: pluginData[0]?.name,
           },
         });
       }
@@ -96,13 +99,12 @@ const App: React.FC = () => {
     loadModule();
   }, []);
 
-  const extismContext = useRef(new ExtismContext());
-
   const loadFunctions = async (manifest: any) => {
     try {
-      const plugin = await extismContext.current.newPlugin(manifest);
+      const plugin = await createPlugin(manifest);
       const functions = await plugin.getExports();
-      return Object.keys(functions).filter((x) => !x.startsWith('__') && x !== 'memory');
+
+      return functions.filter((x: WebAssembly.ModuleExportDescriptor) => !x.name?.startsWith('__') && x.name !== 'memory');
     } catch (error) {
       console.log('ERROR IN LOAD', error);
       dispatch({ type: 'ERROR_ON_LOAD', payload: { error } });
@@ -120,8 +122,9 @@ const App: React.FC = () => {
     let manifest: any;
     switch (moduleData.constructor) {
       case String:
+        moduleData = moduleData as string
         manifest = {
-          wasm: [{ path: moduleData as string }],
+          wasm: [{ [((moduleData).indexOf('http') !== -1) ? 'url' : 'path']: moduleData }],
         };
         break;
 
@@ -146,7 +149,7 @@ const App: React.FC = () => {
           payload: {
             moduleData: manifestData,
             functions: pluginData,
-            func_name: pluginData[0],
+            func_name: pluginData[0]?.name,
           },
         });
       }
@@ -167,7 +170,7 @@ const App: React.FC = () => {
           payload: {
             moduleData,
             functions: pluginData,
-            func_name: pluginData[0],
+            func_name: pluginData[0]?.name,
             moduleName,
           },
         });
@@ -182,7 +185,7 @@ const App: React.FC = () => {
 
     try {
       const manifest = getManifest(state.moduleData);
-      const plugin = await extismContext.current.newPlugin(manifest);
+      const plugin = await createPlugin(manifest);
 
       dispatch({ type: 'ON_CALL', payload: { loading: true } });
 
