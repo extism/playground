@@ -3,17 +3,17 @@ import React from 'react';
 interface SelectFunctionDropDownProps {
   handleFunctionDropDownChange: React.ChangeEventHandler<HTMLSelectElement>;
   func_name: string;
-  functions: string[];
+  functions: WebAssembly.ModuleExportDescriptor[];
 }
 const SelectFunctionDropDown: React.FC<SelectFunctionDropDownProps> = ({
   handleFunctionDropDownChange,
   func_name,
   functions,
 }) => {
-  const funcOptions = functions.map((f: string, i: number) => {
+  const funcOptions = functions.map((f: WebAssembly.ModuleExportDescriptor, i: number) => {
     return (
-      <option key={i} value={f}>
-        {f}
+      <option key={i} value={f.name}>
+        {f.name}
       </option>
     );
   });

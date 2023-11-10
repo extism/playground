@@ -42,7 +42,13 @@ const LoadingScreen: React.FC<OutputComponentProps> = () => {
 };
 
 const PlainText: React.FC<OutputComponentProps> = ({ bytes }) => {
-  const text = new TextDecoder().decode(bytes);
+  let text: string;
+  try {
+    text = new TextDecoder().decode(bytes);
+  } catch (e) {
+    text = e as string;
+    console.error(e)
+  }
 
   return (
     <textarea className="output-text-component rounded p-2" id="plugin-output-area" name="output" disabled value={text}>
@@ -56,15 +62,15 @@ const HTMLOutput: React.FC<OutputComponentProps> = ({ bytes }) => {
 
   return (
     <div id="plugin-output-area" className="output-text-component">
-        <iframe
-          title="html-output"
-          width="100%"
-          height="100%"
-          srcDoc={text}
-          referrerPolicy="no-referrer"
-          allow="fullscreen"
-          sandbox="allow-scripts"
-        ></iframe>
+      <iframe
+        title="html-output"
+        width="100%"
+        height="100%"
+        srcDoc={text}
+        referrerPolicy="no-referrer"
+        allow="fullscreen"
+        sandbox="allow-scripts"
+      ></iframe>
     </div>
   );
 };
