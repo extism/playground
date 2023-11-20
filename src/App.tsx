@@ -57,13 +57,10 @@ https://raw.githubusercontent.com/extism/extism-fsnotify/main/apps/md2html/md2ht
 https://githubusercontent.com/extism/playground/main/public/invert.wasm
   */
 // for testing purposes only.
-
-// latest namespace (extism:host/env)
-// const currentURL = 'https://modsurfer.dylibso.workers.dev/api/v1/module/93898457953d30d016f712ccf4336ce7e9971db5f7f3aff1edd252764f75d5d7.wasm';
-const currentURL = 'https://modsurfer.dylibso.workers.dev/api/v1/module/cf29364cb62d3bc4de8654b187fae9cf50174634760eb995b1745650e7a38b41.wasm';
+const currentURL = 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm';
 
 const initialState = {
-  defaultUrl: 'https://modsurfer.dylibso.workers.dev/api/v1/module/cf29364cb62d3bc4de8654b187fae9cf50174634760eb995b1745650e7a38b41.wasm',
+  defaultUrl: 'https://raw.githubusercontent.com/extism/extism/main/wasm/code.wasm',
   moduleData: currentURL,
   input: new Uint8Array(),
   output: new Uint8Array(),
