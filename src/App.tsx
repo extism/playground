@@ -182,7 +182,7 @@ const App: React.FC = () => {
 
     try {
       const manifest = getManifest(state.moduleData);
-      const plugin = await createPlugin(manifest. { useWasi: true });
+      const plugin = await createPlugin(manifest, { useWasi: true });
 
       dispatch({ type: 'ON_CALL', payload: { loading: true } });
 
